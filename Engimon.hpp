@@ -44,7 +44,7 @@ class Engimon{
         // setter
         void setName(string _name);
         void setParent(string _parent1, string _parent2);
-        void setSkills(vector<Skills> skills);
+        void setSkills(vector<Skill> skills);
         void setElements(vector<Element> elements);
         void setLevel(int _level);
         void setEXP(int _EXP);
