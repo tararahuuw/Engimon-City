@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "Skill.hpp"
+#include "Skill.h"
 
 enum Element {fire, water, electric, ground, ice};
 
@@ -21,26 +21,27 @@ class Engimon{
         int health;
 
     public:
-        // Engimon();
-        // user defined ctor
-        // engimon liar
-        Engimon(string _name, Skill _skill, vector<Element> _elements, int _level, int _EXP, int _cumulativeEXP, int _status, int _health);
+        // Engimon(string _name, Skill _skill, vector<Element> _elements, int _level, int _EXP, int _cumulativeEXP, int _status, int _health);
         
-        // kalo parameternya mau pakai vector
-        Engimon(string _name, list<string> _parent, Skill _skill, vector<Element> _elements, int _level, int _EXP, int _cumulativeEXP, int _status, int _health);
-        
+        // // kalo parameternya mau pakai vector
+        // Engimon(string _name, list<string> _parent, Skill _skill, vector<Element> _elements, int _level, int _EXP, int _cumulativeEXP, int _status, int _health);
+        // ctor
+        Engimon();
+
+        // user defined
         // 1 elemen
         Engimon(string _name, list<string> _parent, Skill _skills, Element elm, int _level, int _EXP, int _cumulativeEXP, int _status, int _health);
-        
         // 2 elemen
         Engimon(string _name, list<string> _parent, Skill _skills, Element elm1, Element elm2, int _level, int _EXP, int _cumulativeEXP, int _status, int _health);
         
         // dtor
         ~Engimon();
-        // cctor
+        
         //operator overload
         bool operator==(const Engimon& otherEngimon);
         Engimon& operator=(const Engimon& otherEngimon);
+        friend ostream& operator<<(ostream& os, const Engimon& engimon);
+        friend ostream& operator<<(ostream& os, const Element& element);
 
         // getter
         int getLevel() const;
@@ -64,17 +65,18 @@ class Engimon{
         void setHealth(int _health);
 				
         // fungsi lain
-        void upLevel();
-        void downLevel(int decr);
-        void addEXP();
-        void printInfo();
-        void addSkills();
+        void upLevel(); // menaikan sebesar 1 level
+        void downLevel(int decr); // menurunkan sebesar decr level
+        void addEXP(int exp); // menambah exp
+        // void printInfo(); pakai overload
+        void addSkills(Skill skill); //menambahkan skill engimon
         bool checkNumOfElements() const; // kalau 1 itu false, kalau 2 true
         
         // print nama elemen
-        static void printElement(Element elm);
+        // static void printElement(Element elm); pakai overload
 };
 
+// buat daftar engimon liar(?)
 class KatalogEngimon{
     private:
         vector<Engimon> katalogEngimon;
