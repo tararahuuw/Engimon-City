@@ -1,12 +1,15 @@
 #ifndef SKILL_H
 #define SKILL_H
 
-#include <vector>
 #include <iostream>
+#include <vector>
 #include <string>
-#include "Engimon.h"
+#include <fstream>
 
 using namespace std;
+
+enum Element {fire, water, electric, ground, ice};
+ostream& operator<<(ostream& os, const Element& elm); // untuk print element
 
 class Skill{
 private:
@@ -23,7 +26,7 @@ public:
     Skill(string _name, int _basePower, int _masteryLevel, Element elm1, Element elm2); // 2 elemen
     
     //dtor
-    ~Skill(){}
+    ~Skill();
 
     //operator overload
     bool operator==(const Skill& otherSkill);
@@ -37,7 +40,7 @@ public:
     
     // setter
     void setName(string _name);
-    void setBasePower(string _basePower);
+    void setBasePower(int _basePower);
     void setMasteryLevel(int _masteryLevel);
     void setElement(Element elm);
     void setElement(Element elm1, Element elm2);
@@ -47,12 +50,35 @@ public:
     void incrMasteryLevel();
 };
 
-// Daftar skill yang ada
+// Berisi daftar skill yang ada
 class KatalogSkill {
     private:
         vector<Skill> katalogSkill;
+        // vector<Skill> fireSkills;
+        // vector<Skill> waterSkills;
+        // vector<Skill> electricSkills;
+        // vector<Skill> groundSkills;
+        // vector<Skill> iceSkills;
+        // vector<Skill> fire_electricSkills;
+        // vector<Skill> water_iceSkills;
+        // vector<Skill> water_groundSkills;
     public:
         KatalogSkill();
+        ~KatalogSkill();
+        // void addSkill();
+        // void addSkill();
+        // operator overload
+        Skill& operator[](int i);
+        // vector<Skill>& operator[](string elm){
+        //     if (elm == "fire") return fireSkills;
+        //     else if(elm == "water") return waterSkills;
+        //     else if(elm == "electric") return electricSkills;
+        //     else if(elm == "ground") return groundSkills;
+        //     else if(elm == "ice") return iceSkills;
+        //     else if(elm == "fire_electric") return fire_electricSkills;
+        //     else if(elm == )
+        // }
+        void printtKatalogSkill(); //for testing purpose
 };
 
 #endif // !
