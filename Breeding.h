@@ -12,9 +12,7 @@ class Breeding {
     	// Asumsi engimon sudah level 30
         static Engimon& breeding (Engimon A, Engimon B);
 
-        string elemenanak(Engimon A, Engimon B);
-
-        List& skillanak(Engimon A, Engimon B);
+        Vector& skillanak(Engimon A, Engimon B);
 
 
 };
