@@ -30,6 +30,7 @@ public:
 
     //operator overload
     bool operator==(const Skill& otherSkill);
+    Skill& operator=(const Skill& otherSkill);
     friend ostream& operator<<(ostream& os, const Skill& skill);
 
     // getter

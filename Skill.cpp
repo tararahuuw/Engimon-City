@@ -42,6 +42,15 @@ bool Skill::operator==(const Skill& otherSkill){
         this->element == otherSkill.element;
 }
 
+Skill& Skill::operator=(const Skill& otherSkill){
+    this->name = otherSkill.name;
+    this->basePower = otherSkill.basePower;
+    this->masteryLevel = otherSkill.masteryLevel;
+    this->element = otherSkill.element;
+
+    return *this;
+}
+
 ostream& operator<<(ostream& os, const Skill& skill){
     os << "===============================" << endl;
     os << "| " << skill.name << endl;
