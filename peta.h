@@ -1,14 +1,19 @@
 #include <iostream>
+#include <string>
+#include <list>
+#include <fstream>
 #include <vector>
-//#include "Engimon.hpp"
+#include <map>
+#include "Engimon.cpp"
 using namespace std;
 
 #ifndef PETA_HPP
 #define PETA_HPP
-#define SIZE_ROW 14
-#define SIZE_COL 14
+// #define SIZE_ROW 14
+// #define SIZE_COL 14
 #define MIN_LEVEL 5
 #define MAX_LEVEL 10
+#define MAX_SPAWN 20
 
 class Peta {
     private :
@@ -16,7 +21,10 @@ class Peta {
         int kolom;
         int nElmt;
         char *isiPeta;
-        //vector<Engimon> DaftarEngimon; //ada array of engimon buat nyimpan engimon apa saja yang ada pada peta
+        char *PetaTetap;
+        static int engimonId;
+        vector<pair<int, Engimon> > DaftarEngimon;
+        //Engimon *DaftarEngimon; //ada array of engimon buat nyimpan engimon apa saja yang ada pada peta
         vector<int> PosisiEngimon; //ini mending dijadiin vector of point deh
         int BykEngimonLiar;
 
@@ -35,22 +43,28 @@ class Peta {
         
         //Get&Set
         char GetElementPeta(int b, int k);
+        char GetElementPeta(int posisi);
+        char GetElementPetaTetap(int b, int k);
+        char GetElementPetaTetap(int posisi);
         void SetElementPeta(int b, int k, char element);
         void SetElementPeta(int index, char element);
         int GetBanyakEngimonLiar();
+        static int GetEngimonId();
         
         //Baca file dan isi element pada peta sesuai dengan isi file txt
         void BacaFile();
         
         //Print isi Peta
         void PrintPeta();
+        void PrintDaftarEngimon();
+        void PrintPosisiEngimon();
         
         //Untuk masukin engimon yang telah dibuat ke daftarEngimon
-        void AddEngimon();
+        void AddEngimon(pair<int, Engimon> e, int posisi);
         
         //Hapus engimon dari daftarEngimon
-        void DeleteEngimon();
-        void SelectNama(char Engimon, string *nama, int *cumexp, int *health);
+        void DeleteEngimon(pair<int, Engimon> e);
+        void SelectNama(char Engimon, string *nama, int *health);
         //spawn engimon
         //algoritma random
         /* 
@@ -60,12 +74,13 @@ class Peta {
         4. Masukin dalam array engimon yang sudah ada
         */
         void SpawnEngimon(int BanyakSpawn);
-        
+    
+        void TukarPosisi(int posisi, int posisisekarang);
         //engimon bergerak
         /*
         1. Dari array of engimon yang sudah ada itu diubah lokasinya di dalam peta
         */
-        void GerakinEngimon();
+        void GerakinSemuaEngimon();
         
         
 };

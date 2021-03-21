@@ -7,6 +7,8 @@
 
 using namespace std;
 
+int Peta::engimonId = 0;
+
 Peta::Peta(int b, int k){
 	this->baris = b;
 	this->kolom = k;
@@ -15,6 +17,13 @@ Peta::Peta(int b, int k){
 	for(int i=0; i<this->nElmt; i++){
 		this->isiPeta[i] = 'x';
 	}
+	this->PetaTetap = new char[this->nElmt];
+	for(int i=0; i<this->nElmt; i++){
+		this->PetaTetap[i] = 'x';
+	}
+	this->BykEngimonLiar = 0;
+	this->PosisiEngimon = vector<int> ();
+	this->DaftarEngimon = vector<pair<int, Engimon> > ();
 }
 
 Peta::Peta(const Peta& P){
@@ -25,14 +34,30 @@ Peta::Peta(const Peta& P){
 	for(int i=0; i<this->nElmt; i++){
 		this->isiPeta[i] = P.isiPeta[i];
 	}
+	this->PetaTetap = new char[this->nElmt];
+	for(int i=0; i<this->nElmt; i++){
+		this->PetaTetap[i] = P.isiPeta[i];
+	}
+	this->PosisiEngimon = vector<int> ();
+	for (int i = 0; i < this->PosisiEngimon.size(); i++){
+        this->PosisiEngimon[i] == P.PosisiEngimon[i];
+    }
+	// this->DaftarEngimon = vector<pair<int, Engimon> > ();
+	// for (int i = 0; i < this->PosisiEngimon.size(); i++){
+    //     this->DaftarEngimon[i] == P.DaftarEngimon[i];
+    // }
+	this->BykEngimonLiar = P.BykEngimonLiar;
+	//this->DaftarEngimon = new Engimon[20];
 }
 
 Peta::~Peta(){
 	delete[] this->isiPeta;
+	delete[] this->PetaTetap;
 }
 
 Peta& Peta::operator=(const Peta& P){
 	delete[] this->isiPeta;
+	delete[] this->PetaTetap;
 	this->baris = P.baris;
 	this->kolom = P.kolom;
 	this->nElmt = P.nElmt;
@@ -40,21 +65,60 @@ Peta& Peta::operator=(const Peta& P){
 	for(int i=0; i<this->nElmt; i++){
 		this->isiPeta[i] = P.isiPeta[i];
 	}
+	this->PetaTetap = new char[this->nElmt];
+	for(int i=0; i<this->nElmt; i++){
+		this->PetaTetap[i] = P.isiPeta[i];
+	}
+	this->PosisiEngimon = vector<int> ();
+	for (int i = 0; i < this->PosisiEngimon.size(); i++){
+        this->PosisiEngimon[i] == P.PosisiEngimon[i];
+    }
+	// this->DaftarEngimon = vector<pair<int, Engimon> > ();
+	// for (int i = 0; i < this->PosisiEngimon.size(); i++){
+    //     this->DaftarEngimon[i] == P.DaftarEngimon[i];
+    // }
+
 }
 
 char Peta::GetElementPeta(int b, int k){
-	if(b > SIZE_ROW || b < 0 || k > SIZE_COL || k < 0){
+	if(b > this->baris || b < 0 || k > this->kolom || k < 0){
 		throw ("Index Out of Range");
 	} else {
-		return this->isiPeta[(b*SIZE_COL)+k];
+		return this->isiPeta[(b*this->kolom)+k];
 	}
 }
 
-void Peta::SetElementPeta(int b, int k, char element){
-	if(b > SIZE_ROW || b < 0 || k > SIZE_COL || k < 0){
+char Peta::GetElementPeta(int posisi){
+	if(posisi < 0 || posisi >= this->nElmt){
 		throw ("Index Out of Range");
 	} else {
-		this->isiPeta[(b*SIZE_COL)+k] = element;
+		return this->isiPeta[posisi];
+	}
+
+}
+
+char Peta::GetElementPetaTetap(int b, int k){
+	if(b > this->baris || b < 0 || k > this->kolom || k < 0){
+		throw ("Index Out of Range");
+	} else {
+		return this->PetaTetap[(b*this->kolom)+k];
+	}
+}
+
+char Peta::GetElementPetaTetap(int posisi){
+	if(posisi < 0 || posisi >= this->nElmt){
+		throw ("Index Out of Range");
+	} else {
+		return this->PetaTetap[posisi];
+	}
+
+}
+
+void Peta::SetElementPeta(int b, int k, char element){
+	if(b > this->baris || b < 0 || k > this->kolom || k < 0){
+		throw ("Index Out of Range");
+	} else {
+		this->isiPeta[(b*this->kolom)+k] = element;
 	}
 }
 
@@ -66,6 +130,10 @@ void Peta::SetElementPeta(int index, char element){
 	}
 }
 
+int Peta::GetEngimonId(){
+	return engimonId;
+}
+
 void Peta::BacaFile(){
 	ifstream obj("map.txt");
 	char element;
@@ -75,6 +143,7 @@ void Peta::BacaFile(){
 			obj.get(element);
 			if(!isspace(element)){
 				this->isiPeta[index] = element;
+				this->PetaTetap[index] = element;
 				index++;
 			}
 		}
@@ -85,26 +154,46 @@ void Peta::BacaFile(){
 }
 
 void Peta::PrintPeta(){
-	for(int i = 0; i < SIZE_ROW; i++){
-		for(int j =0; j < SIZE_COL; j++){
+	for(int i = 0; i < this->baris; i++){
+		for(int j =0; j < this->kolom; j++){
 			cout << GetElementPeta(i,j) << " ";
 		}
 		cout << endl;
 	}
 }
 
-//kalo engimonnya sudah berhasil dijinakkan hapus dari DaftarEngimon
-void Peta::DeleteEngimon(){
-	//SetElementPeta
-	//delete element vector engimon
-// 	myvector= {1, 2, 3, 4, 5}, iterator= 2
-//          myvector.erase(iterator);
-	// for (auto i = DaftarEngimon.begin(); i != DaftarEngimon.end(); ++i)
-	//std::vector<int> a={1,2,3};
-   //a.erase(std::find(a.begin(),a.end(),2));
+void Peta::PrintDaftarEngimon(){
+	for(int i = 0; i < this->BykEngimonLiar; i++){
+		cout << this->DaftarEngimon[i].first << endl;
+	}
 }
 
-void Peta::SelectNama(char Engimon, string *nama, int *cumexp, int *health){
+void Peta::PrintPosisiEngimon(){
+	for(int i = 0; i < this->BykEngimonLiar; i++){
+		cout << this->PosisiEngimon[i] << endl;
+	}
+}
+
+void Peta::AddEngimon(pair<int, Engimon> e, int posisi){
+	this->DaftarEngimon.push_back(e);
+	this->PosisiEngimon.push_back(posisi);
+	this->BykEngimonLiar++;
+	engimonId++;
+}
+
+//kalo engimonnya sudah berhasil dijinakkan hapus dari DaftarEngimon
+void Peta::DeleteEngimon(pair<int, Engimon> e){
+	for (int i = 0; i != this->BykEngimonLiar; i++){
+		if(DaftarEngimon[i].first == e.first){
+			DaftarEngimon.erase(DaftarEngimon.begin() + i);
+			PosisiEngimon.erase(PosisiEngimon.begin() + i);
+			this->BykEngimonLiar--;
+			break;
+		}
+	}
+}
+
+void Peta::SelectNama(char Engimon, string *nama, int *health){
 	string fire1[3] = {"Snorlax", "Porygon", "Eevee"};
 	string fire2[3] = {"Chansey", "Kangaskhan", "Meowth"};
 	string ground1[3] = {"Bulbasaur", "Venusaur", "Weepinbell"};
@@ -118,43 +207,33 @@ void Peta::SelectNama(char Engimon, string *nama, int *cumexp, int *health){
 	string random;
 	if(Engimon == 'f'){
 		random = fire1[rand() % 3];
-		*cumexp = 1200;
 		*health = 300;
 	} else if(Engimon == 'F'){
 		random = fire2[rand() % 3]; 
-		*cumexp = 1200;
 		*health = 400;
 	} else if(Engimon == 'g'){
 		random = ground1[rand() % 3];
-		*cumexp = 1300;
 		*health = 300;
 	} else if(Engimon == 'G'){
 		random = ground2[rand() % 3];
-		*cumexp = 1300;
 		*health = 400;
 	} else if(Engimon == 'e'){
 		random = electric1[rand() % 3];
-		*cumexp = 1400;
 		*health = 300;
 	} else if(Engimon == 'E'){
 		random = electric2[rand() % 3]; 
-		*cumexp = 1400;
 		*health = 400;
 	} else if(Engimon == 'w'){
 		random = water1[rand() % 3];
-		*cumexp = 1300;
 		*health = 450;
 	} else if(Engimon == 'W'){
 		random = water2[rand() % 3];
-		*cumexp = 1300;
 		*health = 500;
 	} else if(Engimon == 'i'){
 		random = ice1[rand() % 3];
-		*cumexp = 1200;
 		*health = 500;
 	} else if(Engimon == 'I'){
 		random = ice2[rand() % 3];
-		*cumexp = 1200;
 		*health = 550;
 	}
 	*nama = random;
@@ -164,16 +243,17 @@ void Peta::SelectNama(char Engimon, string *nama, int *cumexp, int *health){
 void Peta::SpawnEngimon(int BanyakSpawn){
 	int posisi, level;
 	//int BanyakSpawn = 10;
-	posisi = rand() % (SIZE_ROW*SIZE_COL);
+	posisi = rand() % (this->nElmt);
 	level = rand(); //mod dengan max level dari engimon
 	char grass[] = "fFgGeE";
 	char sea[] = "wiWI";
 	char engimonTerpilih;
+	KatalogEngimon katalogengimon;
 	string namaEngimon;
-	int cumexp, health;
+	int health;
 	for(int i = 0; i < BanyakSpawn; i++){
 		while(this->isiPeta[posisi] != '-' && this->isiPeta[posisi] != 'o'){
-			posisi = rand() % (SIZE_ROW*SIZE_COL);
+			posisi = rand() % (this->nElmt);
 		}
 		//random level
 		if(engimonTerpilih == 'f' || engimonTerpilih == 'g' || engimonTerpilih == 'e' || engimonTerpilih == 'w' || engimonTerpilih == 'i'){
@@ -186,23 +266,23 @@ void Peta::SpawnEngimon(int BanyakSpawn){
 			engimonTerpilih = grass[rand() % 6];
 			//set di peta
 			SetElementPeta(posisi, engimonTerpilih);
-			SelectNama(engimonTerpilih,&namaEngimon, &cumexp, &health);
-			cout << namaEngimon << endl;
+			//SelectNama(engimonTerpilih,&namaEngimon, &health);
+			//cout << namaEngimon << endl;
 			//create obj engimon
-			// nama, parent=NULL, skill, element, level, exp, cumexp, status = 1, health
-			// DaftarEngimon.push_back(engimon);
-			//PosisiEngimon.push_back(posisi) 
+			// pair<int, char> PAIR1; 
+			// PAIR1.first = 100; 
+			// PAIR1.second = 'G';
+
 			cout << engimonTerpilih << endl;
 			cout << posisi << endl;
-			//create engimon
+
 			//masukin ke daftar engimon
 		} else if(this->isiPeta[posisi] == 'o'){
 			engimonTerpilih = sea[rand() % 4];
 			//set di peta
 			SetElementPeta(posisi, engimonTerpilih);
-			SelectNama(engimonTerpilih,&namaEngimon, &cumexp, &health);
-			cout << namaEngimon << endl;
-			// DaftarEngimon.push_back(i);
+			// SelectNama(engimonTerpilih,&namaEngimon, &health);
+			// cout << namaEngimon << endl;
 			cout << engimonTerpilih << endl;
 			cout << posisi << endl;
 			//create engimon
@@ -212,17 +292,33 @@ void Peta::SpawnEngimon(int BanyakSpawn){
 	}
 }
 
-void Peta::GerakinEngimon(){
+
+
+void Peta::TukarPosisi(int posisibaru, int posisisekarang){
+	if(GetElementPeta(posisibaru) == 'P'){
+		throw false;
+	} else {
+		SetElementPeta(posisibaru, GetElementPeta(posisisekarang));
+		SetElementPeta(posisisekarang, GetElementPetaTetap(posisisekarang));
+	}
+}
+
+void Peta::GerakinSemuaEngimon(){
 	//iterasi tiap element pada pada daftar engimon
 	//untuk geraknya di random
-	// for (auto i = DaftarEngimon.begin(); i != DaftarEngimon.end(); ++i){
-	// 	cout << *i << " "; 
-	int posisi = rand() % (SIZE_ROW*SIZE_COL);
-	// } 
-	//if else jenis engimon yang sedang dijalankan
-	//SetElementPeta posisi engimon sekarang ganti jadi posisi sebelumnya
-	
-	//SetElementPeta //ganti jadi posisi yang baru
+	for (int i = 0; i != this->BykEngimonLiar; i++){
+		int posisi = rand() % (this->nElmt);
+		while(GetElementPeta(posisi) != GetElementPetaTetap(PosisiEngimon[i]) || GetElementPeta(posisi) == 'X'){
+			posisi = rand() % (this->nElmt);
+		}
+		try{
+			//ubah element pada isipeta
+			TukarPosisi(posisi, PosisiEngimon[i]);
+			PosisiEngimon[i] = posisi;
+		} catch(bool f){
+			//tetap ditempat engimon yang diacu
+		}
+	}
 }
 
 int main(){
@@ -233,70 +329,8 @@ int main(){
 	//P.PrintPeta();
 	P.SpawnEngimon(5);
 	P.PrintPeta();
-	
+	int g = P.GetEngimonId();
+	cout << g << endl;
 	return 0;
 }
 
-/*
-// Constructor for Given Matrix
-Peta::Peta(const char * fileName){
-    ifstream file_A(fileName); // input file stream to open the file A.txt
-
-    // Task 1
-    // Keeps track of the Column and row sizes
-    int colSize = 0;
-    int rowSize = 0;
-    
-    // read it as a vector
-    string line_A;
-    int idx = 0;
-    double element_A;
-    double *vector_A = nullptr;
-    
-    if (file_A.is_open() && file_A.good())
-    {
-        // cout << "File A.txt is open. \n";
-        while (getline(file_A, line_A))
-        {
-            rowSize += 1;
-            stringstream stream_A(line_A);
-            colSize = 0;
-            while (1)
-            {
-                stream_A >> element_A;
-                if (!stream_A)
-                    break;
-                colSize += 1;
-                double *tempArr = new double[idx + 1];
-                copy(vector_A, vector_A + idx, tempArr);
-                tempArr[idx] = element_A;
-                vector_A = tempArr;
-                idx += 1;
-            }
-        }
-    }
-    else
-    {
-        cout << " WTF! failed to open. \n";
-    }
-    
-    int j;
-    idx = 0;
-    m_matrix.resize(rowSize);
-    for (unsigned i = 0; i < m_matrix.size(); i++) {
-        m_matrix[i].resize(colSize);
-    }
-    for (int i = 0; i < rowSize; i++)
-    {
-        for (j = 0; j < colSize; j++)
-        {
-            this->m_matrix[i][j] = vector_A[idx];
-            idx++;
-        }
-    }
-    m_colSize = colSize;
-    m_rowSize = rowSize;
-    delete [] vector_A; // Tying up loose ends
-    
-
-} */
