@@ -4,19 +4,49 @@
 using namespace std;
 
 
-Player:: Player(){
-	this->coordinate = make_pair(0,0);
-	this->listEngimon = Inventory<Engimon>();
-	this->listSkillItem = Inventory<Skill>();
-}
+// Player:: Player(){
+// 	this->coordinate = make_pair(0,0);
+// 	this->listEngimon = Inventory<Engimon>();
+// 	this->listSkillItem = Inventory<Skill>();
+// }
 //no need dest
 // Player::~Player(){
 // 	this->listEngimon.
 // }
-Player::Player(pair<int,int> Coordinate){
+Player::Player(pair<int,int> Coordinate, const Peta& map){
 	this->coordinate = Coordinate;
 	this->listEngimon = Inventory<Engimon>();
 	this->listSkillItem = Inventory<Skill>();
+	this->peta = map;
+	this->isThereActiveEngimon = false;
+	this->activeEngimon = Engimon();
+	//starter pack here
+	//3 engimon (?)
+	//3 proper item skills (?)
+}
+
+void Player::activateEngimon(int idx){
+	Engimon dummy;
+	try{
+		dummy = this->listEngimon.getElementX();
+	}catch (exception& e){
+		throw InvalidEngimonException(); 
+	}
+	if (this->isThereActiveEngimon){
+		this->listEngimon.setElementX(this->activeEngimon, idx); //no exception guaranteed if this line executed
+		//already checked using getelementx
+		this->activeEngimon = dummy;
+	}else{
+		this->activateEngimon = dummy;
+		this->listEngimon.delElementIndexX(idx);
+	}
+	
+}
+
+void Player:: learnSkill(int idx){
+	this->activateEngimon.addSkills(this->listSkillItem.getSkillX(idx));
+	//these lines below will be executed if there is no exception throwed
+	this->listSkillItem.delElement(this->listSkillItem.getSkillX(idx));
 }
 
 int Player:: getXCoordinate(){

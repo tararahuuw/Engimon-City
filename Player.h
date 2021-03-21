@@ -4,14 +4,17 @@
 #include "Skill.h"
 #include "peta.h"
 #include "Engimon.h"
+#include "CustomException.h"
 //TODO : include other needed MODULE
 
 using namespace std;
 
+
 namespace InvProp{
-	static const int maxCapacity = 3;
+	static const int maxCapacity = 50;
 	static int banyakItem = 0;
 }
+
 
 template<class T>
 class Inventory{
@@ -42,16 +45,25 @@ public:
 		if (InvProp::maxCapacity > InvProp::banyakItem){
 			this->Array.push_back(x);
 			InvProp::banyakItem++;
-		}else throw "Inventory penuh" ; //change to exception if needed
+		}else throw InventoryPenuhException(); //change to exception if needed
+	}
+
+	void setElementX(const Engimon& other, int x){
+		//check for exception
+		try{
+			this->Array.at(x) = other;
+		}catch exception& e{
+			throw InvalidIndexException();
+		}
 	}
 
 	T& delElementIndexX(int x){
 		if (this->Array.size() == 0){
 			// cout << "Array kosong" << endl; //change to exception if needed
-			throw "Array Kosong" ;//change to proper exception if needed
+			throw InventoryKosongException();//change to proper exception if needed
 		}else if(this->Array.size() <= x){
 			// cout << "Invalid index" << endl; //change to exception if needed
-			throw "Invalid index" ;//change to proper exception if needed
+			throw InvalidIndexException();//change to proper exception if needed
 		}else{
 			T dummy = this->getElementX(x); //class T need to have operator assignment
 			this->Array.erase(this->Array.begin()+x);
@@ -91,6 +103,15 @@ public:
 	// 	this->Array.~map();
 	// }
 	//no need destructor
+
+	Skill& getSkillX(int idx){
+		try{
+			this->Array.at(idx);
+		}catch exception& e{
+			throw InvalidIndexException();
+		}
+		return *(this->Array.at(idx));
+	}
 
 	Inventory& operator=(const Inventory& other){
 		this->Array = other.Array;
@@ -144,7 +165,7 @@ public:
 		}else if (this-> getAmountSkill(s) > 0 and InvProp::banyakItem < InvProp::maxCapacity){
 			this->Jumlah[this->getIdx(s)]++;
 			InvProp::banyakItem++;
-		}else throw  "Inventory full";
+		}else throw  InventoryPenuhException();
 		// if (this->Array.count(s) == 0 and InvProp::banyakItem < InvProp::maxCapacity){
 		// 	this->Array.insert(pair<Skill, int> (s,1));
 		// 	InvProp::banyakItem++;
@@ -157,7 +178,7 @@ public:
 	}
 
 	void delElement(Skill& s){
-		if (this->getAmountSkill(s) == 0) throw "No item s";
+		if (this->getAmountSkill(s) == 0) throw EmptySkillsItemException();
 		else{
 			int index = this->getIdx(s);
 			this->Jumlah[index]--;
@@ -190,16 +211,20 @@ public:
 //TODO : breeding, learn (wow learn is done, created by mr thomas, named addskills in Engimon header)
 //move, include peta
 //active engimon
+//exception class
 class Player{
 private:
 pair<int,int> coordinate;
 Inventory<Engimon> listEngimon;
 Inventory<Skill> listSkillItem;
+Engimon activeEngimon; //if there is not an active engimon, this will be filled by default ctor	 engimon
+Peta peta;
+bool isThereActiveEngimon; //can be false if : not activate engimon yet, lose battle
 // tambahkan active engimon di sini
 public:
-	Player();
+	// Player();
 	// ~Player();
-	Player(pair<int,int> Coordinate);
+	Player(pair<int,int> Coordinate,const Peta& map);
 	//should we implement cctor and assignment operator? we only have 1 player in the game
 
 	int getXCoordinate();
@@ -208,14 +233,21 @@ public:
 
 	Inventory<Skill> getListSkill();
 	Inventory<Engimon> getListEng();
-
+/**
+	void moveW();
+	void moveA();
+	void moveD();
+	void moveS();
+**/
+	void activateEngimon(int idx); //activate engimon based on index inventory of engimon
+	void learnSkill(int idx); //learn skill based on index inventory of skill. requirement : active engimon
 
 	void viewListSkill();
 	void viewListEngimon();
 	void addEngimonToInven(const Engimon& other);
 	void addSkillItemToInven(Skill& other);
-	//getter list engimon
-	//getter active engimon
+	void setActiveEngimon(const Engimon& other);
+
 
 
 };
