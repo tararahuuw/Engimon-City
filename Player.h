@@ -1,63 +1,51 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-
 #include <bits/stdc++.h> //powerfull library
+#include "Skill.h"
+#include "peta.h"
+#include "Engimon.h"
 //TODO : include other needed MODULE
 
 using namespace std;
 
-//TODO : breeding, 
-class Player{
-private:
-pair<int,int> coordinate;
-//Inventory<engimon> listEngimon;
-//Inventory<Skill> listSkillItem;
-// tambahkan active engimon di sini
-public:
-	Player();
-	~Player();
-	Player(pair<int,int> Coordinate);
-	//should we implement cctor and assignment operator? we only have 1 player in the game
-
-	int getXCoordinate();
-
-	int getYCoordinate();
-
-	//getter list engimon
-	//getter active engimon
-
-
-};
+namespace InvProp{
+	static const int maxCapacity = 3;
+	static int banyakItem = 0;
+}
 
 template<class T>
 class Inventory{
 private:
 	deque<T> Array; //still debatable between vector/deque and list. vector/deque contigous (random access and easy caching hit) but inefficient in deleting non-end element, list easy to insert and delete not only end but frequently miss cache and doesnt have random access 
-	int maxCapacity;
+
 public:
 	Inventory(){
 		this->Array = deque<T>(); //should we implement like this or fixed size (maxcap)? if option 1 then this code working well otherwise need refactor
-		this->maxCapacity = 5;
 	}
 
-	Inventory(int maxCapacity){
-		this->Array = deque<T>();
-		this->maxCapacity = maxCapacity;
+	Inventory& operator=(const Inventory& other){
+		this-> Array = other.Array;
+		return *this;
 	}
+	// Inventory(int maxCapacity){
+	// 	this->Array = deque<T>();
+	// 	this->maxCapacity = maxCapacity;
+	// }
 
 	//should we implement cctor and op assignment? again its only 1 player in the game
 
-	T getElementX(int x){
+	T& getElementX(int x){
 		this->Array.at(x);
-		return this->Array.at(x); //will throw exception out of range if needed. operator[] is fine but wont throw exception
+		return *(this->Array.at(x)); //will throw exception out of range if needed. operator[] is fine but wont throw exception
 	}
-	void addElement(T x){
-		if (this->maxCapacity > this->Array.size()){
+	void addElement(const T& x){
+		if (InvProp::maxCapacity > InvProp::banyakItem){
 			this->Array.push_back(x);
-		}else cout << "Array penuh" << endl; //change to exception if needed
+			InvProp::banyakItem++;
+		}else throw "Inventory penuh" ; //change to exception if needed
 	}
 
-	T delElementIndexX(int x){
+	T& delElementIndexX(int x){
 		if (this->Array.size() == 0){
 			// cout << "Array kosong" << endl; //change to exception if needed
 			throw "Array Kosong" ;//change to proper exception if needed
@@ -67,73 +55,174 @@ public:
 		}else{
 			T dummy = this->getElementX(x); //class T need to have operator assignment
 			this->Array.erase(this->Array.begin()+x);
-			return dummy;
+			InvProp::banyakItem--;
+			return *(dummy);
 		}
 	}
 
 	int getSize(){
 		return this->Array.size();
 	}
+
+	void viewList(){
+		for (int i =0; i < this->Array.size(); i++){
+			cout << this->Array[i] << endl;
+		}
+	}
 };
 
 //NEED TESTING USING SKILL MODULE
-/**
+//FCK ERROR IF USING MAP
 template <>
 class Inventory<Skill>{
 private:
-	map<Skill,int> Array;
-	int maxCapacity;
+	vector<Skill> Array;
+	vector<int> Jumlah;
 public:
 	Inventory(){
-		this->Array = map<Skill,int>();
-		this->maxCapacity = 50;
+		this->Array = vector<Skill>();
+		this->Jumlah = vector<int>();
 	}
-	Inventory(int maxCapacity){
-		this->Array = map<Skill,int>();
-		this->maxCapacity = maxCapacity;
-	}
-	~Inventory(){
-		this->Array.~map();
+	// Inventory(int maxCapacity){
+	// 	this->Array = map<Skill,int>();
+	// 	this->maxCapacity = maxCapacity;
+	// }
+	// ~Inventory(){
+	// 	this->Array.~map();
+	// }
+	//no need destructor
+
+	Inventory& operator=(const Inventory& other){
+		this->Array = other.Array;
+		this->Jumlah = other.Jumlah;
+		return *this;
 	}
 
-	int getAmountSkill(Skill s){
-		if (this->Array.count(s) == 0){
-			cout << "Tidak ada skill yang diinginkan" <<endl; //change to exception if needed
-		}else{
-			return map[s];
+	int getIdx(Skill& s){
+		for (int i = 0; i < this->Array.size(); i++){
+			if (this->Array[i] == s){
+				return i;
+			}
 		}
+		return -1;
+	}
+
+	int getAmountSkill(Skill& s){
+		for (int i = 0; i < this->Array.size(); i++){
+			if (this->Array[i] == s){
+				return this->Jumlah[i];
+			}
+		}
+		return 0;
+
+		// if (this->Array.count(s) == 0){
+		// 	cout << "Tidak ada skill yang diinginkan" <<endl; //change to exception if needed
+		// }else{
+		// 	return (this->Array)[s];
+		// }
 	}
 
 	int getActualSize(){
-		map<Skill,int>::iterator it; //using iterator cause thats what mr fitra said. alternatively can use auto if we use c++ 11
-		int actualSize = 0;
-		for (it = this->Array.begin(); it != this->Array.end(); it++){
-			actualSize += it->second;
+		int result;
+		for (int i =0; i < this->Jumlah.size(); i++){
+			result += this->Jumlah[i];
 		}
-		return actualSize;
+		return result;
+		// map<Skill,int>::iterator it; //using iterator cause thats what mr fitra said. alternatively can use auto if we use c++ 11
+		// int actualSize = 0;
+		// for (it = this->Array.begin(); it != this->Array.end(); it++){
+		// 	actualSize += it->second;
+		// }
+		// return actualSize;
 	}
 
-	void addElement(Skill s){
-		if (this->Array.count(s) == 0 and this->getActualSize() < this->maxCapacity){
-			this->Array.insert(pair<Skill, int> (s,1));
-		}else if (this->Array.count(s) > 0 and this -> getActualSize() < this -> maxCapacity){
-			this->Array[s]++; //need testing
-		}else{
-			cout << "Inventory full" << endl; //change to exception if needed
-		}
+	void addElement(Skill& s){
+		if (this->getAmountSkill(s) == 0 and InvProp::banyakItem < InvProp::maxCapacity){
+			this->Array.push_back(s);
+			this->Jumlah.push_back(1);
+			InvProp::banyakItem++;
+		}else if (this-> getAmountSkill(s) > 0 and InvProp::banyakItem < InvProp::maxCapacity){
+			this->Jumlah[this->getIdx(s)]++;
+			InvProp::banyakItem++;
+		}else throw  "Inventory full";
+		// if (this->Array.count(s) == 0 and InvProp::banyakItem < InvProp::maxCapacity){
+		// 	this->Array.insert(pair<Skill, int> (s,1));
+		// 	InvProp::banyakItem++;
+		// }else if (this->Array.count(s) > 0 and InvProp::banyakItem < InvProp::maxCapacity){
+		// 	(this->Array)[s]++; //need testing
+		// 	InvProp::banyakItem++;
+		// }else{
+		// 	throw "Inventory full"; //change to exception if needed
+		// }
 	}
 
-	void delElement(Skill s){
-		if (this->Array.count(s) == 0){
-			cout << "No item s" << endl; //change to exception if needed
-		}else{
-			this->Array[s]--;
-			if (this->Array.count(s) == 0){
-				this->Array.erase(s); //need testing, use iterator if this fail
+	void delElement(Skill& s){
+		if (this->getAmountSkill(s) == 0) throw "No item s";
+		else{
+			int index = this->getIdx(s);
+			this->Jumlah[index]--;
+			if (this->Jumlah[index] == 0){
+				this->Array.erase(this->Array.begin()+index);
+				this->Jumlah.erase(this->Jumlah.begin()+index);
 			}
+			InvProp::banyakItem--;
+		}
+		// if (this->Array.count(s) == 0){
+		// 	cout << "No item s" << endl; //change to exception if needed
+		// }else{
+		// 	(this->Array)[s]--;
+		// 	if (this->Array.count(s) == 0){
+		// 		this->Array.erase(s); //need testing, use iterator if this fail
+		// 	}
+		// 	InvProp::banyakItem--;
+		// }
+	}
+
+	void viewList(){
+		for (int i = 0; i < this->Array.size(); i++){
+			cout << this->Array[i] << endl;
+			cout << "| Jumlah       : " << this->Jumlah[i] << endl;
 		}
 	}
+	
 };
-**/
+
+//TODO : breeding, learn (wow learn is done, created by mr thomas, named addskills in Engimon header)
+//move, include peta
+//active engimon
+class Player{
+private:
+pair<int,int> coordinate;
+Inventory<Engimon> listEngimon;
+Inventory<Skill> listSkillItem;
+// tambahkan active engimon di sini
+public:
+	Player();
+	// ~Player();
+	Player(pair<int,int> Coordinate);
+	//should we implement cctor and assignment operator? we only have 1 player in the game
+
+	int getXCoordinate();
+
+	int getYCoordinate();
+
+	Inventory<Skill> getListSkill();
+	Inventory<Engimon> getListEng();
+
+
+	void viewListSkill();
+	void viewListEngimon();
+	void addEngimonToInven(const Engimon& other);
+	void addSkillItemToInven(Skill& other);
+	//getter list engimon
+	//getter active engimon
+
+
+};
+
+
+
+
+
 
 #endif

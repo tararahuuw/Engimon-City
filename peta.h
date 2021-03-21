@@ -17,7 +17,7 @@ class Peta {
         int nElmt;
         char *isiPeta;
         //vector<Engimon> DaftarEngimon; //ada array of engimon buat nyimpan engimon apa saja yang ada pada peta
-        vector<int> PosisiEngimon;
+        vector<int> PosisiEngimon; //ini mending dijadiin vector of point deh
         int BykEngimonLiar;
 
     public :

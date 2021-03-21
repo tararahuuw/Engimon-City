@@ -49,7 +49,7 @@ int _cumulativeEXP, bool _status, int _health)
     this->elements = vector<Element> ();
     elements.push_back(elm);
 
-    cout << "Test 1" << endl;
+    // cout << "Test 1" << endl;
 
     if (!_parent.empty()){
         parent.push_back(_parent.front());
@@ -264,9 +264,11 @@ void Engimon::addEXP(int exp){
 void Engimon::addSkills(Skill skill){
     if (this->skills.size() == maxSkill) { cout << "Slot skill penuh" << endl; }
     else{
-        if (this->elements == skill.getElement()) {skills.push_back(skill);}
+        if (this->elements == skill.getElement()) {skills.push_back(skill);} //ini udah lolos error kalau misalnya elemennya cuman kebalik?
+        //operator == vector itu harus urut kan ngeceknya? kalau kebalik gimana?
         else if (this->elements.size() == 2 && 
         (this->elements[0] == skill.getElement()[0] || this->elements[0] == skill.getElement()[1])) {skills.push_back(skill);}
+        //kalau nambah skill yang sesuai elemen kedua gimana?
         else cout << "Elemen tidak sesuai" << endl;
     }
 }
@@ -289,7 +291,7 @@ KatalogEngimon::KatalogEngimon(){
     katalogEngimon = map<int, Engimon> ();
     KatalogSkill skills;
 
-    skills.printtKatalogSkill();
+    // skills.printtKatalogSkill();
 
     // list<string> parent1 = {"a", "b"};
     // cout << "Masuk sini?" << endl;
