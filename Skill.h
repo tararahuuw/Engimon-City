@@ -8,7 +8,7 @@
 
 using namespace std;
 
-enum Element {fire, water, electric, ground, ice};
+enum Element {none = -1, fire = 0, water, electric, ground, ice};
 ostream& operator<<(ostream& os, const Element& elm); // untuk print element
 
 class Skill{
@@ -49,6 +49,7 @@ public:
     // fungsi lain
     // void printSkillInfo();
     void incrMasteryLevel();
+    bool hasElement(Element elm);
 };
 
 // Berisi daftar skill yang ada
