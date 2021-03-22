@@ -1,14 +1,15 @@
 #include "Skill.h"
 
 ostream& operator<<(ostream& os, const Element& elm){
-    if (elm==fire) os << "Fire";
-    else if(elm==water) os << "Water";
-    else if(elm==electric) os << "Electric";
-    else if(elm==ground) os << "Ground";
-    else if(elm==ice) os << "Ice";
+    if (elm==fire) os << "F";
+    else if(elm==water) os << "W";
+    else if(elm==electric) os << "E";
+    else if(elm==ground) os << "G";
+    else if(elm==ice) os << "I";
 
     return os;
 }
+
 // ctor
 Skill::Skill(){
     this->name = "";
@@ -17,29 +18,23 @@ Skill::Skill(){
     this->element = vector<Element>();
 }
 
-Skill::Skill(string _name, int _basePower, int _masteryLevel, Element elm){
+Skill::Skill(string _name, int _basePower, int _masteryLevel, vector<Element> elm)
+{
         this->name = _name;
         this->basePower = _basePower;
         this->masteryLevel = _masteryLevel;
 
-        this->element = vector<Element>();
-        this->element.push_back(elm);
+        this->element = elm;
 }
-Skill::Skill(string _name, int _basePower, int _masteryLevel, Element elm1, Element elm2) : 
-       Skill(_name, _basePower, _masteryLevel, elm1)
-{
-    this->element.push_back(elm2);
-}
-
 // dtor
 Skill::~Skill(){}
 
 // operator overload
-bool Skill::operator==(const Skill& otherSkill){
-    return this->name == otherSkill.name &&
-        this->basePower == otherSkill.basePower &&
-        this->masteryLevel == otherSkill.masteryLevel &&
-        this->element == otherSkill.element;
+bool operator==(const Skill& left, const Skill& right){
+    return left.name == right.name &&
+        left.basePower == right.basePower &&
+        left.masteryLevel == right.masteryLevel &&
+        left.element == right.element;
 }
 
 Skill& Skill::operator=(const Skill& otherSkill){
@@ -53,10 +48,10 @@ Skill& Skill::operator=(const Skill& otherSkill){
 
 ostream& operator<<(ostream& os, const Skill& skill){
     os << "===============================" << endl;
-    os << "| " << skill.name << endl;
-    os << "| Base power    : " << skill.basePower << endl;
-    os << "| Mastery level : " << skill.masteryLevel << endl;
-    os << "| Element       : ";
+    os << " | " << skill.name << endl;
+    os << " | Base power    : " << skill.basePower << endl;
+    os << " | Mastery level : " << skill.masteryLevel << endl;
+    os << " | Element       : ";
 
     for(int i = 0; i<skill.element.size(); i++){
         if (i != 0){
@@ -108,42 +103,88 @@ void Skill::incrMasteryLevel(){
     this->masteryLevel++;
 }
 
+bool Skill::hasElement(Element elm)
+{
+    for (auto i = element.begin(); i != element.end(); ++i) { if (*i == elm) return true; }
+    return false;
+}
 /* Class KatalogSkill */
 
-KatalogSkill::KatalogSkill(){
-    katalogSkill = vector<Skill> ();
+SkillsFactory::SkillsFactory(){
+    skills = vector<Skill> ();
 
-    Skill s1("Skill1", 900, 1, fire);
-    Skill s2("Skill2", 850, 1, water);
-    Skill s3("Skill3", 920, 1, electric);
-    Skill s4("Skill4", 940, 1, ground);
-    Skill s5("Skill5", 960, 1, ice);
-    Skill s6("Skill6", 1020, 1, fire, electric);
-    Skill s7("Skill7", 1050, 1, water, ice);
-    Skill s8("Skill8", 1030, 1, water, ground);
-    Skill s9("Skill9", 1000, 1, fire);
-    Skill s10("Skill10", 1012, 1, water);
+    vector<Element> fireV = {fire};
+    vector<Element> waterV = {water};
+    vector<Element> iceV = {ice};
+    vector<Element> electricV = {electric};
+    vector<Element> groundV = {ground};
 
-    katalogSkill.push_back(s1);
-    katalogSkill.push_back(s2);
-    katalogSkill.push_back(s3);
-    katalogSkill.push_back(s4);
-    katalogSkill.push_back(s5);
-    katalogSkill.push_back(s6);
-    katalogSkill.push_back(s7);
-    katalogSkill.push_back(s8);
-    katalogSkill.push_back(s9);
-    katalogSkill.push_back(s10);
+    vector<Element> fire_electricV = {fire, electric};
+    vector<Element> water_iceV = {water, ice};
+    vector<Element> water_groundV = {water, ground};
+    vector<Element> ground_iceV = {ground, ice};
+    vector<Element> electric_ice_waterV = {water, electric, ice};
+    vector<Element> allElement = {fire, water, electric, ground, ice};
+
+    Skill s0("One Punch", 9999, 1, allElement);
+
+    Skill s1("Inferno", 900, 1, {fire});
+    Skill s2("Ragnarok Trisagon", 950, 1, fireV);
+    Skill s3("Maralagidyne", 970, 1, fireV);
+    Skill s4("Titanomachia", 1112, 1, fire_electricV);
+
+    Skill s5("Aquary Tide", 895, 1, waterV);
+    Skill s6("Water Blast", 980, 1, waterV);
+    Skill s7("Blackwater Taint", 1010, 1, waterV);
+    Skill s8("Depthsurge", 1100, 1, water_groundV);
+
+    Skill s9("Earthbolt", 910, 1, groundV);
+    Skill s10("Clearstone", 960, 1, groundV);
+    Skill s11("Phantom Plow", 1000, 1, groundV);
+    Skill s12("Rain of Spines", 1120, 1, ground_iceV);
+
+    Skill s13("Thunderswarm", 920, 1, electricV);
+    Skill s14("Stormrage", 980, 1, electricV);
+    Skill s15("Presper Moonbow", 999, 1, electricV);
+    Skill s16("Mystic Lash", 1200, 1, electric_ice_waterV);
+
+    Skill s17("Arctic Haze", 920, 1, iceV);
+    Skill s18("Glaze Lock", 980, 1, iceV);
+    Skill s19("Heat Leech", 1100, 1, iceV);
+    Skill s20("Blizzard", 1150, 1, iceV);
+
+    Skill s21("Shatterstone", 1190, 1, water_groundV);
+
+    skills.push_back(s0);
+    skills.push_back(s1);
+    skills.push_back(s2);
+    skills.push_back(s3);
+    skills.push_back(s4);
+    skills.push_back(s5);
+    skills.push_back(s6);
+    skills.push_back(s7);
+    skills.push_back(s8);
+    skills.push_back(s9);
+    skills.push_back(s10);
+    skills.push_back(s11);
+    skills.push_back(s12);
+    skills.push_back(s13);
+    skills.push_back(s14);
+    skills.push_back(s15);
+    skills.push_back(s16);
+    skills.push_back(s17);
+    skills.push_back(s18);
+    skills.push_back(s19);
+    skills.push_back(s20);
+    skills.push_back(s21);
 }
 
-KatalogSkill::~KatalogSkill(){}
+SkillsFactory::~SkillsFactory(){}
 
-Skill& KatalogSkill::operator[](int i){
-    return katalogSkill[i];
+Skill& SkillsFactory::operator[](int i){
+    return skills[i];
 }
 
-void KatalogSkill::printtKatalogSkill(){
-    for (auto i = katalogSkill.begin(); i != katalogSkill.end(); ++i){
-        cout << *i << endl;
-    } 
+void SkillsFactory::printKatalogSkill(){
+    for (auto i = skills.begin(); i != skills.end(); ++i){ cout << *i << endl; } 
 }

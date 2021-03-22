@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <exception>
+// #include "CustomException.h"
 
 using namespace std;
 
@@ -22,24 +24,23 @@ public:
 	//ctor
     Skill();
     //user defined
-    Skill(string _name, int _basePower, int _masteryLevel, Element elm); // 1 elemen
-    Skill(string _name, int _basePower, int _masteryLevel, Element elm1, Element elm2); // 2 elemen
+    Skill(string _name, int _basePower, int _masteryLevel, vector<Element> elm); // 1 elemen
     
     //dtor
     ~Skill();
 
     //operator overload
-    bool operator==(const Skill& otherSkill);
+    friend bool operator==(const Skill& left, const Skill& right);
     Skill& operator=(const Skill& otherSkill);
     friend ostream& operator<<(ostream& os, const Skill& skill);
 
-    // getter
+    // getter, seperlunya
     string getName() const;
     int getBasePower() const;
     int getMasteryLevel() const;
     vector<Element> getElement() const;
     
-    // setter
+    // setter, seperlunya
     void setName(string _name);
     void setBasePower(int _basePower);
     void setMasteryLevel(int _masteryLevel);
@@ -47,40 +48,19 @@ public:
     void setElement(Element elm1, Element elm2);
     
     // fungsi lain
-    // void printSkillInfo();
     void incrMasteryLevel();
     bool hasElement(Element elm);
 };
 
 // Berisi daftar skill yang ada
-class KatalogSkill {
+class SkillsFactory {
     private:
-        vector<Skill> katalogSkill;
-        // vector<Skill> fireSkills;
-        // vector<Skill> waterSkills;
-        // vector<Skill> electricSkills;
-        // vector<Skill> groundSkills;
-        // vector<Skill> iceSkills;
-        // vector<Skill> fire_electricSkills;
-        // vector<Skill> water_iceSkills;
-        // vector<Skill> water_groundSkills;
+        vector<Skill> skills;
     public:
-        KatalogSkill();
-        ~KatalogSkill();
-        // void addSkill();
-        // void addSkill();
-        // operator overload
+        SkillsFactory();
+        ~SkillsFactory();
         Skill& operator[](int i);
-        // vector<Skill>& operator[](string elm){
-        //     if (elm == "fire") return fireSkills;
-        //     else if(elm == "water") return waterSkills;
-        //     else if(elm == "electric") return electricSkills;
-        //     else if(elm == "ground") return groundSkills;
-        //     else if(elm == "ice") return iceSkills;
-        //     else if(elm == "fire_electric") return fire_electricSkills;
-        //     else if(elm == )
-        // }
-        void printtKatalogSkill(); //for testing purpose
+        void printKatalogSkill();
 };
 
 #endif // !

@@ -14,98 +14,104 @@ class Species{
     protected:
         string name;
     public:
+        // ctor
         Species();
+        // user defines ctor
         Species(string _name);
+        // cctor in case perlu
         Species(const Species& sp);
-
+        // dtor
         ~Species();
-
-        Species& operator=(const Species& sp);
-        bool operator==(const Species& sp);
-        // friend ostream& operator<<(const ostream& os, const Species& sp);
+        // operator overload
+        // untuk ostream belum fix, masih jelek
+        Species& operator=(const Species& sp); // kayaknya gaperlu tapi gatau deh
+        bool operator==(const Species& sp); // harusnya ga perlu tapi jaga2 aja
+        friend ostream& operator<<(ostream& os, const Species& sp);
+        virtual ostream& print(ostream& os) const;
         
+        // getter
         string getName() const;
-
+        
+        // pure virtual
+        // true jika single element
         virtual bool isSingleElement() const = 0;
-        virtual vector<Skill> getSkill() const = 0;
+        // mengembalikan element dalam bentuk array
+        // single element = 1, double element = 2
         virtual Element* getElement() const = 0;
-        virtual Element getElement(int idx) const = 0;
+        // mengembalikan element pada indeks ke idx, in case ada yang butuh
+        // single element terima idx = 0, double element terima input idx = 0 dan idx = 1 
+        // jadi kalau mau akses element lebih baik di cek dulu lewat isSingleElement()
+        virtual Element getElement(int idx) const = 0; 
+        // true apabila species punya element _elm
         virtual bool hasElement(Element elm) const = 0;
-
-        virtual void addSkill(Skill _skill)=0;
-        virtual void dropSkill(Skill _skill)=0;
+        // mengembalikan skill bawaan species
+        virtual Skill getBaseSkill() const = 0;
 };
 
 class SingleType : public Species{
     private:
-        Element* elm;
-        vector<Skill> skills;
+        Element* elm; // masih bingung mau tipe apa karena ternyata fungsi dari derived class nda bisa dipanggil lewat pointer base class kecuali ada pure virtual jadi getter nya harus punya return type yang sama
+        Skill baseSkill;
         const int nElm = 1;
-        const int maxSkill = 4; 
 
     public:
+        // ctor
         SingleType();
-        SingleType(string _name, Element _elm, Skill _baseSkill);
-        SingleType(string _name, Element _elm, vector<Skill> _skills);
-        SingleType(Element _elm, Skill _baseSkill);
+        // user define
+        SingleType(string _name, Element _elm, Skill _baseSkill); // argumen 1 skill saja karena species ini di define sekali saja di awal program
+        // SingleType(Element _elm, Skill _baseSkill); // ini kayaknya ga butuh
+        // cctor in case butuh
         SingleType(const SingleType& sp);
-
+        // dtor
         ~SingleType();
-
+        // operator overload
         SingleType& operator=(const SingleType& sp);
         bool operator==(const SingleType& sp);
-        friend ostream& operator<<(ostream& os, const SingleType& sp);
+        ostream& print(ostream& os) const; // masih jelek
 
+        // getter
         Element* getElement() const;
         Element getElement(int idx) const;
-
-        void addSkill(Skill _skill);
-        void dropSkill(Skill _skill);
-        
-        Element getElement(int idx);
-        Element* getElement();
-        
         int getNumElement() const;
+        Skill getBaseSkill() const;
+
         bool isSingleElement() const;
         bool hasElement(Element elm) const;
-        vector<Skill> getSkill() const;
+        // vector<Skill> getSkill() const;
 };
 
 class DoubleType : public Species{
     private:
         Element* elm;
-        vector<Skill> skills;
+        Skill baseSkill;
         const int nElm = 2;
-        const int maxSkill = 4;
+
     public:
+        // ctor
         DoubleType();
+        // user defined ctor
         DoubleType(string _name, Element* _elm, Skill _baseSkill);
-        DoubleType(Element* _elm, Skill _baseSkill);
-        DoubleType(string _name, Element* _elm, vector<Skill> _skills);
-        DoubleType(const DoubleType& sp);
-
+        // DoubleType(Element* _elm, Skill _baseSkill); // ini kayaknya ga butuh
+        // cctor
+        DoubleType(const DoubleType& sp);   
+        // dtor
         ~DoubleType();
-
+        // operator overload
         DoubleType& operator=(const DoubleType& sp);
         bool operator==(const DoubleType& sp);
-        friend ostream& operator<<(ostream& os, const DoubleType& sp);
-
+        ostream& print(ostream& os) const; // masih jelek
+        // getter
         Element* getElement() const;
         Element getElement(int idx) const;
-
-        void addSkill(Skill _skill);
-        void dropSkill(Skill _skill);
-        
-        Element getElement(int idx);
-        Element* getElement();
-        
         int getNumElement() const;
+        Skill getBaseSkill() const;
+
         bool isSingleElement() const;
         bool hasElement(Element elm) const;
-        vector<Skill> getSkill() const;
 };
 
-class SpeciesCollection{
+// Buat init species
+class SpeciesFactory{
     private:
         // Aturan penomoran
         // 0 mod 8 : fire
@@ -118,8 +124,11 @@ class SpeciesCollection{
         // 7 mod 8 : water ice
         map<int, Species*> collection; // string nama species
     public:
-        SpeciesCollection();
-        void initSpecies(); 
+        friend ostream& operator<<(ostream&os, const pair<int, Species*>& sp);
+        SpeciesFactory();
+        void initSpecies(); // perlu dijadiin 1 sama ctor atau ngga?
+        Species*& operator[](int idx); // mengembalikan pointer to species di indeks ke idx
+        void printAllSpecies();
 };
 
 #endif

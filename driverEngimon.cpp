@@ -1,26 +1,25 @@
-#include "Engimon.h"
+#include "Engimon2.h"
 
 int main(){
-    KatalogEngimon engimons;
-    KatalogSkill skills;
+    SkillsFactory initSkill;
+    SpeciesFactory initSpecies;
+    initSpecies.initSpecies();
 
-    cout << "==========1============" << endl;
+    // Engimon liar
+    Engimon e1(initSpecies[0], 1, 0, 0, true, false);
+    Engimon e2(initSpecies[1], 1, 99, 100, true, false);
 
-    engimons.printKatalogEngimon();
-    cout << skills[8];
-    engimons[1].addSkills(skills[8]);
-    engimons[1].addEXP(210);
-    engimons[1].addSkills(skills[9]);
-    
-    cout << endl << "==========2============" << endl;
-    engimons.printKatalogEngimon();
-    engimons[0].dropSkills(skills[8]);
-
-    cout << endl << "==========3============" << endl;
-
-    engimons.printKatalogEngimon();
-
+    // Test addSkill
+    try{
+        e1.addSkill(initSkill[4]);
+        e1.addSkill(initSkill[1]);
+        e2.addSkill(initSkill[0]);
+    } catch (const char* e){
+        cout << e << endl;
+    }
+    cout << e1 << endl;
+    cout << e2 << endl;
     return 0;
 }
 
-// g++ -o testEngi driverEngimon.cpp Engimon.cpp Skill.cpp
+// g++ -o testEngimon driverEngimon.cpp Engimon2.cpp Skill.cpp Species.cpp

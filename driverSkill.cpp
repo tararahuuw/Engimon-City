@@ -1,10 +1,10 @@
 #include "Skill.h"
 
 int main(){
-    KatalogSkill katalogSkill;
+    SkillsFactory katalogSkill;
 
-    katalogSkill.printtKatalogSkill();
+    katalogSkill.printKatalogSkill();
     return 0;
 }
 
-// g++ -o driverSkill Engimon.cpp Skill.cpp driverEngimon.cpp
+// g++ -o driverSkill Skill.cpp driverSkill.cpp
