@@ -22,11 +22,8 @@ class Peta {
         int nElmt;
         char *isiPeta;
         char *PetaTetap;
-        //static int engimonId;
         vector<pair<int, Engimon> > DaftarEngimon; //vector of engimon buat nyimpan engimon apa saja yang ada pada peta
         //^terdiri dari int yang merupakan posisi dari engimon liar dalam peta dan Engimon liar
-        //Engimon *DaftarEngimon; 
-        //vector<int> PosisiEngimon; //ini mending dijadiin vector of point deh
         int BykEngimonLiar;
 
     public :
@@ -52,39 +49,23 @@ class Peta {
         int GetBanyakEngimonLiar();
         Engimon GetEngimonLiar(int x, int y); //untuk dapetin engimon pada posisi (x,y)
         pair<int, Engimon> GetEngimonforDelete(int x, int y);
-        //static int GetEngimonId();
         
         //Baca file dan isi element pada peta sesuai dengan isi file txt
         void BacaFile();
         
         //Print isi Peta
         void PrintPeta();
-        //void PrintDaftarEngimon();
-        void PrintPosisiEngimon();
+        void PrintDaftarEngimon();
         
         //Untuk masukin engimon yang telah dibuat ke daftarEngimon
         void AddEngimon(pair<int, Engimon> e);
-        
-        //Hapus engimon dari daftarEngimon
-        void DeleteEngimon(pair<int, Engimon> e); //masih belum bisa
+        //untuk menghapus engimon liar yg sudah ditangkap
+        void DeleteEngimon(pair<int, Engimon> e); 
+
         int selectlevel(char engimonTerpilih);
-        //void SelectEngimon(Species* *spesies, char e, Skill* *skill);
         void CreateEngimon(char e, int level, Engimon *engi);
-        //spawn engimon
-        //algoritma random
-        /* 
-		1. Cari ambil suatu titik dalam peta yang belum ditempati oleh engimon apapun
-        2. Liat apakah di titik tsb grass atau sea
-        3. Pilih engimon yang sesuai dengan tempat
-        4. Masukin dalam array engimon yang sudah ada
-        */
         void SpawnEngimon(int BanyakSpawn);
-    
         void TukarPosisi(int posisi, int posisisekarang);
-        //engimon bergerak
-        /*
-        1. Dari array of engimon yang sudah ada itu diubah lokasinya di dalam peta
-        */
         void GerakinSemuaEngimon();
         
         
