@@ -1,76 +1,65 @@
 #include "Breeding.h"
 #include "Skill.h"
+#include "Species.h"
+#include "Battle.h"
 
-Engimon& Breeding :: breeding (Engimon A, Engimon B) {
+Engimon& Breeding :: breeding (Engimon A, Engimon B, SpeciesFactory specieses) {
     string nama;
-  	Engimon C;
+    Species* spec;
   
     cout << "Masukkan nama anak : ";
     cin >> nama;
-	
-  	C.setName(nama);
-    C.setParent(A.getSpesies(),A.getParent(), B.getSpesies(), B.getParent()); //katanya headernya mau diubah
-  
-  	C.setSkills(skillanak(A,B));
   
   	if (A.getElement() == B.getElement()) {
-        C.setElements(A.getElement());
-      	C.setSpesies(A.getSpesies());
+      	spec = A.getSpecies();
     }
     else
     {
         if (Battle::advantage(A,B,1) > Battle::advantage(A,B,2)) {
-            C.setElements(A.getElement());
-      		C.setSpesies(A.getSpesies());
+      		spec = A.getSpecies();
         }
-        else if (A.getelementadv() == B.getelementadv()) {
-            C.setElements(A.getElement());
-      		C.setSpesies("Pikachu");
+        else if (Battle::advantage(A,B,1) == Battle::advantage(A,B,2)) {
+      		spec = specieses[0];
         }
         else {
-            C.setElements(B.getElement());
-      		C.setSpesies(B.getSpesies());
+      		spec = B.getSpecies();
         }
     }
-  
-    C.setLevel(1);
-    C.setEXP(0);
-    C.setCumulativeEXP(100);
-    C.setStatus(true);
+
+  	Engimon C(spec, nama, A.getSpecies(), A.getName(), B.getSpecies(), B.getName(),
+        skillanak(A, B), 1, 0, 100, true, false);
 
     // Set ulang atribut parent
     A.downLevel(30);
     B.downLevel(30);
-  	A.setEXP(0);
-    B.setEXP(0);
-    A.setCumulativeEXP(A.getCumulativeEXP() -  3000);
-    B.setCumulativeEXP(A.getCumulativeEXP() -  3000);
     
     return C;
 }
 
-Vector& Breeding :: skillanak(Engimon A, Engimon B) {
+vector<Skill> Breeding :: skillanak(Engimon A, Engimon B) {
   	int masteryA, masteryB;
-  	int n = A.skills.size() + B.skills.size();
+    vector<Skill> skillsA = A.getSkills();
+    vector<Skill> skillsB = B.getSkills();
+  	int n = skillsA.size() + skillsB.size();
     int max;
   	Skill allSkill[n];
   	Skill temp;
   	vector<Skill> getSkill;
   	
   	// Make a new array with all of the skills
-	for (int i = 0; i < A.skills.size(); i++) {
-      	allSkill[i] = A.skills[i];
+	for (int i = 0; i < skillsA.size(); i++) {
+      	allSkill[i] = skillsA[i];
     }
-	for (int j = 0; j < B.skills.size(); j++) {
-      	allSkill[j + A.skills.size()] = B.skills[j];
+	for (int j = 0; j < skillsB.size(); j++) {
+      	allSkill[j + skillsA.size()] = skillsB[j];
     }
 
   	// Sort all skills according to mastery level
 	for (int i = 0; i < n - 1; i++) {
 		max = i;
 		for (int j = i + 1; j < n; j++) {
-            masteryA = allSkill[max].getMasteryLevel;
-            masteryB = allSkill[j].getMasteryLevel;
+            masteryA = allSkill[max].getMasteryLevel();
+            masteryB = allSkill[j].getMasteryLevel();
             if (masteryA < masteryB)
                 max = j;
         }
