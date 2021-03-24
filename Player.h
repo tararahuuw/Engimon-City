@@ -11,7 +11,7 @@ using namespace std;
 
 
 namespace InvProp{
-	static const int maxCapacity = 3;
+	static const int maxCapacity = 50;
 	static int banyakItem = 0;
 }
 
@@ -37,9 +37,11 @@ public:
 
 	//should we implement cctor and op assignment? again its only 1 player in the game
 
-	T& getElementX(int x){
+	T getElementX(int x){
+		cout << "YEET" << endl;
 		this->Array.at(x);
-		return (this->Array.at(x)); //will throw exception out of range if needed. operator[] is fine but wont throw exception
+		cout << "YEET2" << endl;
+		return this->Array.at(x); //will throw exception out of range if needed. operator[] is fine but wont throw exception
 	}
 	void addElement(const T& x){
 		if (InvProp::maxCapacity > InvProp::banyakItem){
@@ -66,7 +68,13 @@ public:
 			throw InvalidIndexException();//change to proper exception if needed
 		}else{
 			// T dummy = this->getElementX(x); //class T need to have operator assignment
+			cout << "Engimon bermasalah?"  << endl;
 			this->Array.erase(this->Array.begin()+x);
+			// for (int i = x; i<this->Array.size()-1; i++){
+			// 	Array[i] = Array[i+1];
+			// }
+			// this->Array.erase(this->Array.end());
+			cout << "Gak tuh" << endl;
 			InvProp::banyakItem--;
 			// return *dummy;
 			//no need  return
@@ -79,7 +87,7 @@ public:
 
 	void viewList(){
 		for (int i =0; i < this->Array.size(); i++){
-			cout << this->Array[i] << endl;
+			cout <<i << ". "<< this->Array[i] << "\n" <<endl;
 		}
 	}
 };
@@ -202,8 +210,8 @@ public:
 
 	void viewList(){
 		for (int i = 0; i < this->Array.size(); i++){
-			cout << this->Array[i] << endl;
-			cout << "| Jumlah       : " << this->Jumlah[i] << endl;
+			cout << i << ". " << this->Array[i] << endl;
+			cout << "| Jumlah       : " << this->Jumlah[i] << "\n" << endl;
 		}
 	}
 	
@@ -251,7 +259,7 @@ public:
 	void addSkillItemToInven(Skill& other);
 	// void setActiveEngimon(const Engimon& other); //activate based on engimon (rarely used maybe?)
 
-
+	Engimon& getActiveEngimon();
 
 };
 

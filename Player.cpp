@@ -20,6 +20,24 @@ Player::Player(pair<int,int> Coordinate){
 	// this->peta = map;
 	this->isThereActiveEngimon = false;
 	this->activeEngimon = Engimon();
+	SkillsFactory katalogskill;
+	Skill agni = katalogskill[2];
+	Skill listrik = katalogskill[6];
+	Skill toya = katalogskill[14];
+	SpeciesFactory katalogspecies;
+	katalogspecies.initSpecies();
+	Species* A = katalogspecies[0];
+	Species* L = katalogspecies[2];
+	Species* T = katalogspecies[1];
+	Engimon Alam(A, "Alam", "", "", "", "", 1, 0, 0, false, false);
+	Engimon Chelsie(L, "Chelsie", "", "", "", "", 1,0,0,false, false);
+	Engimon Monica(T, "Monica", "", "", "", "", 1, 0, 0, false, false);
+	this->addEngimonToInven(Alam);
+	this->addEngimonToInven(Chelsie);
+	this->addEngimonToInven(Monica);
+	this->addSkillItemToInven(agni);
+	this->addSkillItemToInven(listrik);
+	this->addSkillItemToInven(toya);
 	//starter pack here
 	//3 engimon (?)
 	//3 proper item skills (?)
@@ -29,15 +47,20 @@ void Player::activateEngimon(int idx){
 	Engimon dummy;
 	try{
 		dummy = this->listEngimon.getElementX(idx);
+		cout << "BRUH" << endl;
 	}catch (exception& e){
 		throw InvalidEngimonException(); 
 	}
+
 	if (this->isThereActiveEngimon){
+		cout << "YEET" << endl;
 		this->listEngimon.setElementX(this->activeEngimon, idx); //no exception guaranteed if this line executed
 		//already checked using getelementx
 		this->activeEngimon = dummy;
 	}else{
+		// cout << "THERE" << endl;
 		this->activeEngimon = dummy;
+		cout << "THere" << endl;
 		this->listEngimon.delElementIndexX(idx);
 	}
 	
@@ -81,4 +104,9 @@ void Player:: addSkillItemToInven(Skill& other){
 
 bool Player:: isThereActiveEngimonYet(){
 	return this->isThereActiveEngimon;
+}
+
+Engimon& Player:: getActiveEngimon(){
+	if (!this->isThereActiveEngimonYet()) throw ActiveEngimonKosong();
+	return this->activeEngimon;
 }

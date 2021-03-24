@@ -102,7 +102,8 @@ bool Engimon::operator==(const Engimon& engi)
 }
 Engimon& Engimon::operator=(const Engimon& engi)
 {
-    delete[] species;
+    // cout << "YEET" << endl;
+    delete species;
     species = engi.species;
     name = engi.name;
     parent = engi.parent;

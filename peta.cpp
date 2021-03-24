@@ -191,7 +191,7 @@ void Peta::DeleteEngimon(pair<int, Engimon> e){
 	for (int i = 0; i != this->BykEngimonLiar; i++){
 		if(DaftarEngimon[i].first == e.first){
 			cout << "berhasil delete1" << endl;
-			DaftarEngimon.erase(DaftarEngimon.begin() + i); //error disinii
+			this->DaftarEngimon.erase(this->DaftarEngimon.begin() + i); //error disinii
 			//PosisiEngimon.erase(PosisiEngimon.begin() + i);
 			this->BykEngimonLiar--;
 			cout << "berhasil delete" << endl;
@@ -332,26 +332,26 @@ void Peta::GerakinSemuaEngimon(){
 	}
 }
 
-// int main(){
-// 	Peta P(14, 14);
-// 	P.BacaFile();
-// 	//P.PrintPeta();
-// 	//P.SpawnEngimon(10);
-// 	//P.PrintPeta();
-// 	P.SpawnEngimon(5);
-// 	P.PrintPeta();
-// 	//int g = P.GetEngimonId();
-// 	//cout << g << endl;
-// 	// P.PrintPosisiEngimon();
-// 	// P.GerakinSemuaEngimon();
-// 	// P.PrintPeta();
-// 	// P.PrintPosisiEngimon();
-// 	pair<int, Engimon> deleted = P.GetEngimonforDelete(2,13);
-// 	P.DeleteEngimon(deleted);
-// 	P.PrintPosisiEngimon();
-// 	P.PrintPeta();
-// 	// P.DeleteEngimon(P.DaftarEngimon[3]);
-// 	// P.PrintPosisiEngimon();
-// 	return 0;
-// }
+int main(){
+	Peta P(14, 14);
+	P.BacaFile();
+	//P.PrintPeta();
+	//P.SpawnEngimon(10);
+	//P.PrintPeta();
+	P.SpawnEngimon(5);
+	P.PrintPeta();
+	//int g = P.GetEngimonId();
+	//cout << g << endl;
+	// P.PrintPosisiEngimon();
+	// P.GerakinSemuaEngimon();
+	// P.PrintPeta();
+	// P.PrintPosisiEngimon();
+	pair<int, Engimon> deleted = P.GetEngimonforDelete(0,6);
+	P.DeleteEngimon(deleted);
+	P.PrintPosisiEngimon();
+	P.PrintPeta();
+	// P.DeleteEngimon(P.DaftarEngimon[3]);
+	// P.PrintPosisiEngimon();
+	return 0;
+}
 

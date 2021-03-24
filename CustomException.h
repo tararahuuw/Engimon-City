@@ -43,3 +43,8 @@ class TidakMemilikiSkill : public exception {
 	public:
 	virtual char const * what() const noexcept {return "Engimon tidak memiliki skill ini";}
 };
+
+class ActiveEngimonKosong : public exception {
+	public:
+	virtual char const * what() const noexcept {return "Tidak ada active engimon";}
+};
