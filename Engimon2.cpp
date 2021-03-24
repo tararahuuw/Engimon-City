@@ -118,10 +118,14 @@ Engimon& Engimon::operator=(const Engimon& engi)
 
 ostream& operator<<(ostream& os, const Engimon& engi)
 {
+    //nanti cek lagi kondisionalnya
     os << " | ";
-    if (engi.name == "") os << "Wild Engimon" << endl;
+    if (engi.wild) os << "Wild Engimon" << endl;
     else os << engi.name << endl;
-    os << *engi.species;
+    cout << "Yeet" << endl;
+    //kurang kondisi kalau species null
+    if (engi.species != NULL) os << *engi.species;
+    else os << "Species kosong "; //ntar ganti aja oke
     if (engi.parent.first.first == ""){
         os << " | Parent  : ( - | - ) || ( - |- )" << endl;
     }
@@ -176,6 +180,7 @@ void Engimon::setStatus(bool _status) { status = _status; }
 
 void Engimon::addSkill(Skill _skill)
 {
+    //ini ngapa thrownya string WWKWKKWKWWKkWW
     if (skills.capacity() == 4) throw "SkillPenuh()"; // dicek apakah full
     else
     {

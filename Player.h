@@ -2,8 +2,8 @@
 #define PLAYER_H
 #include <bits/stdc++.h> //powerfull library
 #include "Skill.h"
-#include "peta.h"
-#include "Engimon.h"
+// #include "peta.h"
+#include "Engimon2.h"
 #include "CustomException.h"
 //TODO : include other needed MODULE
 
@@ -11,7 +11,7 @@ using namespace std;
 
 
 namespace InvProp{
-	static const int maxCapacity = 50;
+	static const int maxCapacity = 3;
 	static int banyakItem = 0;
 }
 
@@ -33,13 +33,13 @@ public:
 	// Inventory(int maxCapacity){
 	// 	this->Array = deque<T>();
 	// 	this->maxCapacity = maxCapacity;
-	// }
+	// }s
 
 	//should we implement cctor and op assignment? again its only 1 player in the game
 
 	T& getElementX(int x){
 		this->Array.at(x);
-		return *(this->Array.at(x)); //will throw exception out of range if needed. operator[] is fine but wont throw exception
+		return (this->Array.at(x)); //will throw exception out of range if needed. operator[] is fine but wont throw exception
 	}
 	void addElement(const T& x){
 		if (InvProp::maxCapacity > InvProp::banyakItem){
@@ -52,12 +52,12 @@ public:
 		//check for exception
 		try{
 			this->Array.at(x) = other;
-		}catch exception& e{
+		}catch (exception& e){
 			throw InvalidIndexException();
 		}
 	}
 
-	T& delElementIndexX(int x){
+	void delElementIndexX(int x){
 		if (this->Array.size() == 0){
 			// cout << "Array kosong" << endl; //change to exception if needed
 			throw InventoryKosongException();//change to proper exception if needed
@@ -65,10 +65,11 @@ public:
 			// cout << "Invalid index" << endl; //change to exception if needed
 			throw InvalidIndexException();//change to proper exception if needed
 		}else{
-			T dummy = this->getElementX(x); //class T need to have operator assignment
+			// T dummy = this->getElementX(x); //class T need to have operator assignment
 			this->Array.erase(this->Array.begin()+x);
 			InvProp::banyakItem--;
-			return *(dummy);
+			// return *dummy;
+			//no need  return
 		}
 	}
 
@@ -79,6 +80,7 @@ public:
 	void viewList(){
 		for (int i =0; i < this->Array.size(); i++){
 			cout << this->Array[i] << endl;
+			cout << "Yeet" <<endl;
 		}
 	}
 };
@@ -107,10 +109,10 @@ public:
 	Skill& getSkillX(int idx){
 		try{
 			this->Array.at(idx);
-		}catch exception& e{
+		}catch (exception& e){
 			throw InvalidIndexException();
 		}
-		return *(this->Array.at(idx));
+		return this->Array.at(idx);
 	}
 
 	Inventory& operator=(const Inventory& other){
@@ -218,13 +220,13 @@ pair<int,int> coordinate;
 Inventory<Engimon> listEngimon;
 Inventory<Skill> listSkillItem;
 Engimon activeEngimon; //if there is not an active engimon, this will be filled by default ctor	 engimon
-Peta peta;
+// Peta peta;
 bool isThereActiveEngimon; //can be false if : not activate engimon yet, lose battle
 // tambahkan active engimon di sini
 public:
 	// Player();
 	// ~Player();
-	Player(pair<int,int> Coordinate,const Peta& map);
+	Player(pair<int,int> Coordinate);
 	//should we implement cctor and assignment operator? we only have 1 player in the game
 
 	int getXCoordinate();
