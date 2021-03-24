@@ -4,7 +4,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
-#include "Engimon.cpp"
+#include "Engimon2.h"
 using namespace std;
 
 #ifndef PETA_HPP
@@ -22,10 +22,11 @@ class Peta {
         int nElmt;
         char *isiPeta;
         char *PetaTetap;
-        static int engimonId;
-        vector<pair<int, Engimon> > DaftarEngimon;
-        //Engimon *DaftarEngimon; //ada array of engimon buat nyimpan engimon apa saja yang ada pada peta
-        vector<int> PosisiEngimon; //ini mending dijadiin vector of point deh
+        //static int engimonId;
+        vector<pair<int, Engimon> > DaftarEngimon; //vector of engimon buat nyimpan engimon apa saja yang ada pada peta
+        //^terdiri dari int yang merupakan posisi dari engimon liar dalam peta dan Engimon liar
+        //Engimon *DaftarEngimon; 
+        //vector<int> PosisiEngimon; //ini mending dijadiin vector of point deh
         int BykEngimonLiar;
 
     public :
@@ -49,22 +50,26 @@ class Peta {
         void SetElementPeta(int b, int k, char element);
         void SetElementPeta(int index, char element);
         int GetBanyakEngimonLiar();
-        static int GetEngimonId();
+        Engimon GetEngimonLiar(int x, int y); //untuk dapetin engimon pada posisi (x,y)
+        pair<int, Engimon> GetEngimonforDelete(int x, int y);
+        //static int GetEngimonId();
         
         //Baca file dan isi element pada peta sesuai dengan isi file txt
         void BacaFile();
         
         //Print isi Peta
         void PrintPeta();
-        void PrintDaftarEngimon();
+        //void PrintDaftarEngimon();
         void PrintPosisiEngimon();
         
         //Untuk masukin engimon yang telah dibuat ke daftarEngimon
-        void AddEngimon(pair<int, Engimon> e, int posisi);
+        void AddEngimon(pair<int, Engimon> e);
         
         //Hapus engimon dari daftarEngimon
-        void DeleteEngimon(pair<int, Engimon> e);
-        void SelectNama(char Engimon, string *nama, int *health);
+        void DeleteEngimon(pair<int, Engimon> e); //masih belum bisa
+        int selectlevel(char engimonTerpilih);
+        //void SelectEngimon(Species* *spesies, char e, Skill* *skill);
+        void CreateEngimon(char e, int level, Engimon *engi);
         //spawn engimon
         //algoritma random
         /* 
