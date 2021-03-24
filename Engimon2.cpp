@@ -16,7 +16,12 @@ Engimon::Engimon(Species* _species, string _name,
 pair<pair<string, string>, pair<string, string>> _parent, 
 int _level, int _EXP, int _cumulativeEXP, bool _status, bool _wild)
 {
-    species = _species;
+    if (_species -> isSingleElement()){
+        species = new SingleType(*(_species));
+    }else{
+        species = new DoubleType(*(_species));
+    }
+    
     name = _name;
     parent = _parent;
     level = _level;
@@ -33,7 +38,11 @@ Engimon::Engimon(Species* _species, string _name, string specParA, string namePa
 string specParB, string nameParB, int _level, int _EXP, int _cumulativeEXP, 
 bool _status, bool _wild)
 {
-    species = _species;
+    if (_species -> isSingleElement()){
+        species = new SingleType(*(_species));
+    }else{
+        species = new DoubleType(*(_species));
+    }
     name = _name;
     level = _level;
     EXP = _EXP;
@@ -51,7 +60,11 @@ Engimon::Engimon(Species* _species, string _name, string specParA, string namePa
 string specParB, string nameParB, vector<Skill> _skills, int _level, int _EXP,
 int _cumulativeEXP, bool _status, bool _wild)
 {
-    species = _species;
+    if (_species -> isSingleElement()){
+        species = new SingleType(*(_species));
+    }else{
+        species = new DoubleType(*(_species));
+    }
     name = _name;
     level = _level;
     EXP = _EXP;
@@ -86,7 +99,7 @@ bool Engimon::operator==(const Engimon& engi)
     if ((this->species->isSingleElement() && engi.species->isSingleElement()) || 
     (!this->species->isSingleElement() && !engi.species->isSingleElement()))
     {
-        return (species == engi.species &&
+        return (*(species) == *(engi.species) &&
         name == engi.name &&
         parent == engi.parent &&
         level == engi.level &&
@@ -104,7 +117,11 @@ Engimon& Engimon::operator=(const Engimon& engi)
 {
     // cout << "YEET" << endl;
     delete species;
-    species = engi.species;
+    if (engi.species -> isSingleElement()){
+        species = new SingleType(*(engi.species));
+    }else{
+        species = new DoubleType(*(engi.species));
+    }
     name = engi.name;
     parent = engi.parent;
     level = engi.level;
@@ -181,30 +198,38 @@ void Engimon::setStatus(bool _status) { status = _status; }
 
 void Engimon::addSkill(Skill _skill)
 {
+    cout << "Test" << endl;
     //ini ngapa thrownya string WWKWKKWKWWKkWW
-    if (skills.capacity() == 4) throw "SkillPenuh()"; // dicek apakah full
+    if (skills.size() == 4) throw "SkillPenuh()"; // dicek apakah full
     else
     {
+        
         // cek apa udah punya skill
         for (auto i = skills.begin(); i != skills.end(); ++i)
         {
             if ((*i) == _skill) throw "SudahPunyaSkill()";
         }
-
+        cout << "sampai sini?" << endl;
         // dicek apakah element sesuai, atau harusnya cek ini dulu ya diawal haha
         // SingleType Engimon
-        if (species->isSingleElement())
-        {
-            if (_skill.hasElement(species->getElement(0))) {skills.push_back(_skill);} 
-            else {throw "InvalidElement()";} 
+        if (species != NULL){
+            cout << "NAH IKI" << endl;
+            if ( species->isSingleElement())
+            {
+                cout << "sampai sini?" << endl;
+                if (_skill.hasElement(species->getElement(0))) {skills.push_back(_skill);} 
+                else {throw "InvalidElement()";} 
+            }
+            // Double type engimon
+            else
+            {
+                if (_skill.hasElement(species->getElement(0)) || 
+                _skill.hasElement(species->getElement(1))) {skills.push_back(_skill);} 
+                else {throw "InvalidElement()"; }
+            }
         }
-        // Double type engimon
-        else
-        {
-            if (_skill.hasElement(species->getElement(0)) || 
-            _skill.hasElement(species->getElement(1))) {skills.push_back(_skill);} 
-            else {throw "InvalidElement()"; }
-        }
+        
+        cout << "sampai sini?" << endl;
     }
 }
 
