@@ -4,15 +4,16 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "Engimon.hpp"
+#include <vector>
+#include "Engimon2.h"
 
 class Breeding {
     private :
     public :
     	// Asumsi engimon sudah level 30
-        static Engimon& breeding (Engimon A, Engimon B);
+        static Engimon& breeding (Engimon A, Engimon B, SpeciesFactory specieses);
 
-        Vector& skillanak(Engimon A, Engimon B);
+        vector<Skill> skillanak(Engimon A, Engimon B);
 
 
 };
