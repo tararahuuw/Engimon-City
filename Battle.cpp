@@ -35,21 +35,116 @@ float Battle::countPower(Engimon& e,float adv) {
     return total;
 
 }
-void Battle::attack(Player& p,Engimon& e1,Engimon& e2) {
+int Battle::attack(Player& p,Engimon& e1,Engimon& e2,int& attempt) {
     float adv1 = advantage(e1,e2,1);
     float adv2 = advantage(e1,e2,2);
     float power1 = countPower(e1,adv1);
     float power2 = countPower(e2,adv2);
+    cout << "Player Engimon attacks with a total power of " << power1 << endl;
+    cout << "Wild Engimon attacks with a total power of " << power2 << endl;
     if(power1 >= power2) {
+        cout << "Player Engimon wins" << endl;
         int x = rand() % 10 + 1;
-        // e2.setWild(false);
+        e2.setWild(false);
         e1.addEXP(e2.getLevel()*5);
-        // p.addItem(x)
-        
-        
+        p.addItem(x);
+        return 0;
     }
     else {
         e1.setStatus(false);
+        changeEngimon(p,attempt);
+        return 1;
     }
 
+}
+void Battle::startBattle(Player& P,Engimon& enemy) {
+    int ongoing = 1;
+    int attempt = 1;
+    while(ongoing == 1) {
+        string answer;
+        cout << "Enemy : " << enemy.getSpecies() << endl;
+        cout << "Element : ";
+        vector<Element> element = enemy.getElement();
+        for (auto i = element.begin(); i != element.end(); ++i) {
+            cout << EleName[*i] << endl;
+        } 
+        cout << "Level : " << enemy.getLevel() << endl;
+
+        cout << "What will you do?" << endl;
+        cout << "- attack" << endl;
+        cout << "- change active engimon" << endl;
+        cout << "- run" << endl;
+        cout << "Choose a command : ";
+        cin >> answer;
+        if(answer == "attack") {
+            // input player pokemon perlu direvisi
+            ongoing = attack(P,P.getActive(),enemy,attempt);
+        }
+        else if(answer == "change active engimon") {
+            changeEngimon(P,attempt);
+
+        }
+        else if(answer == "run") {
+            ongoing = run(attempt);
+        }
+ 
+    }
+
+}
+int Battle::run(int& attempt) {
+    int x = rand() % 2 + 1;
+    if(attempt > 0) {
+        attempt = attempt - 1;
+        if(x == 1) {
+            cout << "You failed to run" << endl;
+            return 1;
+        }
+        else {
+            cout << "You successfully fled" << endl;
+            return 0;
+        }
+    }
+    else {
+        cout << "You may only attempt to run once until your active engimon is defeated." << endl;
+        return 1;
+    }
+    
+}
+void Battle::gameOver() {
+    cout << "All of your Engimon are defeated." << endl;
+    cout << "GAME OVER" << endl;
+}
+void Battle::changeEngimon(Player& P,int& attempt) {
+    if(P.getListEng().countAvailable() != 0) {
+        int found = 0;
+        while(found == 0) {
+            int x,y;
+            if(P.getActive().getStatus() == false) {
+                cout << "Your active Engimon is defeated" << endl;
+                attempt = 1;
+            }
+            cout << "Please choose another Engimon to fight" << endl;
+            P.getListEng().viewList();
+            cout << "Input number : ";
+            cin >> x;
+            y = x - 1;
+            if(P.getListEng().getElementX(y).getStatus() == false) {
+                cout << "This Engimon is already defeated" << endl;
+                cout << "Please pick another Engimon" << endl;
+            }
+            else {
+                cout << "You have successfully changed your active Engimon" << endl;
+                P.setActive(y);
+                found = 1;
+            }
+        }
+    }
+    else {
+        if(P.getActive().getStatus() == false) {
+            gameOver();
+        }
+        else {
+            cout << "You don't have any other available Engimon" << endl;
+        }
+    }
 }
