@@ -2,7 +2,7 @@
 #define PLAYER_H
 #include <bits/stdc++.h> //powerfull library
 #include "Skill.h"
-// #include "peta.h"
+#include "peta.h"
 #include "Engimon2.h"
 #include "CustomException.h"
 //TODO : include other needed MODULE
@@ -190,9 +190,7 @@ public:
 			int index = this->getIdx(s);
 			this->Jumlah[index]--;
 			if (this->Jumlah[index] == 0){
-				cout <<"Species juga ada bug?" <<endl;
 				this->Array.erase(this->Array.begin()+index);
-				cout <<"Gak ah" << endl;
 				this->Jumlah.erase(this->Jumlah.begin()+index);
 			}
 			InvProp::banyakItem--;
@@ -227,13 +225,13 @@ pair<int,int> coordinate;
 Inventory<Engimon> listEngimon;
 Inventory<Skill> listSkillItem;
 Engimon activeEngimon; //if there is not an active engimon, this will be filled by default ctor	 engimon
-// Peta peta;
+Peta peta;
 bool isThereActiveEngimon; //can be false if : not activate engimon yet, lose battle
 // tambahkan active engimon di sini
 public:
 	// Player();
 	// ~Player();
-	Player(pair<int,int> Coordinate);
+	Player(pair<int,int> Coordinate, Peta peta);
 	//should we implement cctor and assignment operator? we only have 1 player in the game
 
 	int getXCoordinate();

@@ -13,11 +13,11 @@ using namespace std;
 // Player::~Player(){
 // 	this->listEngimon.
 // }
-Player::Player(pair<int,int> Coordinate){
+Player::Player(pair<int,int> Coordinate, const Peta& peta){
 	this->coordinate = Coordinate;
 	this->listEngimon = Inventory<Engimon>();
 	this->listSkillItem = Inventory<Skill>();
-	// this->peta = map;
+	this->peta = peta;
 	this->isThereActiveEngimon = false;
 	this->activeEngimon = Engimon();
 	SkillsFactory katalogskill;
@@ -39,6 +39,7 @@ Player::Player(pair<int,int> Coordinate){
 	this->addSkillItemToInven(agni);
 	this->addSkillItemToInven(listrik);
 	this->addSkillItemToInven(toya);
+	this->peta.SetElementPeta(coordinate.first, coordinate.second, "P");
 	//starter pack here
 	//3 engimon (?)
 	//3 proper item skills (?)
@@ -48,7 +49,6 @@ void Player::activateEngimon(int idx){
 	Engimon dummy;
 	try{
 		this->listEngimon.getElementX(idx);
-		cout << "BRUH" << endl;
 		// Species* tes = dummy.getSpecies();
 		// if (tes->isSingleElement()) cout <<"salahku apa?" << endl;
 	}catch (exception& e){
@@ -56,9 +56,7 @@ void Player::activateEngimon(int idx){
 	}
 
 	dummy = this->listEngimon.getElementX(idx);
-	if (dummy.getSpecies()->isSingleElement()) cout <<"salahku apa?" << endl;
 	if (this->isThereActiveEngimon){
-		cout << "YEET" << endl;
 		this->listEngimon.setElementX(this->activeEngimon, idx); //no exception guaranteed if this line executed
 		//already checked using getelementx
 		this->activeEngimon = dummy;
@@ -66,12 +64,7 @@ void Player::activateEngimon(int idx){
 		// cout << "THERE" << endl;
 		
 		this->activeEngimon = dummy;
-		cout << "THere" << endl;
-		if (dummy.getSpecies()->isSingleElement()) cout <<"salahku apa?" << endl;
 		this->listEngimon.delElementIndexX(idx);
-		if (dummy.getSpecies()->isSingleElement()) cout <<"salahku apa?" << endl;
-		if (this->activeEngimon.getSpecies()->isSingleElement()) cout <<"salahku apa?" << endl;
-		cout << "lah" <<endl;
 	}
 	this->isThereActiveEngimon = true;
 	
@@ -79,7 +72,6 @@ void Player::activateEngimon(int idx){
 
 void Player:: learnSkill(int idx){
 	this->activeEngimon.addSkill(this->listSkillItem.getSkillX(idx));
-	cout << "sampai sini gak?" << endl;
 	//these lines below will be executed if there is no exception throwed
 	this->listSkillItem.delElement(this->listSkillItem.getSkillX(idx));
 }

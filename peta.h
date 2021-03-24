@@ -68,7 +68,8 @@ class Peta {
         void TukarPosisi(int posisi, int posisisekarang);
         void GerakinSemuaEngimon();
         
-        
+        //minta getter baris kolom dan pengecekan indeks map valid dong, terus kalau gak salah banyak
+        //engimon liar bisa didapetin pake vector.size()
 };
 
 #endif
