@@ -7,8 +7,6 @@
 
 using namespace std;
 
-//int Peta::engimonId = 0;
-
 Peta::Peta(int b, int k){
 	this->baris = b;
 	this->kolom = k;
@@ -138,7 +136,7 @@ pair<int, Engimon> Peta::GetEngimonforDelete(int x, int y){
 			result =  DaftarEngimon[i];
 		}
 	}
-	cout << "berhasil get" << endl;
+	//cout << "berhasil get" << endl;
 	return result;
 }
 
@@ -171,7 +169,7 @@ void Peta::PrintPeta(){
 	}
 }
 
-void Peta::PrintPosisiEngimon(){
+void Peta::PrintDaftarEngimon(){
 	for(int i = 0; i < this->BykEngimonLiar; i++){
 		cout << "posisi : " << this->DaftarEngimon[i].first << endl;
 		cout << this->DaftarEngimon[i].second << endl;
@@ -186,15 +184,15 @@ void Peta::AddEngimon(pair<int, Engimon> e){
 }
 
 //kalo engimonnya sudah berhasil dijinakkan hapus dari DaftarEngimon
-//masih belum bisa
 void Peta::DeleteEngimon(pair<int, Engimon> e){
 	for (int i = 0; i != this->BykEngimonLiar; i++){
 		if(DaftarEngimon[i].first == e.first){
-			cout << "berhasil delete1" << endl;
-			this->DaftarEngimon.erase(this->DaftarEngimon.begin() + i); //error disinii
-			//PosisiEngimon.erase(PosisiEngimon.begin() + i);
+			//cout << "berhasil delete1" << endl;
+			//ubah isi peta
+			SetElementPeta(e.first, GetElementPetaTetap(e.first));
+			this->DaftarEngimon.erase(this->DaftarEngimon.begin() + i); 
 			this->BykEngimonLiar--;
-			cout << "berhasil delete" << endl;
+			//cout << "berhasil delete" << endl;
 			return;
 		}
 	}
@@ -250,7 +248,7 @@ int Peta::selectlevel(char engimonTerpilih){
 	} else {
 		level = (rand() % (MIN_LEVEL + 1)) + MIN_LEVEL;
 	}
-	cout << level << endl;
+	//cout << level << endl;
 	return level;
 }
 
@@ -280,8 +278,8 @@ void Peta::SpawnEngimon(int BanyakSpawn){
 
 			//masukin ke daftar engimon
 			AddEngimon(engimon);
-			cout << engimonTerpilih << endl;
-			cout << posisi << endl;
+			// cout << engimonTerpilih << endl;
+			// cout << posisi << endl;
 
 		} else if (this->isiPeta[posisi] == 'o'){
 			engimonTerpilih = sea[rand() % 4];
@@ -296,8 +294,8 @@ void Peta::SpawnEngimon(int BanyakSpawn){
 
 			//masukin ke daftar engimon
 			AddEngimon(engimon);
-			cout << engimonTerpilih << endl;
-			cout << posisi << endl;
+			// cout << engimonTerpilih << endl;
+			// cout << posisi << endl;
 		}
 		//cout << i << endl;
 	}
@@ -342,16 +340,16 @@ int main(){
 	P.PrintPeta();
 	//int g = P.GetEngimonId();
 	//cout << g << endl;
-	// P.PrintPosisiEngimon();
+	// P.PrintDaftarEngimon();
 	// P.GerakinSemuaEngimon();
 	// P.PrintPeta();
-	// P.PrintPosisiEngimon();
-	pair<int, Engimon> deleted = P.GetEngimonforDelete(0,6);
-	P.DeleteEngimon(deleted);
-	P.PrintPosisiEngimon();
+	// P.PrintDaftarEngimon();
+	//pair<int, Engimon> deleted = P.GetEngimonforDelete(2,13);
+	P.DeleteEngimon(P.GetEngimonforDelete(2,13));
+	P.PrintDaftarEngimon();
 	P.PrintPeta();
 	// P.DeleteEngimon(P.DaftarEngimon[3]);
-	// P.PrintPosisiEngimon();
+	// P.PrintDaftarEngimon();
 	return 0;
 }
 
