@@ -16,12 +16,9 @@ Engimon::Engimon(Species* _species, string _name,
 pair<pair<string, string>, pair<string, string>> _parent, 
 int _level, int _EXP, int _cumulativeEXP, bool _status, bool _wild)
 {
-    if (_species -> isSingleElement()){
-        species = new SingleType(*(_species));
-    }else{
-        species = new DoubleType(*(_species));
-    }
-    
+    // species = _species;
+    Species** newInstance = new Species*(_species);
+    species = *newInstance;
     name = _name;
     parent = _parent;
     level = _level;
@@ -38,11 +35,9 @@ Engimon::Engimon(Species* _species, string _name, string specParA, string namePa
 string specParB, string nameParB, int _level, int _EXP, int _cumulativeEXP, 
 bool _status, bool _wild)
 {
-    if (_species -> isSingleElement()){
-        species = new SingleType(*(_species));
-    }else{
-        species = new DoubleType(*(_species));
-    }
+    // species = _species;
+    Species** newInstance = new Species*(_species);
+    species = *newInstance;
     name = _name;
     level = _level;
     EXP = _EXP;
@@ -60,11 +55,9 @@ Engimon::Engimon(Species* _species, string _name, string specParA, string namePa
 string specParB, string nameParB, vector<Skill> _skills, int _level, int _EXP,
 int _cumulativeEXP, bool _status, bool _wild)
 {
-    if (_species -> isSingleElement()){
-        species = new SingleType(*(_species));
-    }else{
-        species = new DoubleType(*(_species));
-    }
+    // species = _species;
+    Species** newInstance = new Species*(_species);
+    species = *newInstance;
     name = _name;
     level = _level;
     EXP = _EXP;
@@ -116,12 +109,9 @@ bool Engimon::operator==(const Engimon& engi)
 Engimon& Engimon::operator=(const Engimon& engi)
 {
     // cout << "YEET" << endl;
-    delete species;
-    if (engi.species -> isSingleElement()){
-        species = new SingleType(*(engi.species));
-    }else{
-        species = new DoubleType(*(engi.species));
-    }
+    Species** newInstance = new Species*(engi.species);
+    species = *newInstance;
+    // species = engi.species;
     name = engi.name;
     parent = engi.parent;
     level = engi.level;

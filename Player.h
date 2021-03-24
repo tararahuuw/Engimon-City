@@ -38,9 +38,9 @@ public:
 	//should we implement cctor and op assignment? again its only 1 player in the game
 
 	T getElementX(int x){
-		cout << "YEET" << endl;
+		//cout << "YEET" << endl;
 		this->Array.at(x);
-		cout << "YEET2" << endl;
+		// cout << "YEET2" << endl;
 		return this->Array.at(x); //will throw exception out of range if needed. operator[] is fine but wont throw exception
 	}
 	void addElement(const T& x){
@@ -68,13 +68,11 @@ public:
 			throw InvalidIndexException();//change to proper exception if needed
 		}else{
 			// T dummy = this->getElementX(x); //class T need to have operator assignment
-			cout << "Engimon bermasalah?"  << endl;
 			this->Array.erase(this->Array.begin()+x);
 			// for (int i = x; i<this->Array.size()-1; i++){
 			// 	Array[i] = Array[i+1];
 			// }
 			// this->Array.erase(this->Array.end());
-			cout << "Gak tuh" << endl;
 			InvProp::banyakItem--;
 			// return *dummy;
 			//no need  return
@@ -192,7 +190,9 @@ public:
 			int index = this->getIdx(s);
 			this->Jumlah[index]--;
 			if (this->Jumlah[index] == 0){
+				cout <<"Species juga ada bug?" <<endl;
 				this->Array.erase(this->Array.begin()+index);
+				cout <<"Gak ah" << endl;
 				this->Jumlah.erase(this->Jumlah.begin()+index);
 			}
 			InvProp::banyakItem--;
@@ -259,7 +259,7 @@ public:
 	void addSkillItemToInven(Skill& other);
 	// void setActiveEngimon(const Engimon& other); //activate based on engimon (rarely used maybe?)
 
-	Engimon& getActiveEngimon();
+	Engimon getActiveEngimon();
 
 };
 

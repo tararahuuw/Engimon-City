@@ -8,6 +8,11 @@ int main(){
     // Engimon liar
     Engimon e1(initSpecies[0], 1, 0, 0, true, false);
     Engimon e2(initSpecies[1], 1, 99, 100, true, false);
+    // Species** meow = new Species*(initSpecies[1]);
+    Engimon* e3 = new Engimon(initSpecies[1], 1, 99, 100, true, false);
+    cout << *e3 << endl;
+    delete e3;
+    initSpecies.printAllSpecies();
 
     // Test addSkill
     try{
