@@ -13,11 +13,11 @@ using namespace std;
 // Player::~Player(){
 // 	this->listEngimon.
 // }
-Player::Player(pair<int,int> Coordinate, const Peta& map){
+Player::Player(pair<int,int> Coordinate){
 	this->coordinate = Coordinate;
 	this->listEngimon = Inventory<Engimon>();
 	this->listSkillItem = Inventory<Skill>();
-	this->peta = map;
+	// this->peta = map;
 	this->isThereActiveEngimon = false;
 	this->activeEngimon = Engimon();
 	//starter pack here
@@ -28,7 +28,7 @@ Player::Player(pair<int,int> Coordinate, const Peta& map){
 void Player::activateEngimon(int idx){
 	Engimon dummy;
 	try{
-		dummy = this->listEngimon.getElementX();
+		dummy = this->listEngimon.getElementX(idx);
 	}catch (exception& e){
 		throw InvalidEngimonException(); 
 	}
@@ -37,14 +37,14 @@ void Player::activateEngimon(int idx){
 		//already checked using getelementx
 		this->activeEngimon = dummy;
 	}else{
-		this->activateEngimon = dummy;
+		this->activeEngimon = dummy;
 		this->listEngimon.delElementIndexX(idx);
 	}
 	
 }
 
 void Player:: learnSkill(int idx){
-	this->activateEngimon.addSkills(this->listSkillItem.getSkillX(idx));
+	this->activeEngimon.addSkill(this->listSkillItem.getSkillX(idx));
 	//these lines below will be executed if there is no exception throwed
 	this->listSkillItem.delElement(this->listSkillItem.getSkillX(idx));
 }

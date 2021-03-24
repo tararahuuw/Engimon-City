@@ -66,6 +66,7 @@ ostream& SingleType::print(ostream& os) const
 Element* SingleType::getElement() const { return elm; }
 Element SingleType::getElement(int idx) const
 {
+    //ini juga string lagi
     if (idx > 0) throw "InvalidIndexException()";
     else return elm[0];
 }
@@ -128,10 +129,11 @@ ostream& DoubleType::print(ostream& os) const
 Element* DoubleType::getElement() const { return elm; }
 Element DoubleType::getElement(int idx) const 
 { 
+    //thrownya string lagi wkwkwkk
     if (idx > 1) throw "InvalidIndexException()";
-    if (idx==0) return elm[0];
-    if (idx==1) return elm[1];
+    return elm[idx];
 }
+
 int DoubleType::getNumElement() const { return nElm; }
 
 // fungsi abc

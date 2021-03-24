@@ -22,7 +22,7 @@ class Engimon{
         int level; 
         int EXP; 
         int cumulativeEXP;
-        bool status; // btw kalau engimon mati bakalan dihapus dari program, apa masih perlu ini?
+        bool status; // btw kalau engimon mati bakalan dihapus dari program, apa masih perlu ini? hmmm iya juga ya
         bool wild;
         const int maxCumulative = 1500;
         const int maxSkill = 4;

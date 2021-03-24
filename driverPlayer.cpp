@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include "Player.h"
+#include "Species.h"
 using namespace std;
 
 int main(){
@@ -29,15 +30,15 @@ int main(){
 	// }catch (const char* e){
 	// 	cout << e << endl;
 	// }
-	Player player1;
-	KatalogSkill katalogskill;
-	KatalogEngimon katalogengimon;
+	Player player1(make_pair(0,0));
+	SkillsFactory katalogskill;
+	SpeciesFactory katalogengimon;
 	//katalogskill.printtKatalogSkill();
 	// katalogengimon.printKatalogEngimon();
-	Engimon a = katalogengimon[0];
-	Engimon b = katalogengimon[1];
-	Engimon c = katalogengimon[2];
-	Engimon d = katalogengimon[3];
+	Engimon a;
+	Engimon b;
+	Engimon c;
+	Engimon d;
 	Skill e = katalogskill[0];
 	try{
 		player1.addEngimonToInven(a);
@@ -47,7 +48,10 @@ int main(){
 
 	}catch (const char* e){
 		cout << e<< endl;
+	}catch (exception& e){
+		cout << e.what() << endl;
 	}
 	player1.viewListEngimon();
+	cout << "Yeet" << endl;
 	player1.viewListSkill();
 }
