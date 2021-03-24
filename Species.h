@@ -126,7 +126,7 @@ class SpeciesFactory{
     public:
         friend ostream& operator<<(ostream&os, const pair<int, Species*>& sp);
         SpeciesFactory();
-        void initSpecies(); // perlu dijadiin 1 sama ctor atau ngga?
+        void initSpecies(); // perlu dijadiin 1 sama ctor atau ngga? kayanya perlu, kalau nanti dijadiin bilang ke grup ya
         Species*& operator[](int idx); // mengembalikan pointer to species di indeks ke idx
         void printAllSpecies();
 };

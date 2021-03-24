@@ -78,3 +78,7 @@ void Player:: addEngimonToInven(const Engimon& other){
 void Player:: addSkillItemToInven(Skill& other){
 	this->listSkillItem.addElement(other);
 }
+
+bool Player:: isThereActiveEngimonYet(){
+	return this->isThereActiveEngimon;
+}

@@ -122,7 +122,7 @@ ostream& operator<<(ostream& os, const Engimon& engi)
     os << " | ";
     if (engi.wild) os << "Wild Engimon" << endl;
     else os << engi.name << endl;
-    cout << "Yeet" << endl;
+    // cout << "Yeet" << endl;
     //kurang kondisi kalau species null
     if (engi.species != NULL) os << *engi.species;
     else os << "Species kosong "; //ntar ganti aja oke

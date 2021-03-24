@@ -80,7 +80,6 @@ public:
 	void viewList(){
 		for (int i =0; i < this->Array.size(); i++){
 			cout << this->Array[i] << endl;
-			cout << "Yeet" <<endl;
 		}
 	}
 };
@@ -235,6 +234,8 @@ public:
 
 	Inventory<Skill> getListSkill();
 	Inventory<Engimon> getListEng();
+
+	bool isThereActiveEngimonYet();
 /**
 	void moveW();
 	void moveA();
@@ -248,7 +249,7 @@ public:
 	void viewListEngimon();
 	void addEngimonToInven(const Engimon& other);
 	void addSkillItemToInven(Skill& other);
-	void setActiveEngimon(const Engimon& other);
+	// void setActiveEngimon(const Engimon& other); //activate based on engimon (rarely used maybe?)
 
 
 
