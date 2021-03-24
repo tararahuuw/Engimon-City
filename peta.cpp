@@ -7,7 +7,7 @@
 
 using namespace std;
 
-int Peta::engimonId = 0;
+//int Peta::engimonId = 0;
 
 Peta::Peta(int b, int k){
 	this->baris = b;
@@ -22,7 +22,6 @@ Peta::Peta(int b, int k){
 		this->PetaTetap[i] = 'x';
 	}
 	this->BykEngimonLiar = 0;
-	this->PosisiEngimon = vector<int> ();
 	this->DaftarEngimon = vector<pair<int, Engimon> > ();
 }
 
@@ -38,16 +37,9 @@ Peta::Peta(const Peta& P){
 	for(int i=0; i<this->nElmt; i++){
 		this->PetaTetap[i] = P.isiPeta[i];
 	}
-	this->PosisiEngimon = vector<int> ();
-	for (int i = 0; i < this->PosisiEngimon.size(); i++){
-        this->PosisiEngimon[i] == P.PosisiEngimon[i];
-    }
-	// this->DaftarEngimon = vector<pair<int, Engimon> > ();
-	// for (int i = 0; i < this->PosisiEngimon.size(); i++){
-    //     this->DaftarEngimon[i] == P.DaftarEngimon[i];
-    // }
+
+	this->DaftarEngimon = P.DaftarEngimon;
 	this->BykEngimonLiar = P.BykEngimonLiar;
-	//this->DaftarEngimon = new Engimon[20];
 }
 
 Peta::~Peta(){
@@ -69,14 +61,9 @@ Peta& Peta::operator=(const Peta& P){
 	for(int i=0; i<this->nElmt; i++){
 		this->PetaTetap[i] = P.isiPeta[i];
 	}
-	this->PosisiEngimon = vector<int> ();
-	for (int i = 0; i < this->PosisiEngimon.size(); i++){
-        this->PosisiEngimon[i] == P.PosisiEngimon[i];
-    }
-	// this->DaftarEngimon = vector<pair<int, Engimon> > ();
-	// for (int i = 0; i < this->PosisiEngimon.size(); i++){
-    //     this->DaftarEngimon[i] == P.DaftarEngimon[i];
-    // }
+
+	this->DaftarEngimon = P.DaftarEngimon;
+	this->BykEngimonLiar = P.BykEngimonLiar;
 
 }
 
@@ -130,9 +117,31 @@ void Peta::SetElementPeta(int index, char element){
 	}
 }
 
-int Peta::GetEngimonId(){
-	return engimonId;
+//untuk dapetin engimon pada posisi (x,y)
+Engimon Peta::GetEngimonLiar(int x, int y){
+	int posisi = (x*this->kolom)+y;
+	Engimon e;
+	for (int i = 0; i != this->BykEngimonLiar; i++){
+		if(DaftarEngimon[i].first == posisi){
+			e = DaftarEngimon[i].second;
+		}
+	}
+	return e;
 }
+
+pair<int, Engimon> Peta::GetEngimonforDelete(int x, int y){
+	int posisi = (x*this->kolom)+y;
+	pair<int, Engimon> result;
+	Engimon e;
+	for (int i = 0; i != this->BykEngimonLiar; i++){
+		if(DaftarEngimon[i].first == posisi){
+			result =  DaftarEngimon[i];
+		}
+	}
+	cout << "berhasil get" << endl;
+	return result;
+}
+
 
 void Peta::BacaFile(){
 	ifstream obj("map.txt");
@@ -162,133 +171,135 @@ void Peta::PrintPeta(){
 	}
 }
 
-void Peta::PrintDaftarEngimon(){
-	for(int i = 0; i < this->BykEngimonLiar; i++){
-		cout << this->DaftarEngimon[i].first << endl;
-	}
-}
-
 void Peta::PrintPosisiEngimon(){
 	for(int i = 0; i < this->BykEngimonLiar; i++){
-		cout << this->PosisiEngimon[i] << endl;
+		cout << "posisi : " << this->DaftarEngimon[i].first << endl;
+		cout << this->DaftarEngimon[i].second << endl;
 	}
 }
 
-void Peta::AddEngimon(pair<int, Engimon> e, int posisi){
+//isi pair itu posisi dari engimon dan data engimon
+void Peta::AddEngimon(pair<int, Engimon> e){ 
 	this->DaftarEngimon.push_back(e);
-	this->PosisiEngimon.push_back(posisi);
 	this->BykEngimonLiar++;
-	engimonId++;
+	//cout << "berhasil" << endl;
 }
 
 //kalo engimonnya sudah berhasil dijinakkan hapus dari DaftarEngimon
+//masih belum bisa
 void Peta::DeleteEngimon(pair<int, Engimon> e){
 	for (int i = 0; i != this->BykEngimonLiar; i++){
 		if(DaftarEngimon[i].first == e.first){
-			DaftarEngimon.erase(DaftarEngimon.begin() + i);
-			PosisiEngimon.erase(PosisiEngimon.begin() + i);
+			cout << "berhasil delete1" << endl;
+			DaftarEngimon.erase(DaftarEngimon.begin() + i); //error disinii
+			//PosisiEngimon.erase(PosisiEngimon.begin() + i);
 			this->BykEngimonLiar--;
-			break;
+			cout << "berhasil delete" << endl;
+			return;
 		}
 	}
 }
 
-void Peta::SelectNama(char Engimon, string *nama, int *health){
-	string fire1[3] = {"Snorlax", "Porygon", "Eevee"};
-	string fire2[3] = {"Chansey", "Kangaskhan", "Meowth"};
-	string ground1[3] = {"Bulbasaur", "Venusaur", "Weepinbell"};
-	string ground2[3] = {"Tangela", "Exeggutor", "Victreebel"};
-	string electric1[3] = {"Zapdos", "Magnemite", "Voltorb"};
-	string electric2[3] = {"Pikachu", "Electabuzz", "Electrode"};
-	string water1[3] = {"Wartortle", "Blastoise", "Poliwhirl"};
-	string water2[3] = {"Dewgong", "Vaporeon", "Cloyster"};
-	string ice1[3] = {"Articuno", "Jynx", "Lapras"};
-	string ice2[3] = {"Cloyster", "Dewgong", "Seel"};
-	string random;
-	if(Engimon == 'f'){
-		random = fire1[rand() % 3];
-		*health = 300;
-	} else if(Engimon == 'F'){
-		random = fire2[rand() % 3]; 
-		*health = 400;
-	} else if(Engimon == 'g'){
-		random = ground1[rand() % 3];
-		*health = 300;
-	} else if(Engimon == 'G'){
-		random = ground2[rand() % 3];
-		*health = 400;
-	} else if(Engimon == 'e'){
-		random = electric1[rand() % 3];
-		*health = 300;
-	} else if(Engimon == 'E'){
-		random = electric2[rand() % 3]; 
-		*health = 400;
-	} else if(Engimon == 'w'){
-		random = water1[rand() % 3];
-		*health = 450;
-	} else if(Engimon == 'W'){
-		random = water2[rand() % 3];
-		*health = 500;
-	} else if(Engimon == 'i'){
-		random = ice1[rand() % 3];
-		*health = 500;
-	} else if(Engimon == 'I'){
-		random = ice2[rand() % 3];
-		*health = 550;
+void Peta::CreateEngimon(char e, int level, Engimon *engi){
+	SpeciesFactory DaftarSpecies;
+	SkillsFactory skills;
+	DaftarSpecies.initSpecies();
+	Species* spesies;
+	int random = rand() % 2;
+	if(e == 'f' || e == 'F'){
+		if(random == 0){
+			spesies = DaftarSpecies[0];
+		} else {
+			spesies = DaftarSpecies[8];
+		}
+	} else if(e == 'e' || e == 'E'){
+		if(random == 0){
+			spesies = DaftarSpecies[2];
+		} else {
+			spesies = DaftarSpecies[10];
+		}
+	} else if(e == 'g' || e == 'G'){
+		if(random == 0){
+			spesies = DaftarSpecies[3];
+		} else {
+			spesies = DaftarSpecies[11];
+		}
+	} else if(e == 'w' || e == 'W') {
+		if(random == 0){
+			spesies = DaftarSpecies[1];
+		} else {
+			spesies = DaftarSpecies[9];
+		}
+	} else  { //if(e == 'i' || e == 'I')
+		if(random == 0){
+			spesies = DaftarSpecies[4];
+		} else {
+			spesies = DaftarSpecies[12];
+		}
+	} 
+
+	Engimon engimon(spesies, level, 0, 0, true, false);
+	*engi = engimon;
+}
+
+int Peta::selectlevel(char engimonTerpilih){
+	int level;
+	//random level
+	if(engimonTerpilih == 'f' || engimonTerpilih == 'g' || engimonTerpilih == 'e' || engimonTerpilih == 'w' || engimonTerpilih == 'i'){
+		level = (rand() % MIN_LEVEL + 1);
+	} else {
+		level = (rand() % (MIN_LEVEL + 1)) + MIN_LEVEL;
 	}
-	*nama = random;
-	 
+	cout << level << endl;
+	return level;
 }
 
 void Peta::SpawnEngimon(int BanyakSpawn){
 	int posisi, level;
 	//int BanyakSpawn = 10;
 	posisi = rand() % (this->nElmt);
-	level = rand(); //mod dengan max level dari engimon
 	char grass[] = "fFgGeE";
 	char sea[] = "wiWI";
 	char engimonTerpilih;
-	KatalogEngimon katalogengimon;
-	string namaEngimon;
-	int health;
 	for(int i = 0; i < BanyakSpawn; i++){
+		//posisi = rand() % (this->nElmt);
 		while(this->isiPeta[posisi] != '-' && this->isiPeta[posisi] != 'o'){
 			posisi = rand() % (this->nElmt);
 		}
-		//random level
-		if(engimonTerpilih == 'f' || engimonTerpilih == 'g' || engimonTerpilih == 'e' || engimonTerpilih == 'w' || engimonTerpilih == 'i'){
-			level = rand() % MIN_LEVEL;
-		} else {
-			level = (rand() % (MIN_LEVEL + 1)) + MIN_LEVEL;
-		}
-		//construc engimon
+		Engimon e;
 		if(this->isiPeta[posisi] == '-'){
 			engimonTerpilih = grass[rand() % 6];
 			//set di peta
 			SetElementPeta(posisi, engimonTerpilih);
-			//SelectNama(engimonTerpilih,&namaEngimon, &health);
-			//cout << namaEngimon << endl;
+			level = selectlevel(engimonTerpilih);
 			//create obj engimon
-			// pair<int, char> PAIR1; 
-			// PAIR1.first = 100; 
-			// PAIR1.second = 'G';
+			CreateEngimon(engimonTerpilih, level, &e);
+			pair<int, Engimon> engimon; 
+			engimon.first = posisi;
+			engimon.second = e;
 
+			//masukin ke daftar engimon
+			AddEngimon(engimon);
 			cout << engimonTerpilih << endl;
 			cout << posisi << endl;
 
-			//masukin ke daftar engimon
-		} else if(this->isiPeta[posisi] == 'o'){
+		} else if (this->isiPeta[posisi] == 'o'){
 			engimonTerpilih = sea[rand() % 4];
 			//set di peta
 			SetElementPeta(posisi, engimonTerpilih);
-			// SelectNama(engimonTerpilih,&namaEngimon, &health);
-			// cout << namaEngimon << endl;
+			level = selectlevel(engimonTerpilih);
+			//create obj engimon
+			CreateEngimon(engimonTerpilih, level, &e);
+			pair<int, Engimon> engimon; 
+			engimon.first = posisi;
+			engimon.second = e;
+
+			//masukin ke daftar engimon
+			AddEngimon(engimon);
 			cout << engimonTerpilih << endl;
 			cout << posisi << endl;
-			//create engimon
-			//masukin ke daftar engimon
 		}
-		//dtor engimon
+		//cout << i << endl;
 	}
 }
 
@@ -308,29 +319,39 @@ void Peta::GerakinSemuaEngimon(){
 	//untuk geraknya di random
 	for (int i = 0; i != this->BykEngimonLiar; i++){
 		int posisi = rand() % (this->nElmt);
-		while(GetElementPeta(posisi) != GetElementPetaTetap(PosisiEngimon[i]) || GetElementPeta(posisi) == 'X'){
+		while(GetElementPeta(posisi) != GetElementPetaTetap(DaftarEngimon[i].first) || GetElementPeta(posisi) == 'X'){
 			posisi = rand() % (this->nElmt);
 		}
 		try{
 			//ubah element pada isipeta
-			TukarPosisi(posisi, PosisiEngimon[i]);
-			PosisiEngimon[i] = posisi;
+			TukarPosisi(posisi, DaftarEngimon[i].first);
+			DaftarEngimon[i].first = posisi;
 		} catch(bool f){
 			//tetap ditempat engimon yang diacu
 		}
 	}
 }
 
-int main(){
-	Peta P(14, 14);
-	P.BacaFile();
-	//P.PrintPeta();
-	//P.SpawnEngimon(10);
-	//P.PrintPeta();
-	P.SpawnEngimon(5);
-	P.PrintPeta();
-	int g = P.GetEngimonId();
-	cout << g << endl;
-	return 0;
-}
+// int main(){
+// 	Peta P(14, 14);
+// 	P.BacaFile();
+// 	//P.PrintPeta();
+// 	//P.SpawnEngimon(10);
+// 	//P.PrintPeta();
+// 	P.SpawnEngimon(5);
+// 	P.PrintPeta();
+// 	//int g = P.GetEngimonId();
+// 	//cout << g << endl;
+// 	// P.PrintPosisiEngimon();
+// 	// P.GerakinSemuaEngimon();
+// 	// P.PrintPeta();
+// 	// P.PrintPosisiEngimon();
+// 	pair<int, Engimon> deleted = P.GetEngimonforDelete(2,13);
+// 	P.DeleteEngimon(deleted);
+// 	P.PrintPosisiEngimon();
+// 	P.PrintPeta();
+// 	// P.DeleteEngimon(P.DaftarEngimon[3]);
+// 	// P.PrintPosisiEngimon();
+// 	return 0;
+// }
 
