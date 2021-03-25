@@ -191,13 +191,14 @@ vector<vector<float>> Engimon::getAdvElementTable() const{
     return tabel;
 }
 
-float Engimon::countPower(Element elemenLawan) const{
-    float sum = 0;
-    for (auto i = skills.begin(); i != skills.end(); ++i)
-    {
-        sum+=((*i).getBasePower()*(*i).getMasteryLevel());
+float Engimon::countPower(Engimon& e,float adv) {
+    // Rumus hitung power: level * element advantage + SUM(every skill’s base power *Mastery Level)
+    float total = e.getLevel() * adv;
+    vector<Skill> skill = e.getSkills();
+    for (auto i = skill.begin(); i != skill.end(); ++i) {
+        total = total + (i->getBasePower() * i->getMasteryLevel());
     }
-    return level*(getAdvantageElement(elemenLawan)) + sum;
+    return total;
 }
 
 // setter

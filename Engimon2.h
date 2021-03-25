@@ -88,7 +88,7 @@ class Engimon{
         bool getStatus() const;
         float getAdvantageElement(Element _elm2) const; // adv elm player terhadap elm2
         vector<vector<float>> getAdvElementTable() const;
-        float countPower(Element elemenLawan) const;
+    
         
         // setter, seperlunya saja
         // void setName(string _name);
@@ -114,6 +114,7 @@ class Engimon{
         // Elemen skill diinisiasi di awal dan hanya bisa diakses lewat SkillsFactory dan kemungkinan urutan elemen akan selalu sama karena skill tidak pernah diubah atributnya kecuali mastery levelnya
         void dropSkill(Skill skill); // Menghapus skill engimon dengan asumsi Skill skill dimiliki engimon 
         bool checkNumOfElements() const; // kalau 1 itu true, kalau 2 false
+        static float countPower(Engimon& e,float adv);
 };
 
 // Katalog engimon sepertinya tida diperlukan, diganti dengan SpeciesFactory
