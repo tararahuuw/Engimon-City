@@ -88,6 +88,7 @@ class Engimon{
         bool getStatus() const;
         float getAdvantageElement(Element _elm2) const; // adv elm player terhadap elm2
         vector<vector<float>> getAdvElementTable() const;
+        float countPower(Element elemenLawan) const;
         
         // setter, seperlunya saja
         // void setName(string _name);

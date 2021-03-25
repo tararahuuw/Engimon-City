@@ -191,6 +191,15 @@ vector<vector<float>> Engimon::getAdvElementTable() const{
     return tabel;
 }
 
+float Engimon::countPower(Element elemenLawan) const{
+    float sum = 0;
+    for (auto i = skills.begin(); i != skills.end(); ++i)
+    {
+        sum+=((*i).getBasePower()*(*i).getMasteryLevel());
+    }
+    return level*(getAdvantageElement(elemenLawan)) + sum;
+}
+
 // setter
 void Engimon::setWild(bool _wild){ this->wild = _wild; }
 void Engimon::setParent(string speciesA, string parentA, string speciesB, string parentB)
