@@ -13,6 +13,13 @@
 #include "CustomException.h"
 using namespace std;
 
+const float table[5][5] = {
+            {1,0,1,0.5,2},
+            {2,1,0,1,1},
+            {1,2,1,0,1.5},
+            {1.5,1,2,1,0},
+            {0,1,0.5,2,1}
+        };
 class Engimon{
     private:
         Species* species;
@@ -27,13 +34,6 @@ class Engimon{
         bool wild;
         const int maxCumulative = 2000;
         const int maxSkill = 4;
-        const float table[5][5] = {
-            {1,0,1,0.5,2},
-            {2,1,0,1,1},
-            {1,2,1,0,1.5},
-            {1.5,1,2,1,0},
-            {0,1,0.5,2,1}
-        };
 
     public:
         // default ctor
@@ -113,6 +113,8 @@ class Engimon{
         // Elemen skill diinisiasi di awal dan hanya bisa diakses lewat SkillsFactory dan kemungkinan urutan elemen akan selalu sama karena skill tidak pernah diubah atributnya kecuali mastery levelnya
         void dropSkill(Skill skill); // Menghapus skill engimon dengan asumsi Skill skill dimiliki engimon 
         bool checkNumOfElements() const; // kalau 1 itu true, kalau 2 false
+        static float countPower(Engimon& e,float adv);
+        static float advantage(Engimon& e1,Engimon& e2,int n);
 };
 
 // Katalog engimon sepertinya tida diperlukan, diganti dengan SpeciesFactory

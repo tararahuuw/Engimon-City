@@ -125,13 +125,6 @@ Engimon& Engimon::operator=(const Engimon& engi)
     return *this;
 }
 
-void printSpace(int n)
-{
-    for (int i = 0; i < n; i++)
-    {
-        cout << " ";
-    }
-}
 ostream& operator<<(ostream& os, const Engimon& engi)
 {
     os << "------------------------" << endl;
@@ -179,6 +172,27 @@ float Engimon::getAdvantageElement(Element _elm2) const{
     return table[species->getElement(0)][_elm2];
 }
 
+float Engimon::advantage(Engimon& e1,Engimon& e2,int n) {
+    int x = 0;
+    int y = 0;
+    for (auto i = e1.getElement().begin(); i != e1.getElement().end(); ++i) {
+        for (auto j = e2.getElement().begin(); i != e2.getElement().end(); ++i) {
+            if(table[*i][*j] > x) {
+                x = table[*i][*j];
+            }
+            if(table[*j][*i] > y) {
+                y = table[*j][*i];
+            }
+        }
+    }
+    if(n == 1) {
+        return x;
+    }
+    else if(n == 2) {
+        return y;
+    }
+}
+
 vector<vector<float>> Engimon::getAdvElementTable() const{
     vector<vector<float>> tabel = vector<vector<float>>();
     for (int i = 0; i < 5; i++){
@@ -189,6 +203,16 @@ vector<vector<float>> Engimon::getAdvElementTable() const{
         tabel.push_back(row);
     }
     return tabel;
+}
+
+float Engimon::countPower(Engimon& e,float adv) {
+    // Rumus hitung power: level * element advantage + SUM(every skill’s base power *Mastery Level)
+    float total = e.getLevel() * adv;
+    vector<Skill> skill = e.getSkills();
+    for (auto i = skill.begin(); i != skill.end(); ++i) {
+        total = total + (i->getBasePower() * i->getMasteryLevel());
+    }
+    return total;
 }
 
 // setter
@@ -240,6 +264,7 @@ void Engimon::addSkill(Skill _skill)
         
     }
 }
+
 
 void Engimon::printDetail()
 {
