@@ -48,3 +48,8 @@ class ActiveEngimonKosong : public exception {
 	public:
 	virtual char const * what() const noexcept {return "Tidak ada active engimon";}
 };
+
+class InvalidMove : public exception {
+	public:
+	virtual char const * what() const noexcept {return "Invalid move";}
+};

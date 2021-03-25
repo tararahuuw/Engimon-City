@@ -222,6 +222,7 @@ public:
 class Player{
 private:
 pair<int,int> coordinate;
+pair<int,int> coorActive;
 Inventory<Engimon> listEngimon;
 Inventory<Skill> listSkillItem;
 Engimon activeEngimon; //if there is not an active engimon, this will be filled by default ctor	 engimon
@@ -231,23 +232,26 @@ bool isThereActiveEngimon; //can be false if : not activate engimon yet, lose ba
 public:
 	// Player();
 	// ~Player();
-	Player(pair<int,int> Coordinate, Peta peta);
+	Player(pair<int,int> Coordinate, const Peta& peta);
 	//should we implement cctor and assignment operator? we only have 1 player in the game
 
-	int getXCoordinate();
+	//no need
+	// int getXCoordinate();
 
-	int getYCoordinate();
+	// int getYCoordinate();
 
 	Inventory<Skill> getListSkill();
 	Inventory<Engimon> getListEng();
 
 	bool isThereActiveEngimonYet();
-/**
+	//invalid move ketika menabrak batas peta, engimon lain, kecuali active engimonnya
 	void moveW();
 	void moveA();
 	void moveD();
 	void moveS();
-**/
+
+	void lihatPeta();
+
 	void activateEngimon(int idx); //activate engimon based on index inventory of engimon
 	void learnSkill(int idx); //learn skill based on index inventory of skill. requirement : active engimon
 

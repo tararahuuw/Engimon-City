@@ -62,6 +62,7 @@ Peta& Peta::operator=(const Peta& P){
 
 	this->DaftarEngimon = P.DaftarEngimon;
 	//this->BykEngimonLiar = P.BykEngimonLiar;
+	return *this;
 
 }
 
