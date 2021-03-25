@@ -9,7 +9,7 @@
 #include <map>
 #include "Skill.h"
 #include "Species.h"
-
+#include "CustomException.h"
 using namespace std;
 
 class Engimon{

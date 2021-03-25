@@ -85,7 +85,7 @@ public:
 
 	void viewList(){
 		for (int i =0; i < this->Array.size(); i++){
-			cout <<i << ". "<< this->Array[i] << "\n" <<endl;
+			cout <<i+1 << ". "<< this->Array[i] << "\n" <<endl;
 		}
 	}
 };
@@ -208,7 +208,7 @@ public:
 
 	void viewList(){
 		for (int i = 0; i < this->Array.size(); i++){
-			cout << i << ". " << this->Array[i] << endl;
+			cout << i+1 << ". " << this->Array[i] << endl;
 			cout << "| Jumlah       : " << this->Jumlah[i] << "\n" << endl;
 		}
 	}
@@ -218,6 +218,7 @@ public:
 //TODO : breeding, battle
 //spawn wild engimon
 //need to fix output view inventory, currently ugly
+//waiting thomas fixing output
 
 class Player{
 private:
@@ -236,9 +237,13 @@ public:
 	//should we implement cctor and assignment operator? we only have 1 player in the game
 
 	//no need
-	// int getXCoordinate();
+	int getXCoordinate();
 
-	// int getYCoordinate();
+	int getYCoordinate();
+
+	int getXCoorAE();
+
+	int getYCoorAE();
 
 	Inventory<Skill> getListSkill();
 	Inventory<Engimon> getListEng();
@@ -249,6 +254,7 @@ public:
 	void moveA();
 	void moveD();
 	void moveS();
+	void moveAE(string move);
 
 	void lihatPeta();
 
@@ -262,7 +268,10 @@ public:
 	// void setActiveEngimon(const Engimon& other); //activate based on engimon (rarely used maybe?)
 
 	Engimon getActiveEngimon();
-
+	// Peta getPeta();
+	// char getPetaTetap(int b, int k);
+	// void setPeta(int b, int k, char c);
+	void relocateAE(); //asumsi sudah ada active engimon
 };
 
 

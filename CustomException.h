@@ -1,3 +1,6 @@
+#ifndef CustEx_H
+#define CustEx_H
+
 using namespace std;
 class InventoryPenuhException : public exception{
 	public:
@@ -53,3 +56,10 @@ class InvalidMove : public exception {
 	public:
 	virtual char const * what() const noexcept {return "Invalid move";}
 };
+
+class InvalidMoveEngimon : public InvalidMove{
+	public:
+	virtual char const * what() const noexcept {return "Invalid move active engimon\nRelocating...";};
+};
+
+#endif

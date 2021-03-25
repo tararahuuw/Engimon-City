@@ -62,23 +62,7 @@ void Player::activateEngimon(int idx){
 		this->activeEngimon = dummy;
 	}else{
 		// cout << "THERE" << endl;
-		int y = this->coordinate.first;
-		int x = this->coordinate.second;
-		if (y+1 < this->peta.GetBaris() and (this->peta.GetElementPeta(y+1,x) == '-' or this->peta.GetElementPeta(y+1,x) == 'o')){
-			this->coorActive = make_pair(y+1,x);
-			this->peta.SetElementPeta(y+1,x,'X');
-		}else if (x + 1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y,x+1) == '-' or this->peta.GetElementPeta(y,x+1) == 'o')){
-			this->coorActive = make_pair(y, x+1);
-			this->peta.SetElementPeta(y,x+1,'X');
-		}else if (x - 1 >= 0 and (this->peta.GetElementPeta(y,x-1) == '-' or this->peta.GetElementPeta(y,x-1) == 'o')){
-			this-> coorActive = make_pair(y, x-1);
-			this->peta.SetElementPeta(y,x-1,'X');
-		}else if (y - 1 >= 0 and (this->peta.GetElementPeta(y-1,x) == '-' or this->peta.GetElementPeta(y-1, x) == 'o')){
-			this->coorActive = make_pair(y-1,x);
-			this->peta.SetElementPeta(y-1,x,'X');
-		}else{
-			this -> coorActive = make_pair(y,x); //kasus khusus ketika tidak ada tiles yang tepat, engimon tidak akan muncul di peta;
-		}
+		this->relocateAE();
 		this->activeEngimon = dummy;
 		this->listEngimon.delElementIndexX(idx);
 	}
@@ -94,14 +78,22 @@ void Player:: learnSkill(int idx){
 	}else throw ActiveEngimonKosong();
 }
 
-//no need
-// int Player:: getXCoordinate(){
-// 	return this->coordinate.first;
-// }
+// no need
+int Player:: getXCoordinate(){
+	return this->coordinate.second;
+}
 
-// int Player:: getYCoordinate(){
-// 	return this->coordinate.second;
-// }
+int Player:: getYCoordinate(){
+	return this->coordinate.first;
+}
+
+int Player:: getXCoorAE(){
+	return this->coorActive.second;
+}
+
+int Player:: getYCoorAE(){
+	return this->coorActive.first;
+}
 
 Inventory<Skill> Player::getListSkill(){
 	return this->listSkillItem;
@@ -139,13 +131,14 @@ void Player:: moveW(){
 	int x = this->coordinate.second;
 	if (y - 1 >= 0 and (this->peta.GetElementPeta(y-1,x) == '-' or this->peta.GetElementPeta(y-1, x) == 'o' or this->peta.GetElementPeta(y-1,x)=='X')){
 		
-		if (this->isThereActiveEngimonYet()){
-			this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second, this->peta.GetElementPetaTetap(this->coorActive.first, this->coorActive.second));
-			this->coorActive = make_pair(y,x);
-			this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second,'X');
-		}else{
-			this->peta.SetElementPeta(y,x,this->peta.GetElementPetaTetap(y,x));
-		}
+		// if (this->isThereActiveEngimonYet()){
+		// 	this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second, this->peta.GetElementPetaTetap(this->coorActive.first, this->coorActive.second));
+		// 	this->coorActive = make_pair(y,x);
+		// 	this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second,'X');
+		// }else{
+		// 	this->peta.SetElementPeta(y,x,this->peta.GetElementPetaTetap(y,x));
+		// }
+		this->peta.SetElementPeta(y,x,this->peta.GetElementPetaTetap(y,x));
 		this->coordinate.first = y-1;
 		this->peta.SetElementPeta(y-1,x,'P');
 		
@@ -156,13 +149,14 @@ void Player:: moveA(){
 	int x = this->coordinate.second;
 	if (x - 1 >= 0 and (this->peta.GetElementPeta(y,x-1) == '-' or this->peta.GetElementPeta(y, x-1) == 'o' or this->peta.GetElementPeta(y,x-1)=='X')){
 		
-		if (this->isThereActiveEngimonYet()){
-			this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second, this->peta.GetElementPetaTetap(this->coorActive.first, this->coorActive.second));
-			this->coorActive = make_pair(y,x);
-			this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second,'X');
-		}else{
-			this->peta.SetElementPeta(y,x,this->peta.GetElementPetaTetap(y,x));
-		}
+		// if (this->isThereActiveEngimonYet()){
+		// 	this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second, this->peta.GetElementPetaTetap(this->coorActive.first, this->coorActive.second));
+		// 	this->coorActive = make_pair(y,x);
+		// 	this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second,'X');
+		// }else{
+		// 	this->peta.SetElementPeta(y,x,this->peta.GetElementPetaTetap(y,x));
+		// }
+		this->peta.SetElementPeta(y,x,this->peta.GetElementPetaTetap(y,x));
 		this->coordinate.second = x-1;
 		this->peta.SetElementPeta(y,x-1,'P');
 	}else throw InvalidMove();
@@ -172,13 +166,14 @@ void Player:: moveD(){
 	int x = this->coordinate.second;
 	if (x + 1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y,x+1) == '-' or this->peta.GetElementPeta(y, x+1) == 'o' or this->peta.GetElementPeta(y,x+1)=='X')){
 		
-		if (this->isThereActiveEngimonYet()){
-			this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second, this->peta.GetElementPetaTetap(this->coorActive.first, this->coorActive.second));
-			this->coorActive = make_pair(y,x);
-			this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second,'X');
-		}else{
-			this->peta.SetElementPeta(y,x,this->peta.GetElementPetaTetap(y,x));
-		}
+		// if (this->isThereActiveEngimonYet()){
+		// 	this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second, this->peta.GetElementPetaTetap(this->coorActive.first, this->coorActive.second));
+		// 	this->coorActive = make_pair(y,x);
+		// 	this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second,'X');
+		// }else{
+		// 	this->peta.SetElementPeta(y,x,this->peta.GetElementPetaTetap(y,x));
+		// }
+		this->peta.SetElementPeta(y,x,this->peta.GetElementPetaTetap(y,x));
 		this->coordinate.second = x+1;
 		this->peta.SetElementPeta(y,x+1, 'P');
 	}else throw InvalidMove();
@@ -188,19 +183,105 @@ void Player:: moveS(){
 	int x = this->coordinate.second;
 	if (y + 1 < this->peta.GetBaris() and (this->peta.GetElementPeta(y+1,x) == '-' or this->peta.GetElementPeta(y+1, x) == 'o' or this->peta.GetElementPeta(y+1,x)=='X')){
 		
-		if (this->isThereActiveEngimonYet()){
-			this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second, this->peta.GetElementPetaTetap(this->coorActive.first, this->coorActive.second));
-			this->coorActive = make_pair(y,x);
-			this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second,'X');
-		}else{
-			this->peta.SetElementPeta(y,x,this->peta.GetElementPetaTetap(y,x));
-		}
+		// if (this->isThereActiveEngimonYet()){
+		// 	this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second, this->peta.GetElementPetaTetap(this->coorActive.first, this->coorActive.second));
+		// 	this->coorActive = make_pair(y,x);
+		// 	this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second,'X');
+		// }else{
+		// 	this->peta.SetElementPeta(y,x,this->peta.GetElementPetaTetap(y,x));
+		// }
+		this->peta.SetElementPeta(y,x,this->peta.GetElementPetaTetap(y,x));
 		this->coordinate.first = y+1;
 		this->peta.SetElementPeta(y+1,x,'P');
 	}else throw InvalidMove();
 
 }
 
+void Player:: moveAE(string move){
+	bool exc = false;
+	int y = this->coordinate.first;
+	int x = this->coordinate.second;
+	if (move == "D" or move == "d"){
+		if (this->peta.GetElementPeta(y,x-1) != '-' and this->peta.GetElementPeta(y,x-1) != 'o'){
+			exc = true;
+		}else{
+			this->peta.SetElementPeta(coorActive.first,coorActive.second,this->peta.GetElementPetaTetap(coorActive.first,coorActive.second));
+			this->coorActive = make_pair(y,x-1);
+			this->peta.SetElementPeta(y,x-1, 'X');
+		}
+	}else if (move == "S" or move == "s"){
+		if (this->peta.GetElementPeta(y-1,x) != '-' and this->peta.GetElementPeta(y-1,x) != 'o'){
+			exc = true;
+		}else{
+			this->peta.SetElementPeta(coorActive.first,coorActive.second,this->peta.GetElementPetaTetap(coorActive.first,coorActive.second));
+			this->coorActive = make_pair(y-1,x);
+			this->peta.SetElementPeta(y-1,x,'X');
+		}
+	}else if (move == "A" or move == "a"){
+		if (this->peta.GetElementPeta(y,x+1) != '-' and this->peta.GetElementPeta(y,x+1) != 'o'){
+			exc = true;
+		}else{
+			this->peta.SetElementPeta(coorActive.first,coorActive.second,this->peta.GetElementPetaTetap(coorActive.first,coorActive.second));
+			this->coorActive = make_pair(y,x+1);
+			this->peta.SetElementPeta(y,x+1,'X');
+		}
+	}else if (move == "W" or move == "w"){
+		if (this->peta.GetElementPeta(y+1,x) != '-' and this->peta.GetElementPeta(y+1,x) != 'o'){
+			exc = true;
+		}else{
+			this->peta.SetElementPeta(coorActive.first,coorActive.second,this->peta.GetElementPetaTetap(coorActive.first,coorActive.second));
+			this->coorActive = make_pair(y+1,x);
+			this->peta.SetElementPeta(y+1,x, 'X');
+		}
+	}
+
+	if (exc) throw InvalidMoveEngimon();
+}
+
 void Player:: lihatPeta(){
 	this->peta.PrintPeta();
+}
+
+// Peta Player::getPeta(){
+// 	return this->peta;
+// }
+
+void Player:: relocateAE(){
+	int y = this->coordinate.first;
+	int x = this->coordinate.second;
+	bool found = true;
+	int a;
+	int b;
+	if (y+1 < this->peta.GetBaris() and (this->peta.GetElementPeta(y+1,x) == '-' or this->peta.GetElementPeta(y+1,x) == 'o')){
+		a = y+1;
+		b = x;
+	}else if (x + 1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y,x+1) == '-' or this->peta.GetElementPeta(y,x+1) == 'o')){
+		a = y;
+		b = x+1;
+	}else if (x - 1 >= 0 and (this->peta.GetElementPeta(y,x-1) == '-' or this->peta.GetElementPeta(y,x-1) == 'o')){
+		a = y;
+		b = x-1;
+	}else if (y - 1 >= 0 and (this->peta.GetElementPeta(y-1,x) == '-' or this->peta.GetElementPeta(y-1, x) == 'o')){
+		a =  y-1;
+		b = x;
+	}else if (y+1 < this->peta.GetBaris() and x + 1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y+1,x+1) == '-' or this->peta.GetElementPeta(y+1,x+1) == 'o')){
+		a = y+1;
+		b = x+1;
+	}else if (y+1 < this->peta.GetBaris() and x - 1 >= 0 and (this->peta.GetElementPeta(y+1,x-1) == '-' or this->peta.GetElementPeta(y+1,x-1) == 'o')){
+		a = y + 1;
+		b = x-1;
+	}else if (y - 1 >= 0 and x + 1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y-1,x+1) == '-' or this->peta.GetElementPeta(y-1,x+1) == 'o')){
+		a = y-1;
+		b = x+1;
+	}else if (y - 1 >= 0 and x - 1 >= 0 and (this->peta.GetElementPeta(y-1,x-1) == '-' or this->peta.GetElementPeta(y-1,x-1) == 'o')){
+		a = y-1;
+		b = x-1;
+	}
+	else{
+		found = false;
+		a=y;
+		b=x; //kasus khusus ketika tidak ada tiles yang tepat, engimon tidak akan muncul di peta;
+	}
+	this->coorActive = make_pair(a,b);
+	if (found) this->peta.SetElementPeta(a,b,'X');
 }

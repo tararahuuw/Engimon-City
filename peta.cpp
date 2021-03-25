@@ -75,7 +75,7 @@ Peta& Peta::operator=(const Peta& P){
 	}
 
 	this->DaftarEngimon = P.DaftarEngimon;
-
+	return *this;
 }
 
 int Peta::GetBaris(){
