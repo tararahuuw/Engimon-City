@@ -30,17 +30,12 @@ public:
 		this-> Array = other.Array;
 		return *this;
 	}
-	// Inventory(int maxCapacity){
-	// 	this->Array = deque<T>();
-	// 	this->maxCapacity = maxCapacity;
-	// }s
-
-	//should we implement cctor and op assignment? again its only 1 player in the game
-
 	T getElementX(int x){
-		//cout << "YEET" << endl;
-		this->Array.at(x);
-		// cout << "YEET2" << endl;
+		try{
+			this->Array.at(x);
+		} catch (exception& e){
+			throw InvalidIndexException();
+		}
 		return this->Array.at(x); //will throw exception out of range if needed. operator[] is fine but wont throw exception
 	}
 	void addElement(const T& x){
@@ -61,21 +56,12 @@ public:
 
 	void delElementIndexX(int x){
 		if (this->Array.size() == 0){
-			// cout << "Array kosong" << endl; //change to exception if needed
 			throw InventoryKosongException();//change to proper exception if needed
 		}else if(this->Array.size() <= x){
-			// cout << "Invalid index" << endl; //change to exception if needed
 			throw InvalidIndexException();//change to proper exception if needed
 		}else{
-			// T dummy = this->getElementX(x); //class T need to have operator assignment
 			this->Array.erase(this->Array.begin()+x);
-			// for (int i = x; i<this->Array.size()-1; i++){
-			// 	Array[i] = Array[i+1];
-			// }
-			// this->Array.erase(this->Array.end());
 			InvProp::banyakItem--;
-			// return *dummy;
-			//no need  return
 		}
 	}
 
@@ -90,8 +76,6 @@ public:
 	}
 };
 
-//NEED TESTING USING SKILL MODULE
-//FCK ERROR IF USING MAP
 template <>
 class Inventory<Skill>{
 private:
@@ -102,16 +86,8 @@ public:
 		this->Array = vector<Skill>();
 		this->Jumlah = vector<int>();
 	}
-	// Inventory(int maxCapacity){
-	// 	this->Array = map<Skill,int>();
-	// 	this->maxCapacity = maxCapacity;
-	// }
-	// ~Inventory(){
-	// 	this->Array.~map();
-	// }
-	//no need destructor
 
-	Skill& getSkillX(int idx){
+	Skill& getSkillX(int idx){ //getter
 		try{
 			this->Array.at(idx);
 		}catch (exception& e){
@@ -120,13 +96,13 @@ public:
 		return this->Array.at(idx);
 	}
 
-	Inventory& operator=(const Inventory& other){
+	Inventory& operator=(const Inventory& other){ //assignop
 		this->Array = other.Array;
 		this->Jumlah = other.Jumlah;
 		return *this;
 	}
 
-	int getIdx(Skill& s){
+	int getIdx(Skill& s){ //getidx based on skill
 		for (int i = 0; i < this->Array.size(); i++){
 			if (this->Array[i] == s){
 				return i;
@@ -135,36 +111,24 @@ public:
 		return -1;
 	}
 
-	int getAmountSkill(Skill& s){
+	int getAmountSkill(Skill& s){ //getter amount specific skill
 		for (int i = 0; i < this->Array.size(); i++){
 			if (this->Array[i] == s){
 				return this->Jumlah[i];
 			}
 		}
 		return 0;
-
-		// if (this->Array.count(s) == 0){
-		// 	cout << "Tidak ada skill yang diinginkan" <<endl; //change to exception if needed
-		// }else{
-		// 	return (this->Array)[s];
-		// }
 	}
 
-	int getActualSize(){
+	int getActualSize(){ //getteractualsize
 		int result;
 		for (int i =0; i < this->Jumlah.size(); i++){
 			result += this->Jumlah[i];
 		}
 		return result;
-		// map<Skill,int>::iterator it; //using iterator cause thats what mr fitra said. alternatively can use auto if we use c++ 11
-		// int actualSize = 0;
-		// for (it = this->Array.begin(); it != this->Array.end(); it++){
-		// 	actualSize += it->second;
-		// }
-		// return actualSize;
 	}
 
-	void addElement(Skill& s){
+	void addElement(Skill& s){ //setter element
 		if (this->getAmountSkill(s) == 0 and InvProp::banyakItem < InvProp::maxCapacity){
 			this->Array.push_back(s);
 			this->Jumlah.push_back(1);
@@ -173,18 +137,9 @@ public:
 			this->Jumlah[this->getIdx(s)]++;
 			InvProp::banyakItem++;
 		}else throw  InventoryPenuhException();
-		// if (this->Array.count(s) == 0 and InvProp::banyakItem < InvProp::maxCapacity){
-		// 	this->Array.insert(pair<Skill, int> (s,1));
-		// 	InvProp::banyakItem++;
-		// }else if (this->Array.count(s) > 0 and InvProp::banyakItem < InvProp::maxCapacity){
-		// 	(this->Array)[s]++; //need testing
-		// 	InvProp::banyakItem++;
-		// }else{
-		// 	throw "Inventory full"; //change to exception if needed
-		// }
 	}
 
-	void delElement(Skill& s){
+	void delElement(Skill& s){ //setter element
 		if (this->getAmountSkill(s) == 0) throw EmptySkillsItemException();
 		else{
 			int index = this->getIdx(s);
@@ -195,15 +150,6 @@ public:
 			}
 			InvProp::banyakItem--;
 		}
-		// if (this->Array.count(s) == 0){
-		// 	cout << "No item s" << endl; //change to exception if needed
-		// }else{
-		// 	(this->Array)[s]--;
-		// 	if (this->Array.count(s) == 0){
-		// 		this->Array.erase(s); //need testing, use iterator if this fail
-		// 	}
-		// 	InvProp::banyakItem--;
-		// }
 	}
 
 	void viewList(){
@@ -219,7 +165,7 @@ public:
 //spawn wild engimon
 //need to fix output view inventory, currently ugly
 //waiting thomas fixing output
-
+//interaction with active engimon
 class Player{
 private:
 pair<int,int> coordinate;
@@ -275,6 +221,8 @@ public:
 
 	void spawn();
 	void randomMove();
+
+	void battle(const Engimon& other);
 };
 
 

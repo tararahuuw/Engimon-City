@@ -294,3 +294,9 @@ void Player:: spawn(){
 void Player:: randomMove(){
 	this->peta.GerakinSemuaEngimon();
 }
+
+void Player::battle(const Engimon& other){
+	if (isThereActiveEngimon){
+
+	}else throw ActiveEngimonKosong();
+}

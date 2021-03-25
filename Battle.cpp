@@ -49,7 +49,7 @@ int Battle::attack(Player& p,Engimon& e1,Engimon& e2,int& attempt) {
         cout << "Player Engimon wins" << endl;
         e1.addEXP(e2.getLevel()*5); // tambah exp
         p.addEngimonToInven(e2); // nambah engimon ke inventoy
-
+        //try catch -
         //dapet skill random
         int ele2 = e2.getElement().at(0); //yang dipake elemen enemy pertama
         int x = rand() % sf.getSkills().size();
