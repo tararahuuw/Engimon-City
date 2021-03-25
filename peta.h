@@ -26,6 +26,10 @@ class Peta {
         //^terdiri dari int yang merupakan posisi dari engimon liar dalam peta dan Engimon liar
 
     public :
+        //default ctor
+        //ukaran default 14x14
+        Peta();
+
     	//ctor user defined
         Peta(int b, int k);
         

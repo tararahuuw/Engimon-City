@@ -7,6 +7,22 @@
 
 using namespace std;
 
+Peta::Peta(){
+	//ukaran default 14x14
+	this->baris = 14;
+	this->kolom = 14;
+	this->nElmt = this->baris * this->kolom;
+	this->isiPeta = new char[this->nElmt];
+	for(int i=0; i<this->nElmt; i++){
+		this->isiPeta[i] = 'x';
+	}
+	this->PetaTetap = new char[this->nElmt];
+	for(int i=0; i<this->nElmt; i++){
+		this->PetaTetap[i] = 'x';
+	}
+	this->DaftarEngimon = vector<pair<int, Engimon> > ();
+}
+
 Peta::Peta(int b, int k){
 	this->baris = b;
 	this->kolom = k;
@@ -19,7 +35,6 @@ Peta::Peta(int b, int k){
 	for(int i=0; i<this->nElmt; i++){
 		this->PetaTetap[i] = 'x';
 	}
-	//this->BykEngimonLiar = 0;
 	this->DaftarEngimon = vector<pair<int, Engimon> > ();
 }
 
@@ -37,7 +52,6 @@ Peta::Peta(const Peta& P){
 	}
 
 	this->DaftarEngimon = P.DaftarEngimon;
-	//this->BykEngimonLiar = P.BykEngimonLiar;
 }
 
 Peta::~Peta(){
@@ -61,7 +75,6 @@ Peta& Peta::operator=(const Peta& P){
 	}
 
 	this->DaftarEngimon = P.DaftarEngimon;
-	//this->BykEngimonLiar = P.BykEngimonLiar;
 	return *this;
 
 }
@@ -357,31 +370,4 @@ void Peta::GerakinSemuaEngimon(){
 	}
 }
 
-int main(){
-	Peta P(14, 14);
-	P.BacaFile();
-	//P.PrintPeta();
-	//P.SpawnEngimon(10);
-	//P.PrintPeta();
-	P.SpawnEngimon(5);
-	P.PrintPeta();
-	//pair<int, Engimon> tmp = P.GetDaftarEngimon(0);
-	int b = P.GetBarisObjek(P.GetDaftarEngimon(2).first);
-	int k = P.GetKolomObjek(P.GetDaftarEngimon(2).first);
-	cout << b << endl;
-	cout << k << endl;
-	//int g = P.GetEngimonId();
-	//cout << g << endl;
-	P.PrintDaftarEngimon();
-	// P.GerakinSemuaEngimon();
-	// P.PrintPeta();
-	// P.PrintDaftarEngimon();
-	//pair<int, Engimon> deleted = P.GetEngimonforDelete(2,13);
-	//P.DeleteEngimon2(2,13);
-	//P.PrintDaftarEngimon();
-	//P.PrintPeta();
-	// P.DeleteEngimon(P.DaftarEngimon[3]);
-	// P.PrintDaftarEngimon();
-	return 0;
-}
 

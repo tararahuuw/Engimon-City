@@ -215,10 +215,10 @@ public:
 	
 };
 
-//TODO : breeding, learn (wow learn is done, created by mr thomas, named addskills in Engimon header)
-//move, include peta
-//active engimon
-//exception class
+//TODO : breeding, battle
+//spawn wild engimon
+//need to fix output view inventory, currently ugly
+
 class Player{
 private:
 pair<int,int> coordinate;

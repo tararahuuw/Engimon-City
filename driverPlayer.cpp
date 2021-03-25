@@ -9,9 +9,11 @@ int main(){
 	Player player1(make_pair(13,13), peta);
 	
 
-	player1.viewListEngimon();
+	// player1.viewListEngimon();
 	// cout << "Yeet" << endl;
-	
+	player1.lihatPeta();	
+	player1.moveW();
+	player1.lihatPeta();
 	int x;
 	cin >> x;
 	// player1.viewListSkill();
@@ -20,10 +22,7 @@ int main(){
 	}catch (exception e){
 		cout << e.what() << endl;
 	}
-	cout << "bruh" <<endl;
-	cout << player1.getListEng().getSize() << endl;
-	if (player1.getListEng().getElementX(1).getSpecies()->isSingleElement()) cout <<"salahku apa?" << endl;
-	if (player1.getActiveEngimon().getSpecies()->isSingleElement()) cout <<"salahku apa?" << endl;
+	player1.lihatPeta();
 	player1.viewListEngimon();
 	player1.viewListSkill();
 	cin >> x;

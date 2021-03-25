@@ -39,6 +39,7 @@ Player::Player(pair<int,int> Coordinate, const Peta& p){
 	this->addSkillItemToInven(listrik);
 	this->addSkillItemToInven(toya);
 	this->coorActive = make_pair(-1,-1); //selama belum diaktifin, jadi -1 aja;
+	this->peta.SetElementPeta(this->coordinate.first,this->coordinate.second,'P');
 	//starter pack here
 	//3 engimon (?)
 	//3 proper item skills (?)
@@ -65,12 +66,16 @@ void Player::activateEngimon(int idx){
 		int x = this->coordinate.second;
 		if (y+1 < this->peta.GetBaris() and (this->peta.GetElementPeta(y+1,x) == '-' or this->peta.GetElementPeta(y+1,x) == 'o')){
 			this->coorActive = make_pair(y+1,x);
+			this->peta.SetElementPeta(y+1,x,'X');
 		}else if (x + 1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y,x+1) == '-' or this->peta.GetElementPeta(y,x+1) == 'o')){
 			this->coorActive = make_pair(y, x+1);
+			this->peta.SetElementPeta(y,x+1,'X');
 		}else if (x - 1 >= 0 and (this->peta.GetElementPeta(y,x-1) == '-' or this->peta.GetElementPeta(y,x-1) == 'o')){
 			this-> coorActive = make_pair(y, x-1);
+			this->peta.SetElementPeta(y,x-1,'X');
 		}else if (y - 1 >= 0 and (this->peta.GetElementPeta(y-1,x) == '-' or this->peta.GetElementPeta(y-1, x) == 'o')){
 			this->coorActive = make_pair(y-1,x);
+			this->peta.SetElementPeta(y-1,x,'X');
 		}else{
 			this -> coorActive = make_pair(y,x); //kasus khusus ketika tidak ada tiles yang tepat, engimon tidak akan muncul di peta;
 		}

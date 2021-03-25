@@ -188,7 +188,7 @@ void Engimon::setStatus(bool _status) { status = _status; }
 
 void Engimon::addSkill(Skill _skill)
 {
-    cout << "Test" << endl;
+    
     //ini ngapa thrownya string WWKWKKWKWWKkWW
     if (skills.size() == 4) throw "SkillPenuh()"; // dicek apakah full
     else
@@ -199,14 +199,14 @@ void Engimon::addSkill(Skill _skill)
         {
             if ((*i) == _skill) throw "SudahPunyaSkill()";
         }
-        cout << "sampai sini?" << endl;
+        
         // dicek apakah element sesuai, atau harusnya cek ini dulu ya diawal haha
         // SingleType Engimon
         if (species != NULL){
-            cout << "NAH IKI" << endl;
+            
             if ( species->isSingleElement())
             {
-                cout << "sampai sini?" << endl;
+                
                 if (_skill.hasElement(species->getElement(0))) {skills.push_back(_skill);} 
                 else {throw "InvalidElement()";} 
             }
@@ -219,7 +219,7 @@ void Engimon::addSkill(Skill _skill)
             }
         }
         
-        cout << "sampai sini?" << endl;
+        
     }
 }
 
