@@ -190,14 +190,14 @@ void Engimon::addSkill(Skill _skill)
 {
     
     //ini ngapa thrownya string WWKWKKWKWWKkWW
-    if (skills.size() == 4) throw "SkillPenuh()"; // dicek apakah full
+    if (skills.size() == 4) throw SkillPenuh(); // dicek apakah full
     else
     {
         
         // cek apa udah punya skill
         for (auto i = skills.begin(); i != skills.end(); ++i)
         {
-            if ((*i) == _skill) throw "SudahPunyaSkill()";
+            if ((*i) == _skill) throw SudahPunyaSkill();
         }
         
         // dicek apakah element sesuai, atau harusnya cek ini dulu ya diawal haha
@@ -208,14 +208,14 @@ void Engimon::addSkill(Skill _skill)
             {
                 
                 if (_skill.hasElement(species->getElement(0))) {skills.push_back(_skill);} 
-                else {throw "InvalidElement()";} 
+                else {throw InvalidElement();} 
             }
             // Double type engimon
             else
             {
                 if (_skill.hasElement(species->getElement(0)) || 
                 _skill.hasElement(species->getElement(1))) {skills.push_back(_skill);} 
-                else {throw "InvalidElement()"; }
+                else {throw InvalidElement(); }
             }
         }
         
@@ -231,7 +231,7 @@ void Engimon::dropSkill(Skill _skill)
             return;
         }
     }
-    throw "Engimon doesn't have this skill";
+    throw TidakMemilikiSkill();
 }
 
 // Menaikkan level engimon sebesar incr
