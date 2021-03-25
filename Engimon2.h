@@ -74,6 +74,7 @@ class Engimon{
         pair<pair<string, string>, pair<string, string>> getParent() const;
         Species* getSpecies() const;
         bool isWild() const;
+        string getName() const;
         vector<Skill> getSkills() const;
 		vector<Element> getElement() const;
         bool getStatus() const;
@@ -87,7 +88,7 @@ class Engimon{
         // void setEXP(int _EXP);
         // void setCumulativeEXP(int _cumulativeEXP);
         void setStatus(bool _status);
-				
+		void setWild(bool _wild);		
         // fungsi lain
         void upLevel(int incr); // Menaikan level sebesar incr
         void downLevel(int decr); // Menurunkan level decr
