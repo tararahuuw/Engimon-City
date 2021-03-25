@@ -47,11 +47,9 @@ Skill& Skill::operator=(const Skill& otherSkill){
 }
 
 ostream& operator<<(ostream& os, const Skill& skill){
-    os << "===============================" << endl;
-    os << " | " << skill.name << endl;
-    os << " | Base power    : " << skill.basePower << endl;
-    os << " | Mastery level : " << skill.masteryLevel << endl;
-    os << " | Element       : ";
+    os << "============================" << endl;
+    os << " " << skill.name << endl;
+    os << " Element       : ";
 
     for(int i = 0; i<skill.element.size(); i++){
         if (i != 0){

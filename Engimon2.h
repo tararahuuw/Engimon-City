@@ -7,6 +7,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include <iomanip> 
 #include "Skill.h"
 #include "Species.h"
 #include "CustomException.h"
@@ -24,8 +25,15 @@ class Engimon{
         int cumulativeEXP;
         bool status; // btw kalau engimon mati bakalan dihapus dari program, apa masih perlu ini? hmmm iya juga ya
         bool wild;
-        const int maxCumulative = 1500;
+        const int maxCumulative = 2000;
         const int maxSkill = 4;
+        const float table[5][5] = {
+            {1,0,1,0.5,2},
+            {2,1,0,1,1},
+            {1,2,1,0,1.5},
+            {1.5,1,2,1,0},
+            {0,1,0.5,2,1}
+        };
 
     public:
         // default ctor
@@ -78,9 +86,12 @@ class Engimon{
         vector<Skill> getSkills() const;
 		vector<Element> getElement() const;
         bool getStatus() const;
+        float getAdvantageElement(Element _elm2) const; // adv elm player terhadap elm2
+        vector<vector<float>> getAdvElementTable() const;
         
         // setter, seperlunya saja
         // void setName(string _name);
+        void printDetail();
         void setParent(string speciesA, string parentA, string speciesB, string parentB);
         // void setSkills(vector<Skill> _skills);
         // void setElements(vector<Element> _elements);
