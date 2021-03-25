@@ -84,7 +84,6 @@ bool _status, bool _wild) : Engimon(_species, "", "", "", "", "", _skills, _leve
 
 //dtor
 Engimon::~Engimon(){
-    delete species;
 }
 
 // operator overload
