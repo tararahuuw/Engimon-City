@@ -272,12 +272,6 @@ void Engimon::addSkill(Skill _skill)
     }
 }
 
-void printSpace(int n){
-    for (int i =0; i < n; i++){
-        cout << " ";
-    }
-}
-
 
 void Engimon::printDetail()
 {

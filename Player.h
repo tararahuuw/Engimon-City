@@ -275,6 +275,11 @@ public:
 
 	void spawn();
 	void randomMove();
+
+	// Breeding Engimon
+	void breeding (int Index1, int Index2);
+
+    vector<Skill> skillanak(Engimon A, Engimon B);
 };
 
 
