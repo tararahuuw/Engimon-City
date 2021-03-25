@@ -179,6 +179,27 @@ float Engimon::getAdvantageElement(Element _elm2) const{
     return table[species->getElement(0)][_elm2];
 }
 
+float Engimon::advantage(Engimon& e1,Engimon& e2,int n) {
+    int x = 0;
+    int y = 0;
+    for (auto i = e1.getElement().begin(); i != e1.getElement().end(); ++i) {
+        for (auto j = e2.getElement().begin(); i != e2.getElement().end(); ++i) {
+            if(table[*i][*j] > x) {
+                x = table[*i][*j];
+            }
+            if(table[*j][*i] > y) {
+                y = table[*j][*i];
+            }
+        }
+    }
+    if(n == 1) {
+        return x;
+    }
+    else if(n == 2) {
+        return y;
+    }
+}
+
 vector<vector<float>> Engimon::getAdvElementTable() const{
     vector<vector<float>> tabel = vector<vector<float>>();
     for (int i = 0; i < 5; i++){
@@ -250,6 +271,13 @@ void Engimon::addSkill(Skill _skill)
         
     }
 }
+
+void printSpace(int n){
+    for (int i =0; i < n; i++){
+        cout << " ";
+    }
+}
+
 
 void Engimon::printDetail()
 {
