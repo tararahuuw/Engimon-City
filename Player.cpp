@@ -287,3 +287,10 @@ void Player:: relocateAE(){
 	this->coorActive = make_pair(a,b);
 	if (found) this->peta.SetElementPeta(a,b,'X');
 }
+
+void Player:: spawn(){
+	this->peta.SpawnEngimon();
+}
+void Player:: randomMove(){
+	this->peta.GerakinSemuaEngimon();
+}

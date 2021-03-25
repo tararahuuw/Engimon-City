@@ -53,6 +53,13 @@ int main(){
 
 
             //jika mencapai round dengan kriteria tertentu, random spawn dan/atau random gerak
+            if (round%15 == 0){
+                player1.spawn();
+            }
+            if (round%10 == 0){
+                player1.randomMove();
+            }
+            
             if (player1.isThereActiveEngimonYet() and isLastCommandMove ){
                 try{
                     player1.moveAE(command);

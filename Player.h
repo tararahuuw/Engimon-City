@@ -272,6 +272,9 @@ public:
 	// char getPetaTetap(int b, int k);
 	// void setPeta(int b, int k, char c);
 	void relocateAE(); //asumsi sudah ada active engimon
+
+	void spawn();
+	void randomMove();
 };
 
 
