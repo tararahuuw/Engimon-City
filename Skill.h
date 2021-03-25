@@ -61,6 +61,7 @@ class SkillsFactory {
         ~SkillsFactory();
         Skill& operator[](int i);
         void printKatalogSkill();
+        vector<Skill> getSkills();
 };
 
 #endif // !

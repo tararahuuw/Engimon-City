@@ -188,3 +188,6 @@ Skill& SkillsFactory::operator[](int i){
 void SkillsFactory::printKatalogSkill(){
     for (auto i = skills.begin(); i != skills.end(); ++i){ cout << *i << endl; } 
 }
+vector<Skill> SkillsFactory::getSkills() {
+    return skills;
+}
