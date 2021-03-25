@@ -7,6 +7,22 @@
 
 using namespace std;
 
+Peta::Peta(){
+	//ukaran default 14x14
+	this->baris = 14;
+	this->kolom = 14;
+	this->nElmt = this->baris * this->kolom;
+	this->isiPeta = new char[this->nElmt];
+	for(int i=0; i<this->nElmt; i++){
+		this->isiPeta[i] = 'x';
+	}
+	this->PetaTetap = new char[this->nElmt];
+	for(int i=0; i<this->nElmt; i++){
+		this->PetaTetap[i] = 'x';
+	}
+	this->DaftarEngimon = vector<pair<int, Engimon> > ();
+}
+
 Peta::Peta(int b, int k){
 	this->baris = b;
 	this->kolom = k;
@@ -19,7 +35,6 @@ Peta::Peta(int b, int k){
 	for(int i=0; i<this->nElmt; i++){
 		this->PetaTetap[i] = 'x';
 	}
-	//this->BykEngimonLiar = 0;
 	this->DaftarEngimon = vector<pair<int, Engimon> > ();
 }
 
@@ -37,7 +52,6 @@ Peta::Peta(const Peta& P){
 	}
 
 	this->DaftarEngimon = P.DaftarEngimon;
-	//this->BykEngimonLiar = P.BykEngimonLiar;
 }
 
 Peta::~Peta(){
@@ -61,7 +75,6 @@ Peta& Peta::operator=(const Peta& P){
 	}
 
 	this->DaftarEngimon = P.DaftarEngimon;
-	//this->BykEngimonLiar = P.BykEngimonLiar;
 
 }
 
