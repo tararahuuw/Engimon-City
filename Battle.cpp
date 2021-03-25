@@ -60,7 +60,7 @@ int Battle::attack(Player& p,Engimon& e1,Engimon& e2,int& attempt) {
     }
     else {
         cout << "Your Engimon is defeated" << endl;
-        e1.setStatus(false);
+        e1 = Engimon();
         changeEngimon(p,attempt);
         return 1;
     }
@@ -75,7 +75,7 @@ void Battle::startBattle(Player& P,Engimon& enemy) {
         cout << "Element : ";
         vector<Element> element = enemy.getElement();
         for (auto i = element.begin(); i != element.end(); ++i) {
-            cout << EleName[*i] << endl;
+            cout << " - " << EleName[*i] << endl;
         } 
         cout << "Level : " << enemy.getLevel() << endl;
 
@@ -127,22 +127,23 @@ void Battle::changeEngimon(Player& P,int& attempt) {
         int found = 0;
         while(found == 0) {
             int x,y;
-            if(P.getActiveEngimon().getStatus() == false) {
+            if(P.getActiveEngimon().getSpecies() == NULL) {
                 attempt = 1;
             }
             cout << "Please choose another Engimon to fight" << endl;
-            P.getListEng().viewList();
+            P.viewListEngimon();
             cout << "Input the index of the Engimon : ";
             cin >> x;
             y = x - 1;
-            if(P.getListEng().getElementX(y).getStatus() == false) {
-                cout << "This Engimon is already defeated" << endl;
-            }
-            else {
-                cout << "You have successfully changed your active Engimon" << endl;
+            try {
                 P.activateEngimon(y);
-                found = 1;
             }
+            catch (exception& e)
+            {
+			    throw InvalidIndexException();
+            }
+            cout << "You have successfully changed your active Engimon" << endl;
+            found = 1;
         }
     }
     else {
