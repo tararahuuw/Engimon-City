@@ -125,33 +125,32 @@ Engimon& Engimon::operator=(const Engimon& engi)
     return *this;
 }
 
+void printSpace(int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        cout << " ";
+    }
+}
 ostream& operator<<(ostream& os, const Engimon& engi)
 {
-    //nanti cek lagi kondisionalnya
-    os << " | ";
-    if (engi.wild) os << "Wild Engimon" << endl;
-    else os << engi.name << endl;
-    // cout << "Yeet" << endl;
-    //kurang kondisi kalau species null
-    if (engi.species != NULL) os << *engi.species;
-    else os << "Species kosong "; //ntar ganti aja oke
-    if (engi.parent.first.first == ""){
-        os << " | Parent  : ( - | - ) || ( - |- )" << endl;
+    os << "------------------------" << endl;
+    os << "";
+    if(engi.wild){
+        os << " Wild " << engi.species->getName();
     }
-    else
-    {
-        os << " | Parent  : (" << engi.parent.first.first << "|";
-        os << engi.parent.first.second << ")||";
-        os << " (" << engi.parent.second.first << "|";
-        os << engi.parent.second.second << ")" << endl;
-    }
-    os << " | Level   : " << engi.level << endl;
-    os << " | EXP     : " << engi.EXP << "/100" << endl;
-    os << " | Total EXP : " << engi.cumulativeEXP << endl;
-    os << " | Skill   : " << endl;
-    
-    for (auto i =engi.skills.begin(); i != engi.skills.end(); ++i)
-    { os << (*i); }
+    else{
+        if (engi.name == "") { 
+            os << " - "; 
+        }
+        else { 
+            os << "| Name : " << engi.name;
+        }
+    } 
+    os << endl;
+
+    os << "" << " Spesies : " << engi.species->getName() << endl;
+    os << "------------------------" << endl;
 
     return os;
 }
@@ -176,6 +175,22 @@ vector<Element> Engimon::getElement() const
 
     return elmnts;
 }
+float Engimon::getAdvantageElement(Element _elm2) const{
+    return table[species->getElement(0)][_elm2];
+}
+
+vector<vector<float>> Engimon::getAdvElementTable() const{
+    vector<vector<float>> tabel = vector<vector<float>>();
+    for (int i = 0; i < 5; i++){
+        vector<float> row;
+        for (int j = 0; j < 5; j++){
+            row.push_back(table[i][j]);
+        }
+        tabel.push_back(row);
+    }
+    return tabel;
+}
+
 // setter
 void Engimon::setWild(bool _wild){ this->wild = _wild; }
 void Engimon::setParent(string speciesA, string parentA, string speciesB, string parentB)
@@ -226,6 +241,33 @@ void Engimon::addSkill(Skill _skill)
     }
 }
 
+void Engimon::printDetail()
+{
+    cout <<  "_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-" << endl;
+    cout << "							       " << endl;
+    if (!wild) cout << "     " << name;
+    else { cout << "Wild" << species->getName();}
+    cout << endl;
+    cout << "	[ " << species->getName() << " ] [ " << species->getElement(0);
+    if (!species->isSingleElement()){ cout << "/" << species->getElement(1); }
+    cout << " ]" << endl;
+    cout << "	[ Lvl : " << level << " ]";
+    if (!wild){
+        cout << " [ EXP : " << EXP << "/100 ] [";
+        cout << "Total EXP : " << cumulativeEXP << " ]" << endl;
+        cout << "	== Parent ==" << endl;
+        cout << " 	";
+        //print parent
+        cout << "[ " << parent.first.first << " | " << parent.first.second << " ] X [ ";
+        cout << " " << parent.second.first << " | " << parent.second.second << " ]" << endl;
+    }
+    cout << "    	== Skills ==" << endl;
+    // print skills
+    for (auto i = skills.begin(); i != skills.end(); ++i){
+        cout << *i << endl;
+    }
+    cout <<  endl << "_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-" << endl;
+}
 void Engimon::dropSkill(Skill _skill)
 {
     for (int i = 0; i < skills.size(); i++){
