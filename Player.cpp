@@ -294,3 +294,139 @@ void Player:: spawn(){
 void Player:: randomMove(){
 	this->peta.GerakinSemuaEngimon();
 }
+void Player::battle(Engimon& enemy) {
+	int ongoing = 1;
+	int attempt = 1;
+	while(ongoing == 1) {
+		string answer;
+		cout << "Enemy : " << enemy.getSpecies() << endl;
+		cout << "Element : ";
+		vector<Element> element = enemy.getElement();
+		for (auto i = element.begin(); i != element.end(); ++i) {
+			cout << " - " << *i << endl;
+		} 
+		cout << "Level : " << enemy.getLevel() << endl;
+
+		cout << "What will you do?" << endl;
+		cout << "- attack" << endl;
+		cout << "- change active engimon" << endl;
+		cout << "- run" << endl;
+		cout << "Choose a command : ";
+		cin >> answer;
+		if(answer == "attack") {
+			//ongoing = attack(P,P.getActiveEngimon(),enemy,attempt); // error soalnya harusnya pake reference
+			SkillsFactory sf = SkillsFactory(); //buat nanti dapet skill item
+			float adv1 = Engimon::advantage(this->activeEngimon,enemy,1);
+			float adv2 = Engimon::advantage(this->activeEngimon,enemy,2);
+			float power1 = Engimon::countPower(this->activeEngimon,adv1);
+			float power2 = Engimon::countPower(enemy,adv2);
+			cout << "Player Engimon attacks with a total power of " << power1 << endl;
+			cout << "Wild Engimon attacks with a total power of " << power2 << endl;
+			if(power1 >= power2) { // kalo player menang
+				cout << "Player Engimon wins" << endl;
+				this->activeEngimon.addEXP(enemy.getLevel()*5); // tambah exp
+				this->addEngimonToInven(enemy); // nambah engimon ke inventoy
+
+				//dapet skill random
+				int ele2 = enemy.getElement().at(0); //yang dipake elemen enemy pertama
+				int x = rand() % sf.getSkills().size();
+				Skill s = Skill(sf[x]);
+				while(count(s.getElement().begin(),s.getElement().end(),ele2) == 0) { //skill randomnya beda elemen
+					x = (x + 1) % sf.getSkills().size();
+					s = Skill(sf[x]);
+				} 
+				this->addSkillItemToInven(s);
+				ongoing = 0;
+			}
+			else {
+				cout << "Your Engimon is defeated" << endl;
+				this->activeEngimon = Engimon(); // Engimon player ditimpa default Engimon
+				this->isThereActiveEngimon = false;
+				//changeEngimon(p,attempt); // kalo Engimon mati wajib ganti
+				if(this->getListEng().getSize() >= 1) { // kalo masih ada Engimon di inventory
+					int found = 0;
+					while(found == 0) {
+						int x,y;
+						cout << "Please choose another Engimon to be active" << endl;
+						this->viewListEngimon(); 
+						cout << "Input the index of the Engimon : ";
+						cin >> x;
+						y = x - 1;
+						try {
+							this->activateEngimon(y); // error kalo input index di luar batas
+						}
+						catch (exception& e)
+						{
+							throw InvalidIndexException();
+						}
+						cout << "You have successfully changed your active Engimon" << endl;
+						found = 1;
+					}
+				}
+				else {
+					if(this->isThereActiveEngimon = false) { // otomatis kalah kalo Active Engimon mati dan nggak ada lagi di inventory
+						cout << "All of your Engimon are defeated." << endl;
+    					cout << "GAME OVER" << endl;
+					}
+					else {
+						cout << "You don't have any other available Engimon" << endl; 
+					}
+				}
+				ongoing = 0;
+			}
+					
+		}
+		else if(answer == "change active engimon") {
+			if(this->getListEng().getSize() >= 1) { // kalo masih ada Engimon di inventory
+				int found = 0;
+				while(found == 0) {
+					int x,y;
+					cout << "Please choose another Engimon to be active" << endl;
+					this->viewListEngimon(); 
+					cout << "Input the index of the Engimon : ";
+					cin >> x;
+					y = x - 1;
+					try {
+						this->activateEngimon(y); // error kalo input index di luar batas
+					}
+					catch (exception& e)
+					{
+						throw InvalidIndexException();
+					}
+					cout << "You have successfully changed your active Engimon" << endl;
+					found = 1;
+				}
+			}
+			else {
+				if(this->isThereActiveEngimon = false) { // otomatis kalah kalo Active Engimon mati dan nggak ada lagi di inventory
+					cout << "All of your Engimon are defeated." << endl;
+					cout << "GAME OVER" << endl;
+				}
+				else {
+					cout << "You don't have any other available Engimon" << endl; 
+				}
+			}
+
+		}
+		else if(answer == "run") {
+			//ongoing = run(attempt);
+			int x = rand() % 2 + 1;
+			if(attempt > 0) {
+				attempt = attempt - 1;
+				if(x == 1) {
+					cout << "You failed to run" << endl;
+					ongoing = 1;
+				}
+				else {
+					cout << "You successfully fled" << endl;
+					ongoing = 0;
+				}
+			}
+			else {
+				cout << "You may only attempt to run once." << endl;
+				ongoing = 1;
+			}
+		}
+
+	}
+}

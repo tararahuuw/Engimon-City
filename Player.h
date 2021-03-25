@@ -275,6 +275,7 @@ public:
 
 	void spawn();
 	void randomMove();
+	void battle(Engimon& enemy);
 };
 
 
