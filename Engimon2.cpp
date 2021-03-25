@@ -83,7 +83,9 @@ bool _status, bool _wild) : Engimon(_species, "", "", "", "", "", _skills, _leve
 }
 
 //dtor
-Engimon::~Engimon(){}
+Engimon::~Engimon(){
+    delete species;
+}
 
 // operator overload
 bool Engimon::operator==(const Engimon& engi)
@@ -165,6 +167,7 @@ pair<pair<string, string>, pair<string, string>> Engimon::getParent() const
 vector<Skill> Engimon::getSkills() const { return skills; }
 bool Engimon::isWild() const { return wild; }
 bool Engimon::getStatus() const { return status; }
+string Engimon::getName() const { return name; }
 vector<Element> Engimon::getElement() const
 {
     vector<Element> elmnts;
@@ -175,6 +178,7 @@ vector<Element> Engimon::getElement() const
     return elmnts;
 }
 // setter
+void Engimon::setWild(bool _wild){ this->wild = _wild; }
 void Engimon::setParent(string speciesA, string parentA, string speciesB, string parentB)
 {
     parent = pair<pair<string, string>, pair<string, string>> ();
