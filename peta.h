@@ -72,7 +72,9 @@ class Peta {
 
         int selectlevel(char engimonTerpilih);
         void CreateEngimon(char e, int level, Engimon *engi);
-        void SpawnEngimon(int BanyakSpawn);
+        int CekElementEngimonRandom(char engimonTerpilih);
+        int RandomPosisi(char engimonTerpilih, int cek);
+        void SpawnEngimon();
         void TukarPosisi(int posisi, int posisisekarang);
         void GerakinSemuaEngimon();
         
