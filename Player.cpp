@@ -87,9 +87,11 @@ void Player::activateEngimon(int idx){
 }
 
 void Player:: learnSkill(int idx){
-	this->activeEngimon.addSkill(this->listSkillItem.getSkillX(idx));
+	if (this->isThereActiveEngimon){
+		this->activeEngimon.addSkill(this->listSkillItem.getSkillX(idx));
 	//these lines below will be executed if there is no exception throwed
-	this->listSkillItem.delElement(this->listSkillItem.getSkillX(idx));
+		this->listSkillItem.delElement(this->listSkillItem.getSkillX(idx));
+	}else throw ActiveEngimonKosong();
 }
 
 //no need
