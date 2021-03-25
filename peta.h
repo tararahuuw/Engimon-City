@@ -24,7 +24,6 @@ class Peta {
         char *PetaTetap;
         vector<pair<int, Engimon> > DaftarEngimon; //vector of engimon buat nyimpan engimon apa saja yang ada pada peta
         //^terdiri dari int yang merupakan posisi dari engimon liar dalam peta dan Engimon liar
-        int BykEngimonLiar;
 
     public :
     	//ctor user defined
@@ -40,13 +39,17 @@ class Peta {
         Peta& operator=(const Peta& P);
         
         //Get&Set
+        int GetBaris();
+        int GetKolom();
+        int GetBarisObjek(int posisi);
+        int GetKolomObjek(int posisi);
+        pair<int, Engimon> GetDaftarEngimon(int index); //index dari vector daftar engimon
         char GetElementPeta(int b, int k);
         char GetElementPeta(int posisi);
         char GetElementPetaTetap(int b, int k);
         char GetElementPetaTetap(int posisi);
         void SetElementPeta(int b, int k, char element);
         void SetElementPeta(int index, char element);
-        int GetBanyakEngimonLiar();
         Engimon GetEngimonLiar(int x, int y); //untuk dapetin engimon pada posisi (x,y)
         pair<int, Engimon> GetEngimonforDelete(int x, int y);
         
@@ -60,7 +63,8 @@ class Peta {
         //Untuk masukin engimon yang telah dibuat ke daftarEngimon
         void AddEngimon(pair<int, Engimon> e);
         //untuk menghapus engimon liar yg sudah ditangkap
-        void DeleteEngimon(pair<int, Engimon> e); 
+        void DeleteEngimon1(pair<int, Engimon> e); 
+        void DeleteEngimon2(int x, int y); //(x,y) adalah posisi dari engimon
 
         int selectlevel(char engimonTerpilih);
         void CreateEngimon(char e, int level, Engimon *engi);

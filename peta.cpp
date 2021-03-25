@@ -19,7 +19,7 @@ Peta::Peta(int b, int k){
 	for(int i=0; i<this->nElmt; i++){
 		this->PetaTetap[i] = 'x';
 	}
-	this->BykEngimonLiar = 0;
+	//this->BykEngimonLiar = 0;
 	this->DaftarEngimon = vector<pair<int, Engimon> > ();
 }
 
@@ -37,7 +37,7 @@ Peta::Peta(const Peta& P){
 	}
 
 	this->DaftarEngimon = P.DaftarEngimon;
-	this->BykEngimonLiar = P.BykEngimonLiar;
+	//this->BykEngimonLiar = P.BykEngimonLiar;
 }
 
 Peta::~Peta(){
@@ -61,8 +61,29 @@ Peta& Peta::operator=(const Peta& P){
 	}
 
 	this->DaftarEngimon = P.DaftarEngimon;
-	this->BykEngimonLiar = P.BykEngimonLiar;
+	//this->BykEngimonLiar = P.BykEngimonLiar;
 
+}
+
+int Peta::GetBaris(){
+	return this->baris;
+}
+
+int Peta::GetKolom(){
+	return this->kolom;
+}
+
+int Peta::GetBarisObjek(int posisi){
+	return (posisi / this->kolom);
+}
+
+int Peta::GetKolomObjek(int posisi){
+	//int temp = posisi / this->kolom;
+	return (posisi % this->kolom);
+}
+
+pair<int, Engimon> Peta::GetDaftarEngimon(int index){
+	return this->DaftarEngimon[index];
 }
 
 char Peta::GetElementPeta(int b, int k){
@@ -119,7 +140,7 @@ void Peta::SetElementPeta(int index, char element){
 Engimon Peta::GetEngimonLiar(int x, int y){
 	int posisi = (x*this->kolom)+y;
 	Engimon e;
-	for (int i = 0; i != this->BykEngimonLiar; i++){
+	for (int i = 0; i != this->DaftarEngimon.size(); i++){
 		if(DaftarEngimon[i].first == posisi){
 			e = DaftarEngimon[i].second;
 		}
@@ -131,7 +152,7 @@ pair<int, Engimon> Peta::GetEngimonforDelete(int x, int y){
 	int posisi = (x*this->kolom)+y;
 	pair<int, Engimon> result;
 	Engimon e;
-	for (int i = 0; i != this->BykEngimonLiar; i++){
+	for (int i = 0; i != this->DaftarEngimon.size(); i++){
 		if(DaftarEngimon[i].first == posisi){
 			result =  DaftarEngimon[i];
 		}
@@ -170,7 +191,7 @@ void Peta::PrintPeta(){
 }
 
 void Peta::PrintDaftarEngimon(){
-	for(int i = 0; i < this->BykEngimonLiar; i++){
+	for(int i = 0; i < this->DaftarEngimon.size(); i++){
 		cout << "posisi : " << this->DaftarEngimon[i].first << endl;
 		cout << this->DaftarEngimon[i].second << endl;
 	}
@@ -179,23 +200,28 @@ void Peta::PrintDaftarEngimon(){
 //isi pair itu posisi dari engimon dan data engimon
 void Peta::AddEngimon(pair<int, Engimon> e){ 
 	this->DaftarEngimon.push_back(e);
-	this->BykEngimonLiar++;
+	//this->BykEngimonLiar++;
 	//cout << "berhasil" << endl;
 }
 
 //kalo engimonnya sudah berhasil dijinakkan hapus dari DaftarEngimon
-void Peta::DeleteEngimon(pair<int, Engimon> e){
-	for (int i = 0; i != this->BykEngimonLiar; i++){
+void Peta::DeleteEngimon1(pair<int, Engimon> e){
+	for (int i = 0; i != this->DaftarEngimon.size(); i++){
 		if(DaftarEngimon[i].first == e.first){
 			//cout << "berhasil delete1" << endl;
 			//ubah isi peta
 			SetElementPeta(e.first, GetElementPetaTetap(e.first));
 			this->DaftarEngimon.erase(this->DaftarEngimon.begin() + i); 
-			this->BykEngimonLiar--;
+			//this->BykEngimonLiar--;
 			//cout << "berhasil delete" << endl;
 			return;
 		}
 	}
+}
+
+void Peta::DeleteEngimon2(int x, int y){
+	pair<int, Engimon> e = GetEngimonforDelete(x,y);
+	DeleteEngimon1(e);
 }
 
 void Peta::CreateEngimon(char e, int level, Engimon *engi){
@@ -315,7 +341,7 @@ void Peta::TukarPosisi(int posisibaru, int posisisekarang){
 void Peta::GerakinSemuaEngimon(){
 	//iterasi tiap element pada pada daftar engimon
 	//untuk geraknya di random
-	for (int i = 0; i != this->BykEngimonLiar; i++){
+	for (int i = 0; i != this->DaftarEngimon.size(); i++){
 		int posisi = rand() % (this->nElmt);
 		while(GetElementPeta(posisi) != GetElementPetaTetap(DaftarEngimon[i].first) || GetElementPeta(posisi) == 'X'){
 			posisi = rand() % (this->nElmt);
@@ -330,26 +356,31 @@ void Peta::GerakinSemuaEngimon(){
 	}
 }
 
-// int main(){
-// 	Peta P(14, 14);
-// 	P.BacaFile();
-// 	//P.PrintPeta();
-// 	//P.SpawnEngimon(10);
-// 	//P.PrintPeta();
-// 	P.SpawnEngimon(5);
-// 	P.PrintPeta();
-// 	//int g = P.GetEngimonId();
-// 	//cout << g << endl;
-// 	// P.PrintDaftarEngimon();
-// 	// P.GerakinSemuaEngimon();
-// 	// P.PrintPeta();
-// 	// P.PrintDaftarEngimon();
-// 	//pair<int, Engimon> deleted = P.GetEngimonforDelete(2,13);
-// 	P.DeleteEngimon(P.GetEngimonforDelete(2,13));
-// 	P.PrintDaftarEngimon();
-// 	P.PrintPeta();
-// 	// P.DeleteEngimon(P.DaftarEngimon[3]);
-// 	// P.PrintDaftarEngimon();
-// 	return 0;
-// }
+int main(){
+	Peta P(14, 14);
+	P.BacaFile();
+	//P.PrintPeta();
+	//P.SpawnEngimon(10);
+	//P.PrintPeta();
+	P.SpawnEngimon(5);
+	P.PrintPeta();
+	//pair<int, Engimon> tmp = P.GetDaftarEngimon(0);
+	int b = P.GetBarisObjek(P.GetDaftarEngimon(2).first);
+	int k = P.GetKolomObjek(P.GetDaftarEngimon(2).first);
+	cout << b << endl;
+	cout << k << endl;
+	//int g = P.GetEngimonId();
+	//cout << g << endl;
+	P.PrintDaftarEngimon();
+	// P.GerakinSemuaEngimon();
+	// P.PrintPeta();
+	// P.PrintDaftarEngimon();
+	//pair<int, Engimon> deleted = P.GetEngimonforDelete(2,13);
+	//P.DeleteEngimon2(2,13);
+	//P.PrintDaftarEngimon();
+	//P.PrintPeta();
+	// P.DeleteEngimon(P.DaftarEngimon[3]);
+	// P.PrintDaftarEngimon();
+	return 0;
+}
 
