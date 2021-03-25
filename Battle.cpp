@@ -2,6 +2,7 @@
 #include <string>
 #include <bits/stdc++.h>
 #include "Battle.h"
+#include "Skill.h"
 using namespace std;
 
 
@@ -36,6 +37,7 @@ float Battle::countPower(Engimon& e,float adv) {
 
 }
 int Battle::attack(Player& p,Engimon& e1,Engimon& e2,int& attempt) {
+    SkillsFactory sf = SkillsFactory();
     float adv1 = advantage(e1,e2,1);
     float adv2 = advantage(e1,e2,2);
     float power1 = countPower(e1,adv1);
@@ -44,13 +46,20 @@ int Battle::attack(Player& p,Engimon& e1,Engimon& e2,int& attempt) {
     cout << "Wild Engimon attacks with a total power of " << power2 << endl;
     if(power1 >= power2) {
         cout << "Player Engimon wins" << endl;
-        int x = rand() % 10 + 1;
-        e2.setWild(false);
         e1.addEXP(e2.getLevel()*5);
-        p.addItem(x);
+        int x = rand() % sf.getSkills().size();
+        e2.setWild(false);
+        int ele2 = e2.getElement().at(0);
+        Skill s = Skill(sf[x]);
+        while(count(s.getElement().begin(),s.getElement().end(),ele2) == 0) {
+            x = (x + 1) % sf.getSkills().size();
+            s = Skill(sf[x]);
+        } 
+        p.addSkillItemToInven(s);
         return 0;
     }
     else {
+        cout << "Your Engimon is defeated" << endl;
         e1.setStatus(false);
         changeEngimon(p,attempt);
         return 1;
@@ -77,8 +86,7 @@ void Battle::startBattle(Player& P,Engimon& enemy) {
         cout << "Choose a command : ";
         cin >> answer;
         if(answer == "attack") {
-            // input player pokemon perlu direvisi
-            ongoing = attack(P,P.getActive(),enemy,attempt);
+            ongoing = attack(P,P.getActiveEngimon(),enemy,attempt);
         }
         else if(answer == "change active engimon") {
             changeEngimon(P,attempt);
@@ -115,32 +123,30 @@ void Battle::gameOver() {
     cout << "GAME OVER" << endl;
 }
 void Battle::changeEngimon(Player& P,int& attempt) {
-    if(P.getListEng().countAvailable() != 0) {
+    if(P.getListEng().getSize() >= 1) {
         int found = 0;
         while(found == 0) {
             int x,y;
-            if(P.getActive().getStatus() == false) {
-                cout << "Your active Engimon is defeated" << endl;
+            if(P.getActiveEngimon().getStatus() == false) {
                 attempt = 1;
             }
             cout << "Please choose another Engimon to fight" << endl;
             P.getListEng().viewList();
-            cout << "Input number : ";
+            cout << "Input the index of the Engimon : ";
             cin >> x;
             y = x - 1;
             if(P.getListEng().getElementX(y).getStatus() == false) {
                 cout << "This Engimon is already defeated" << endl;
-                cout << "Please pick another Engimon" << endl;
             }
             else {
                 cout << "You have successfully changed your active Engimon" << endl;
-                P.setActive(y);
+                P.activateEngimon(y);
                 found = 1;
             }
         }
     }
     else {
-        if(P.getActive().getStatus() == false) {
+        if(P.getActiveEngimon().getStatus() == false) {
             gameOver();
         }
         else {

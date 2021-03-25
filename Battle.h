@@ -3,7 +3,8 @@
 #include <iostream>
 #include <string>
 #include <bits/stdc++.h>
-#include "Engimon.h"
+#include <typeinfo>
+#include "Engimon2.h"
 #include "Player.h"
 using namespace std;
 
