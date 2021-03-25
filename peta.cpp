@@ -101,7 +101,7 @@ pair<int, Engimon> Peta::GetDaftarEngimon(int index){
 
 char Peta::GetElementPeta(int b, int k){
 	if(b > this->baris || b < 0 || k > this->kolom || k < 0){
-		throw ("Index Out of Range");
+		throw InvalidIndexException();
 	} else {
 		return this->isiPeta[(b*this->kolom)+k];
 	}
@@ -109,7 +109,7 @@ char Peta::GetElementPeta(int b, int k){
 
 char Peta::GetElementPeta(int posisi){
 	if(posisi < 0 || posisi >= this->nElmt){
-		throw ("Index Out of Range");
+		throw InvalidIndexException();
 	} else {
 		return this->isiPeta[posisi];
 	}
@@ -118,7 +118,7 @@ char Peta::GetElementPeta(int posisi){
 
 char Peta::GetElementPetaTetap(int b, int k){
 	if(b > this->baris || b < 0 || k > this->kolom || k < 0){
-		throw ("Index Out of Range");
+		throw InvalidIndexException();
 	} else {
 		return this->PetaTetap[(b*this->kolom)+k];
 	}
@@ -126,7 +126,7 @@ char Peta::GetElementPetaTetap(int b, int k){
 
 char Peta::GetElementPetaTetap(int posisi){
 	if(posisi < 0 || posisi >= this->nElmt){
-		throw ("Index Out of Range");
+		throw InvalidIndexException();
 	} else {
 		return this->PetaTetap[posisi];
 	}
@@ -135,7 +135,7 @@ char Peta::GetElementPetaTetap(int posisi){
 
 void Peta::SetElementPeta(int b, int k, char element){
 	if(b > this->baris || b < 0 || k > this->kolom || k < 0){
-		throw ("Index Out of Range");
+		throw InvalidIndexException();
 	} else {
 		this->isiPeta[(b*this->kolom)+k] = element;
 	}
@@ -143,7 +143,7 @@ void Peta::SetElementPeta(int b, int k, char element){
 
 void Peta::SetElementPeta(int index, char element){
 	if(index < 0 || index >= this->nElmt){
-		throw ("Index Out of Range");
+		throw InvalidIndexException();
 	} else {
 		this->isiPeta[index] = element;
 	}
@@ -291,7 +291,7 @@ void Peta::CreateEngimon(char e, int level, Engimon *engi){
 		}
 	}
 
-	Engimon engimon(spesies, level, 0, 0, true, false);
+	Engimon engimon(spesies, level, 0, 0, true, true);
 	*engi = engimon;
 }
 

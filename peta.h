@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include "Engimon2.h"
+#include "CustomException.h"
 using namespace std;
 
 #ifndef PETA_HPP
