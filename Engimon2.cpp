@@ -125,13 +125,6 @@ Engimon& Engimon::operator=(const Engimon& engi)
     return *this;
 }
 
-void printSpace(int n)
-{
-    for (int i = 0; i < n; i++)
-    {
-        cout << " ";
-    }
-}
 ostream& operator<<(ostream& os, const Engimon& engi)
 {
     os << "------------------------" << endl;
