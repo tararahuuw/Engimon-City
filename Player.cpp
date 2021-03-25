@@ -201,11 +201,13 @@ void Player:: moveAE(string move){
 	bool exc = false;
 	int y = this->coordinate.first;
 	int x = this->coordinate.second;
+	
+
 	if (move == "D" or move == "d"){
 		if (this->peta.GetElementPeta(y,x-1) != '-' and this->peta.GetElementPeta(y,x-1) != 'o'){
 			exc = true;
 		}else{
-			this->peta.SetElementPeta(coorActive.first,coorActive.second,this->peta.GetElementPetaTetap(coorActive.first,coorActive.second));
+			if (this->coorActive.first != y or this->coorActive.second != x) this->peta.SetElementPeta(coorActive.first,coorActive.second,this->peta.GetElementPetaTetap(coorActive.first,coorActive.second));
 			this->coorActive = make_pair(y,x-1);
 			this->peta.SetElementPeta(y,x-1, 'X');
 		}
@@ -213,7 +215,7 @@ void Player:: moveAE(string move){
 		if (this->peta.GetElementPeta(y-1,x) != '-' and this->peta.GetElementPeta(y-1,x) != 'o'){
 			exc = true;
 		}else{
-			this->peta.SetElementPeta(coorActive.first,coorActive.second,this->peta.GetElementPetaTetap(coorActive.first,coorActive.second));
+			if (this->coorActive.first != y or this->coorActive.second != x) this->peta.SetElementPeta(coorActive.first,coorActive.second,this->peta.GetElementPetaTetap(coorActive.first,coorActive.second));
 			this->coorActive = make_pair(y-1,x);
 			this->peta.SetElementPeta(y-1,x,'X');
 		}
@@ -221,7 +223,7 @@ void Player:: moveAE(string move){
 		if (this->peta.GetElementPeta(y,x+1) != '-' and this->peta.GetElementPeta(y,x+1) != 'o'){
 			exc = true;
 		}else{
-			this->peta.SetElementPeta(coorActive.first,coorActive.second,this->peta.GetElementPetaTetap(coorActive.first,coorActive.second));
+			if (this->coorActive.first != y or this->coorActive.second != x) this->peta.SetElementPeta(coorActive.first,coorActive.second,this->peta.GetElementPetaTetap(coorActive.first,coorActive.second));
 			this->coorActive = make_pair(y,x+1);
 			this->peta.SetElementPeta(y,x+1,'X');
 		}
@@ -229,7 +231,7 @@ void Player:: moveAE(string move){
 		if (this->peta.GetElementPeta(y+1,x) != '-' and this->peta.GetElementPeta(y+1,x) != 'o'){
 			exc = true;
 		}else{
-			this->peta.SetElementPeta(coorActive.first,coorActive.second,this->peta.GetElementPetaTetap(coorActive.first,coorActive.second));
+			if (this->coorActive.first != y or this->coorActive.second != x) this->peta.SetElementPeta(coorActive.first,coorActive.second,this->peta.GetElementPetaTetap(coorActive.first,coorActive.second));
 			this->coorActive = make_pair(y+1,x);
 			this->peta.SetElementPeta(y+1,x, 'X');
 		}
