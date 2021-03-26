@@ -4,7 +4,10 @@ using namespace std;
 
 int main(){
 	Peta P(14, 14);
-	P.BacaFile();
+	string filename;
+	cout << "masukkan nama file : ";
+	cin >> filename;
+	P.BacaFile(filename);
 	//P.PrintPeta();
 	//P.SpawnEngimon(10);
 	//P.PrintPeta();
