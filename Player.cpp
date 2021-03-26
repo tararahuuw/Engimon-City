@@ -516,6 +516,7 @@ bool Player::battle(Engimon& enemy) {
 		}
 		else {
 			cout << "invalid command" << endl;
+			cin >> answer;
 		}
 
 	}
@@ -525,10 +526,6 @@ bool Player::battle(Engimon& enemy) {
 void Player:: initBattle(){
 	if (this->isThereActiveEngimon and this->isEnemyAround()){
 		pair<int,int> coorEnemy = this->getEnemyAround();
-		cout << this->coordinate.first << " " << this->coordinate.second << endl;
-		cout << "sampai sini" << endl;
-		cout << coorEnemy.first << " " << coorEnemy.second << endl;
-		cout << this->peta.GetElementPeta(coorEnemy.first,coorEnemy.second) << endl;
 		Engimon enemy = this->peta.GetEngimonLiar(coorEnemy.first,coorEnemy.second);
 		cout << enemy << endl;
 		bool win = this->battle(enemy);
@@ -589,6 +586,7 @@ void Player::deactivateEngimon(){
 		this->addEngimonToInven(this->activeEngimon);
 		this->isThereActiveEngimon =false;
 		this->activeEngimon = Engimon();
+		this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second,this->peta.GetElementPetaTetap(this->coorActive.first,this->coorActive.second));
 	}else throw ActiveEngimonKosong();
 }
 

@@ -152,14 +152,12 @@ void Peta::SetElementPeta(int index, char element){
 //untuk dapetin engimon pada posisi (x,y)
 Engimon Peta::GetEngimonLiar(int x, int y){
 	int posisi = (x*this->kolom)+y;
-	cout << posisi << endl;
 	Engimon e;
 	for (int i = 0; i != this->DaftarEngimon.size(); i++){
 		if(DaftarEngimon[i].first == posisi){
 			e = DaftarEngimon[i].second;
 		}
 	}
-	cout << e << endl;
 	return e;
 }
 
@@ -295,7 +293,6 @@ void Peta::CreateEngimon(char e, int level, Engimon *engi){
 
 	Engimon engimon(spesies, level, 0, 0, true, true);
 	*engi = engimon;
-	cout << engi->getSpecies()->getName() << endl;
 }
 
 int Peta::selectlevel(char engimonTerpilih){
@@ -362,7 +359,6 @@ void Peta::SpawnEngimon(){
 		pair<int, Engimon> engimon; 
 		engimon.first = posisi;
 		engimon.second = e;
-		cout << e << endl;
 
 		//masukin ke daftar engimon
 		AddEngimon(engimon);
