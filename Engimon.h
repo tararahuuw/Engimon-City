@@ -12,14 +12,7 @@
 #include "Species.h"
 #include "CustomException.h"
 using namespace std;
-
-const float table[5][5] = {
-            {1,0,1,0.5,2},
-            {2,1,0,1,1},
-            {1,2,1,0,1.5},
-            {1.5,1,2,1,0},
-            {0,1,0.5,2,1}
-        };
+        
 class Engimon{
     private:
         Species* species;
@@ -111,6 +104,7 @@ class Engimon{
         void dropSkill(Skill skill); // Menghapus skill engimon dengan asumsi Skill skill dimiliki engimon 
         bool checkNumOfElements() const; // kalau 1 itu true, kalau 2 false
         void printASCII();
+        int getSpeciesIndex() const;
         static float countPower(Engimon& e,float adv);
         static float advantage(Engimon& e1,Engimon& e2,int n);
 };

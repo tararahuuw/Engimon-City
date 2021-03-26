@@ -1,5 +1,14 @@
 #include "Engimon.h"
 
+const float table[5][5] = {
+            {1,0,1,0.5,2},
+            {2,1,0,1,1},
+            {1,2,1,0,1.5},
+            {1.5,1,2,1,0},
+            {0,1,0.5,2,1}
+        };
+
+
 Engimon::Engimon()
 {
     species = NULL;
@@ -70,7 +79,8 @@ int _cumulativeEXP, bool _status, bool _wild)
 }
 
 // ctor untuk wild engimon
-Engimon::Engimon(Species* _species, int _level, int _EXP, int _cumulativeEXP, bool _status, bool _wild) : Engimon(_species, "", "", "", "", "", _level, _EXP, _cumulativeEXP, _status, _wild)
+Engimon::Engimon(Species* _species, int _level, int _EXP, int _cumulativeEXP, bool _status, bool _wild) : 
+Engimon(_species, "", "", "", "", "", _level, _EXP, _cumulativeEXP, _status, _wild)
 {
 
 }
@@ -212,6 +222,7 @@ vector<vector<float>> Engimon::getAdvElementTable() const{
     return tabel;
 }
 
+// Menghitung total power engimon
 float Engimon::countPower(Engimon& e,float adv) {
     // Rumus hitung power: level * element advantage + SUM(every skill’s base power *Mastery Level)
     float total = e.getLevel() * adv;
@@ -367,6 +378,18 @@ void Engimon::addEXP(int exp)
             else { EXP = EXP%100; }
         }
     }
+}
+int Engimon::getSpeciesIndex() const{
+    SpeciesFactory specs;
+    specs.initSpecies();
+    if (species != NULL){
+        for (int i = 0; i < 16; i++){
+            if (specs[i]->getName() == species->getName()){
+                return i;
+            }
+        }
+    }
+    return -1;
 }
 
 // Mengembalikan jumlah elemen spesies engimon
