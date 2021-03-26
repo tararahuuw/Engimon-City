@@ -50,7 +50,21 @@ int main(){
                 cin >> idx;
                 player1.learnSkill(idx-1);
             }
+            if (command == "battle"){
+                player1.initBattle();
+            }
 
+            if (command == "breeding"){
+                if (player1.getListEng.getSize() < 2){
+                    throw NotEnoughEngiBreed();
+                }else{
+                    player1.viewListEngimon();
+                    int idx1,idx2;
+                    cout << "Masukkan nomor engimon yang ingin digunakan :";
+                    cin >> idx1 >> idx2;
+                    player1.breeding(idx1,idx2);
+                }
+            }
 
             //jika mencapai round dengan kriteria tertentu, random spawn dan/atau random gerak
             if (round%15 == 0){

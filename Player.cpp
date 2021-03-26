@@ -295,10 +295,6 @@ void Player:: randomMove(){
 	this->peta.GerakinSemuaEngimon();
 }
 
-void Player::battle(const Engimon& other){
-	if (isThereActiveEngimon){
-
-	}else throw ActiveEngimonKosong();
 void Player :: breeding (int Index1, int Index2) {
     string nama;
     Species* spec;
@@ -399,9 +395,10 @@ vector<Skill> Player :: skillanak(Engimon A, Engimon B) {
         getSkill.push_back(allSkill[i]);
     }
   	return getSkill;
-void Player::battle(Engimon& enemy) {
+bool Player::battle(Engimon& enemy) {
 	int ongoing = 1;
 	int attempt = 1;
+	bool hasil;
 	while(ongoing == 1) {
 		string answer;
 		cout << "Enemy : " << enemy.getSpecies() << endl;
@@ -442,6 +439,7 @@ void Player::battle(Engimon& enemy) {
 				} 
 				this->addSkillItemToInven(s);
 				ongoing = 0;
+				hasil = true;
 			}
 			else {
 				cout << "Your Engimon is defeated" << endl;
@@ -462,7 +460,8 @@ void Player::battle(Engimon& enemy) {
 						}
 						catch (exception& e)
 						{
-							throw InvalidIndexException();
+							throw InvalidIndexException(); //ini apa gak suruh minta inputan lagi aja sampai dapet engimon yang pas?
+							//maksudnya biar dia cuma keluar dari battle kalau kalah atau run
 						}
 						cout << "You have successfully changed your active Engimon" << endl;
 						found = 1;
@@ -472,9 +471,10 @@ void Player::battle(Engimon& enemy) {
 					if(this->isThereActiveEngimon = false) { // otomatis kalah kalo Active Engimon mati dan nggak ada lagi di inventory
 						cout << "All of your Engimon are defeated." << endl;
     					cout << "GAME OVER" << endl;
+						hasil = false;
 					}
 					else {
-						cout << "You don't have any other available Engimon" << endl; 
+						cout << "You don't have any other available Engimon" << endl;  //sampai sini bukannya udah kosong engimonnya dia?
 					}
 				}
 				ongoing = 0;
@@ -496,7 +496,8 @@ void Player::battle(Engimon& enemy) {
 					}
 					catch (exception& e)
 					{
-						throw InvalidIndexException();
+						throw InvalidIndexException();//ini apa gak suruh minta inputan lagi aja sampai dapet engimon yang pas?
+						//maksudnya biar dia cuma keluar dari battle kalau kalah atau run
 					}
 					cout << "You have successfully changed your active Engimon" << endl;
 					found = 1;
@@ -506,6 +507,7 @@ void Player::battle(Engimon& enemy) {
 				if(this->isThereActiveEngimon = false) { // otomatis kalah kalo Active Engimon mati dan nggak ada lagi di inventory
 					cout << "All of your Engimon are defeated." << endl;
 					cout << "GAME OVER" << endl;
+					hasil = false;
 				}
 				else {
 					cout << "You don't have any other available Engimon" << endl; 
@@ -525,13 +527,61 @@ void Player::battle(Engimon& enemy) {
 				else {
 					cout << "You successfully fled" << endl;
 					ongoing = 0;
+					hasil = false;
 				}
 			}
 			else {
 				cout << "You may only attempt to run once." << endl;
-				ongoing = 1;
+				ongoing = 1; //ini attempt runnya gak tiap engimon aja? kalau 1 tiap player bisa langsung kalah kalau enemynya OP
 			}
 		}
 
 	}
+}
+
+void Player:: initBattle(){
+	if (this->isThereActiveEngimon and this->isEnemyAround()){
+		pair<int,int> coorEnemy = this->getEnemyAround();
+		Engimon enemy = this->peta.GetEngimonLiar(coorEnemy.first,coorEnemy.second);
+		bool win = this->battle(enemy);
+		if (win) {
+			this->peta.DeleteEngimon2(coorEnemy.first,coorEnemy.second);
+		}
+	}else{
+		if (not this->isThereActiveEngimon){
+			throw ActiveEngimonKosong();
+		}else throw EnemyKosong();
+	}
+}
+
+bool Player:: isEnemyAround(){
+	int y = this->coordinate.first;
+	int x = this->coordinate.second;
+	if ( y-1 >= 0 and (this->peta.GetElementPeta(y-1,x) != '-' or this->peta.GetElementPeta(y-1,x) != 'o' or this->peta.GetElementPeta(y-1,x) != 'X')){
+		return true;
+	}else if (x+1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y,x+1) != '-' or this->peta.GetElementPeta(y,x+1) != 'o' or this->peta.GetElementPeta(y,x+1) != 'X')){
+		return true;
+	}else if (y+1 < this->peta.GetBaris() and (this->peta.GetElementPeta(y+1,x) != '-' or this->peta.GetElementPeta(y+1,x) != 'o' or this->peta.GetElementPeta(y+1,x) != 'X')){
+		return true;
+	}else if (x-1 >= 0 and (this->peta.GetElementPeta(y,x-1) != '-' or this->peta.GetElementPeta(y,x-1) != 'o' or this->peta.GetElementPeta(y,x-1) != 'X')){
+		return true;
+	}
+
+	return false;
+}
+
+pair<int,int> Player:: getEnemyAround(){
+	int y = this->coordinate.first;
+	int x = this->coordinate.second;
+	if ( y-1 >= 0 and (this->peta.GetElementPeta(y-1,x) != '-' or this->peta.GetElementPeta(y-1,x) != 'o' or this->peta.GetElementPeta(y-1,x) != 'X')){
+		return make_pair(y-1,x);
+	}else if (x+1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y,x+1) != '-' or this->peta.GetElementPeta(y,x+1) != 'o' or this->peta.GetElementPeta(y,x+1) != 'X')){
+		return make_pair(y,x+1);
+	}else if (y+1 < this->peta.GetBaris() and (this->peta.GetElementPeta(y+1,x) != '-' or this->peta.GetElementPeta(y+1,x) != 'o' or this->peta.GetElementPeta(y+1,x) != 'X')){
+		return make_pair(y+1,x);
+	}else if (x-1 >= 0 and (this->peta.GetElementPeta(y,x-1) != '-' or this->peta.GetElementPeta(y,x-1) != 'o' or this->peta.GetElementPeta(y,x-1) != 'X')){
+		return make_pair(y,x-1);
+	}
+
+	return make_pair(-1,-1);
 }

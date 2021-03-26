@@ -227,7 +227,13 @@ public:
 	void breeding (int Index1, int Index2);
 
     vector<Skill> skillanak(Engimon A, Engimon B);
-	void battle(Engimon& enemy);
+	bool battle(Engimon& enemy);
+
+	void initBattle();
+
+	bool isEnemyAround();
+
+	pair<int,int> getEnemyAround();
 };
 
 
