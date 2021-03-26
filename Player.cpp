@@ -40,6 +40,7 @@ Player::Player(pair<int,int> Coordinate, const Peta& p){
 	this->addSkillItemToInven(toya);
 	this->coorActive = make_pair(-1,-1); //selama belum diaktifin, jadi -1 aja;
 	this->peta.SetElementPeta(this->coordinate.first,this->coordinate.second,'P');
+	this->activateEngimon(0);
 	//starter pack here
 	//3 engimon (?)
 	//3 proper item skills (?)
@@ -419,7 +420,7 @@ bool Player::battle(Engimon& enemy) {
 		cout << "Choose a command : ";
 		cin >> answer;
 		if(answer == 1) {
-			this->drawing(18);
+			this->drawing(18+4);
 			//ongoing = attack(P,P.getActiveEngimon(),enemy,attempt); // error soalnya harusnya pake reference
 			SkillsFactory sf = SkillsFactory(); //buat nanti dapet skill item
 			float adv1 = Engimon::advantage(this->activeEngimon,enemy,1);
@@ -429,7 +430,7 @@ bool Player::battle(Engimon& enemy) {
 			cout << "Your Engimon attacks with a total power of " << power1 << endl;
 			cout << "Wild Engimon attacks with a total power of " << power2 << endl;
 			if(power1 >= power2) { // kalo player menang
-				this->drawing(20);
+				this->drawing(20+4);
 				cout << "Your Engimon wins" << endl;
 				this->activeEngimon.addEXP(enemy.getLevel()*5); // tambah exp
 				cout << "Your active engimon gained " << enemy.getLevel()*5 << " experience points" << endl;
@@ -459,11 +460,38 @@ bool Player::battle(Engimon& enemy) {
 				hasil = true;
 			}
 			else {
-				this->drawing(19);
+				this->drawing(19+4);
 				cout << "Your Engimon is defeated" << endl;
 				this->activeEngimon = Engimon(); // Engimon player ditimpa default Engimon
 				this->isThereActiveEngimon = false;
 				this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second, this->peta.GetElementPetaTetap(this->coorActive.first,this->coorActive.second));
+
+				if(this->getListEng().getSize() >= 1) { // kalo masih ada Engimon di inventory
+					int found = 0;
+					while(found == 0) {
+						int x,y;
+						cout << "Please choose another Engimon to be active" << endl;
+						this->viewListEngimon(); 
+						cout << "Input the index of the Engimon : ";
+						cin >> x;
+						y = x - 1;
+						try {
+							this->activateEngimon(y); // error kalo input index di luar batas
+							found = 1;
+						}
+						catch (exception& e)
+						{
+							cout << "Wrong input. Please try again." <<endl ;
+
+							//ini apa gak suruh minta inputan lagi aja sampai dapet engimon yang pas?
+							//maksudnya biar dia cuma keluar dari battle kalau kalah atau run
+
+							//ABAIKAN KOMEN INI, BACA YANG BAWAH YANG TANYA GAK BATTLE LAGI KALAU PLAYER KALAH
+						}
+						if (found) cout << "You have successfully changed your active Engimon" << endl;
+	
+					}
+				}
 				//changeEngimon(p,attempt); // kalo Engimon mati wajib ganti
 				ongoing = 0;
 				//oh ini harusnya kalau sampai sini gak battle lagi ya?
@@ -543,8 +571,8 @@ void Player:: initBattle(){
 	if (this->isThereActiveEngimon and this->isEnemyAround()){
 		pair<int,int> coorEnemy = this->getEnemyAround();
 		Engimon enemy = this->peta.GetEngimonLiar(coorEnemy.first,coorEnemy.second);
-		this->drawing(21);
-		this->drawing(22);
+		this->drawing(21+4);
+		this->drawing(22+4);
 		bool win = this->battle(enemy);
 		if (win) {
 			this->peta.DeleteEngimon2(coorEnemy.first,coorEnemy.second);
@@ -619,21 +647,21 @@ void Player::delearnSkill(int idx){
 
 void Player::interact(){
 	if (this->isThereActiveEngimon){
-		this->drawing(14);
+		this->drawing(14+4);
 		cout << "Answer : ";
 		int answer;
 		cin >> answer;
 		if (answer == 1){
-			this->drawing(15);
+			this->drawing(15+4);
 			this->activeEngimon.printDetail();
 		}else if (answer == 2){
-			this->drawing(16);
+			this->drawing(16+4);
 			string name;
 			cout << "Enter new name: ";
 			std::getline(std::cin >> std::ws,name);
 			this->activeEngimon.rename(name);
 		}else if (answer == 3){
-			this->drawing(17);
+			this->drawing(17+4);
 		}else cout << "Wrong input" << endl;
 	}else throw ActiveEngimonKosong();
 }
@@ -1242,7 +1270,7 @@ void Player :: drawing(int index) {
 	cout << "  _ /\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/|  " << endl;
 	cout << "| |/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/ | " << endl;
 	cout << "| |   PLAYER                                                              | | " << endl;
-	cout << "| |      Hello my lovely, ____                                            | | " << endl;
+	cout << "| |      Hello my lovely Engimon                                            | | " << endl;
 	cout << "| |      1. How are you? May I see your status?                           | | " << endl;
 	cout << "| |      2. I will give you a new name                                    | | " << endl;
 	cout << "| |      3. Let's go find wild engimon together                           | | " << endl;

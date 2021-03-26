@@ -72,4 +72,9 @@ class NotEnoughEngiBreed : public exception{
 	virtual char const * what() const noexcept {return "Not enough Engimon in inventory to breed";}
 };
 
+class NotEnoughLevel : public exception{
+	public:
+	virtual char const * what() const noexcept {return "Not enough level to breed";}
+};
+
 #endif

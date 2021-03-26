@@ -53,17 +53,17 @@ int main(){
                 player1.lihatPeta();
             }
             if (command == "viewEng"){
-                player1.drawing(13);
+                player1.drawing(13+4);
                 player1.viewListEngimon();
             }
 
             if (command == "viewItem"){
-                player1.drawing(13);
+                player1.drawing(13+4);
                 player1.viewListSkill();
             }
 
             if (command == "viewInventory"){
-                player1.drawing(13);
+                player1.drawing(13+4);
                 player1.viewListEngimon();
                 player1.viewListSkill();
             }
@@ -73,13 +73,13 @@ int main(){
             }
 
             if (command == "activate"){
-                player1.drawing(13);
+                player1.drawing(13+4);
                 player1.viewListEngimon();
                 int idx;
                 cout << "Choose engimon (use number) :";
                 cin >> idx;
                 player1.activateEngimon(idx-1);
-                player1.getActiveEngimon().getSpeciesIndex();
+                player1.drawing(player1.getActiveEngimon().getSpeciesIndex());
             }
             // if(command == "status") {
             //     if (player1.isThereActiveEngimonYet()) cout << "status : " << player1.getActiveEngimon().getStatus() << endl;
@@ -124,15 +124,19 @@ int main(){
                     int idx1,idx2;
                     cout << "Choose 2 engimons (use number) :";
                     cin >> idx1 >> idx2;
+                    if (player1.getListEng().getElementX(idx1-1).getLevel() >= 30 and player1.getListEng().getElementX(idx2-1).getLevel() >= 30){
+
+                    }else throw NotEnoughLevel();
+                    player1.drawing(16);
                     player1.breeding(idx1-1,idx2-1);
                 }
                 round++;
             }
 
 
-            if (command == "deactivate"){
-                player1.deactivateEngimon();
-            }
+            // if (command == "deactivate"){
+            //     player1.deactivateEngimon();
+            // }
 
             if (command == "help"){
                 printCommandList();
@@ -186,7 +190,7 @@ void printCommandList(){
     cout << "viewInventory  \t- To view all inventory" << endl;
     cout << "interact       \t- To interact with active Engimon" << endl;
     cout << "activate       \t- To activate Engimon" <<endl;
-    cout << "deactivate     \t- To deactivate Engimon" << endl;
+    // cout << "deactivate     \t- To deactivate Engimon" << endl;
     cout << "detailEng      \t- To view details of one specific Engimon" << endl;
     cout << "detailItem     \t- To view details of one specific Skill Item" << endl;
     cout << "learn          \t- To learn Skill Item in Active Engimon" << endl;
