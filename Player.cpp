@@ -435,7 +435,7 @@ bool Player::battle(Engimon& enemy) {
 					this->activeEngimon = Engimon();
 					this->isThereActiveEngimon = false;
 					this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second, this->peta.GetElementPetaTetap(this->coorActive.first,this->coorActive.second));
-					
+
 					cout << "Your active Engimon has reached its limit. He will ascend to Engimon heaven" << endl;
 				}
 				enemy.setWild(false);
@@ -497,6 +497,7 @@ bool Player::battle(Engimon& enemy) {
 					cout << "All of your Engimon are defeated." << endl;
 					cout << "GAME OVER" << endl;
 					hasil = false;
+					//flow program gak bakal bisa sampai kesini, karena init battle mewajibkan active engimon ada sebelumnya
 				}
 				else {
 					cout << "You don't have any other available Engimon" << endl; 
@@ -528,7 +529,6 @@ bool Player::battle(Engimon& enemy) {
 		}
 		else {
 			cout << "invalid command" << endl;
-			cin >> answer;
 		}
 
 	}
