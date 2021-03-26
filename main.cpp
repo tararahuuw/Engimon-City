@@ -2,7 +2,7 @@
 #include "Player.h"
 
 //to do : bikin list command
-
+//g++ main.cpp Player.cpp Engimon2.cpp Species.cpp peta.cpp Skill.cpp
 int main(){
     Peta peta(14,14);
 	peta.BacaFile();

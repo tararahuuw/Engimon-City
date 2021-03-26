@@ -127,8 +127,6 @@ Engimon& Engimon::operator=(const Engimon& engi)
 
 ostream& operator<<(ostream& os, const Engimon& engi)
 {
-    os << "------------------------" << endl;
-    os << "";
     if(engi.wild){
         os << " Wild " << engi.species->getName();
     }
@@ -143,7 +141,6 @@ ostream& operator<<(ostream& os, const Engimon& engi)
     os << endl;
 
     os << "" << " Spesies : " << engi.species->getName() << endl;
-    os << "------------------------" << endl;
 
     return os;
 }
@@ -183,7 +180,7 @@ float Engimon::advantage(Engimon& e1,Engimon& e2,int n) {
     int x = 0;
     int y = 0;
     for (auto i = e1.getElement().begin(); i != e1.getElement().end(); ++i) {
-        for (auto j = e2.getElement().begin(); i != e2.getElement().end(); ++i) {
+        for (auto j = e2.getElement().begin(); j != e2.getElement().end(); ++j) {
             if(table[*i][*j] > x) {
                 x = table[*i][*j];
             }

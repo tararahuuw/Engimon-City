@@ -1,11 +1,11 @@
 #include "Skill.h"
 
 ostream& operator<<(ostream& os, const Element& elm){
-    if (elm==fire) os << "F";
-    else if(elm==water) os << "W";
-    else if(elm==electric) os << "E";
-    else if(elm==ground) os << "G";
-    else if(elm==ice) os << "I";
+    if (elm==fire) os << "Fire";
+    else if(elm==water) os << "Water";
+    else if(elm==electric) os << "Electric";
+    else if(elm==ground) os << "Ground";
+    else if(elm==ice) os << "Ice";
 
     return os;
 }

@@ -401,28 +401,33 @@ bool Player::battle(Engimon& enemy) {
 	int attempt = 1;
 	bool hasil;
 	while(ongoing == 1) {
-		string answer;
-		cout << "Enemy : " << enemy.getSpecies() << endl; //error disini
-		cout << "Element : ";
-		vector<Element> element = enemy.getElement();
-		for (auto i = element.begin(); i != element.end(); ++i) {
-			cout << " - " << *i << endl;
-		} 
+		int answer;
+		cout << "------------------------" << endl;
+		cout << enemy;
 		cout << "Level : " << enemy.getLevel() << endl;
+		cout << "Element : " << endl;
+		vector<Element> element = enemy.getElement();
+        for (auto i = element.begin(); i != element.end(); ++i) {
+            cout << " - " << *i << endl;
+        }
+		cout << "------------------------" << endl; 
 
-		cout << "What will you do?" << endl;
-		cout << "- attack" << endl;
-		cout << "- change active engimon" << endl;
-		cout << "- run" << endl;
+		cout << "Input the number of the command you want to do" << endl;
+		cout << "1. attack" << endl;
+		cout << "2. change active engimon" << endl;
+		cout << "3. run" << endl;
 		cout << "Choose a command : ";
 		cin >> answer;
-		if(answer == "attack") {
+		if(answer == 1) {
 			//ongoing = attack(P,P.getActiveEngimon(),enemy,attempt); // error soalnya harusnya pake reference
+			cout << "tes" << endl;
 			SkillsFactory sf = SkillsFactory(); //buat nanti dapet skill item
+			cout << "tes" << endl;
 			float adv1 = Engimon::advantage(this->activeEngimon,enemy,1);
 			float adv2 = Engimon::advantage(this->activeEngimon,enemy,2);
 			float power1 = Engimon::countPower(this->activeEngimon,adv1);
 			float power2 = Engimon::countPower(enemy,adv2);
+			cout << "tes" << endl;
 			cout << "Player Engimon attacks with a total power of " << power1 << endl;
 			cout << "Wild Engimon attacks with a total power of " << power2 << endl;
 			if(power1 >= power2) { // kalo player menang
@@ -447,39 +452,6 @@ bool Player::battle(Engimon& enemy) {
 				this->activeEngimon = Engimon(); // Engimon player ditimpa default Engimon
 				this->isThereActiveEngimon = false;
 				//changeEngimon(p,attempt); // kalo Engimon mati wajib ganti
-				if(this->getListEng().getSize() >= 1) { // kalo masih ada Engimon di inventory
-					int found = 0;
-					while(found == 0) {
-						int x,y;
-						cout << "Please choose another Engimon to be active" << endl;
-						this->viewListEngimon(); 
-						cout << "Input the index of the Engimon : ";
-						cin >> x;
-						y = x - 1;
-						try {
-							this->activateEngimon(y); // error kalo input index di luar batas
-						}
-						catch (exception& e)
-						{
-							throw InvalidIndexException(); //ini apa gak suruh minta inputan lagi aja sampai dapet engimon yang pas?
-							//maksudnya biar dia cuma keluar dari battle kalau kalah atau run
-
-							//ABAIKAN KOMEN INI, BACA YANG BAWAH YANG TANYA GAK BATTLE LAGI KALAU PLAYER KALAH
-						}
-						cout << "You have successfully changed your active Engimon" << endl;
-						found = 1;
-					}
-				}
-				else {
-					if(this->isThereActiveEngimon = false) { // otomatis kalah kalo Active Engimon mati dan nggak ada lagi di inventory
-						cout << "All of your Engimon are defeated." << endl;
-    					cout << "GAME OVER" << endl;
-						hasil = false;
-					}
-					else {
-						cout << "You don't have any other available Engimon" << endl;  //sampai sini bukannya udah kosong engimonnya dia?
-					}
-				}
 				ongoing = 0;
 				//oh ini harusnya kalau sampai sini gak battle lagi ya?
 				//kalau iya hasilnya false;
@@ -489,7 +461,7 @@ bool Player::battle(Engimon& enemy) {
 			}
 					
 		}
-		else if(answer == "change active engimon") {
+		else if(answer == 2) {
 			if(this->getListEng().getSize() >= 1) { // kalo masih ada Engimon di inventory
 				int found = 0;
 				while(found == 0) {
@@ -499,16 +471,16 @@ bool Player::battle(Engimon& enemy) {
 					cout << "Input the index of the Engimon : ";
 					cin >> x;
 					y = x - 1;
-					try {
+					if(x <= this->getListEng().getSize()) {
 						this->activateEngimon(y); // error kalo input index di luar batas
+						cout << "You have successfully changed your active Engimon" << endl;
+						found = 1;
 					}
-					catch (exception& e)
-					{
-						throw InvalidIndexException();//ini apa gak suruh minta inputan lagi aja sampai dapet engimon yang pas?
-						//maksudnya biar dia cuma keluar dari battle kalau kalah atau run
+					else {
+						cout << "Invalid index"<< endl;
+						cout << "" << endl;
 					}
-					cout << "You have successfully changed your active Engimon" << endl;
-					found = 1;
+					
 				}
 			}
 			else {
@@ -523,13 +495,14 @@ bool Player::battle(Engimon& enemy) {
 			}
 
 		}
-		else if(answer == "run") {
+		else if(answer == 3) {
 			//ongoing = run(attempt);
 			int x = rand() % 2 + 1;
 			if(attempt > 0) {
 				attempt = attempt - 1;
 				if(x == 1) {
 					cout << "You failed to run" << endl;
+					cout << "" << endl;
 					ongoing = 1;
 				}
 				else {
@@ -540,8 +513,12 @@ bool Player::battle(Engimon& enemy) {
 			}
 			else {
 				cout << "You may only attempt to run once." << endl;
+				cout << "" << endl;
 				ongoing = 1; //ini attempt runnya gak tiap engimon aja? kalau 1 tiap player bisa langsung kalah kalau enemynya OP
 			}
+		}
+		else {
+			cout << "invalid command" << endl;
 		}
 
 	}
