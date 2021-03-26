@@ -18,6 +18,7 @@ int main(){
 	Player player1(make_pair(13,13), peta);
     player1.spawn();
     int round = 0;
+    player1.drawing(-1);
     printCommandList();
     bool isLastCommandMove = false;
     bool isGameOver = false;
@@ -52,23 +53,33 @@ int main(){
                 player1.lihatPeta();
             }
             if (command == "viewEng"){
+                player1.drawing(13);
                 player1.viewListEngimon();
             }
 
             if (command == "viewItem"){
+                player1.drawing(13);
                 player1.viewListSkill();
             }
 
             if (command == "viewInventory"){
+                player1.drawing(13);
                 player1.viewListEngimon();
                 player1.viewListSkill();
             }
+
+            if (command == "interact"){
+                player1.interact();
+            }
+
             if (command == "activate"){
+                player1.drawing(13);
                 player1.viewListEngimon();
                 int idx;
                 cout << "Choose engimon (use number) :";
                 cin >> idx;
                 player1.activateEngimon(idx-1);
+                player1.getActiveEngimon().getSpeciesIndex();
             }
             // if(command == "status") {
             //     if (player1.isThereActiveEngimonYet()) cout << "status : " << player1.getActiveEngimon().getStatus() << endl;
@@ -173,6 +184,7 @@ void printCommandList(){
     cout << "viewEng        \t- To view Engimon Inventory" << endl;
     cout << "viewItem       \t- To view Skill Item Inventory" << endl;
     cout << "viewInventory  \t- To view all inventory" << endl;
+    cout << "interact       \t- To interact with active Engimon" << endl;
     cout << "activate       \t- To activate Engimon" <<endl;
     cout << "deactivate     \t- To deactivate Engimon" << endl;
     cout << "detailEng      \t- To view details of one specific Engimon" << endl;
