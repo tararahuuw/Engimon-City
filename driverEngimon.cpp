@@ -32,7 +32,8 @@ int main(){
     D.printDetail();
     D.rename("Budi");
     D.printDetail();
+    cout << e1.getSpeciesIndex();
     return 0;
 }
 
-// g++ -o testEngimon driverEngimon.cpp Engimon2.cpp Skill.cpp Species.cpp
+// g++ -o testEngimon driverEngimon.cpp Engimon.cpp Skill.cpp Species.cpp
