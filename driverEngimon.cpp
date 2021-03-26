@@ -1,4 +1,4 @@
-#include "Engimon2.h"
+#include "Engimon.h"
 
 int main(){
     SkillsFactory initSkill;
@@ -30,7 +30,8 @@ int main(){
     e1.printDetail();
     cout << endl;
     D.printDetail();
-
+    D.rename("Budi");
+    D.printDetail();
     return 0;
 }
 

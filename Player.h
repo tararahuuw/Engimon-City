@@ -3,7 +3,7 @@
 #include <bits/stdc++.h> //powerfull library
 #include "Skill.h"
 #include "peta.h"
-#include "Engimon2.h"
+#include "Engimon.h"
 #include "CustomException.h"
 //TODO : include other needed MODULE
 
@@ -161,10 +161,7 @@ public:
 	
 };
 
-//TODO : breeding, battle
-//spawn wild engimon
-//need to fix output view inventory, currently ugly
-//waiting thomas fixing output
+
 //interaction with active engimon
 class Player{
 private:

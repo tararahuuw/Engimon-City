@@ -175,8 +175,8 @@ pair<int, Engimon> Peta::GetEngimonforDelete(int x, int y){
 }
 
 
-void Peta::BacaFile(){
-	ifstream obj("map.txt");
+void Peta::BacaFile(string filename){
+	ifstream obj(filename);
 	char element;
 	int index = 0;
 	if(obj.is_open()){
@@ -205,7 +205,10 @@ void Peta::PrintPeta(){
 
 void Peta::PrintDaftarEngimon(){
 	for(int i = 0; i < this->DaftarEngimon.size(); i++){
-		cout << "posisi : " << this->DaftarEngimon[i].first << endl;
+		int posisi = this->DaftarEngimon[i].first;
+		cout << "posisi : " << posisi << endl;
+		cout << "baris : " << GetBarisObjek(posisi) << endl;
+		cout << "kolom : " << GetKolomObjek(posisi) << endl;
 		cout << this->DaftarEngimon[i].second << endl;
 	}
 }
