@@ -78,23 +78,8 @@ vector<Element> Skill::getElement() const{
 }
 
 // setter
-void Skill::setName(string _name){
-    this->name = _name;
-}
-void Skill::setBasePower(int _basePower){
-    this->basePower = _basePower;
-}
 void Skill::setMasteryLevel(int _masteryLevel){
     this->masteryLevel = _masteryLevel;
-}
-void Skill::setElement(Element elm){
-    this->element.clear();
-    this->element.push_back(elm);
-}
-void Skill::setElement(Element elm1, Element elm2){
-    this->element.clear();
-    this->element.push_back(elm1);
-    this->element.push_back(elm2);
 }
 
 void Skill::incrMasteryLevel(){

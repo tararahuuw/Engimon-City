@@ -1,325 +1,376 @@
 #include "Engimon.h"
-#include "Skill.h"
-// wild engimon
-// Engimon::Engimon(string _name, Skill _skill, vector<Element> _elements, int _level, int _EXP, int _cumulativeEXP, int _status, int _health)
-// {
-    // this->name = _name;
-    // this->skills = vector<Skill> (4);
-    // this->skills[0] = _skill;
-    // this->elements = _elements;
-    // this->level = _level;
-    // this->EXP = _EXP;
-    // this->cumulativeEXP = _cumulativeEXP;
-    // this->status = _status;
-    // this->health = _health;
-// }
 
-map<int, Engimon> KatalogEngimon::katalogEngimon = map<int, Engimon> ();
-
-Engimon::Engimon(){
-    this->name = "";
-    this->species = "";
-    this->skills = vector<Skill> ();
-    this->elements = vector<Element> ();
-    this->level = 0;
-    this->EXP = 0;
-    this->cumulativeEXP = 0;
-    this->status = true;
-    this->health = 0;
-}
-
-// Single element engimon
-Engimon::Engimon(string _species, string _name, list<pair<int, string>> _parent, Skill _skills, 
-Element elm, int _level, int _EXP, 
-int _cumulativeEXP, bool _status, int _health)
+Engimon::Engimon()
 {
-    this->species = _species;
-    this->name = _name;
-    // this->parent = _parent;
-    this->level = _level;
-    this->EXP = _EXP;
-    this->cumulativeEXP = _cumulativeEXP;
-    this->status = _status;
-    this->health = _health;
+    species = NULL;
+    name = "";
+    level = 0;
+    EXP = 0;
+    cumulativeEXP = 0;
+    status = true;
+    wild = true;
+}
 
-    // cout << "Test 1" << endl;
-    this->skills = vector<Skill> ();
-    this->skills.push_back(_skills);
+// ctor biasa
+Engimon::Engimon(Species* _species, string _name, 
+pair<pair<string, string>, pair<string, string>> _parent, 
+int _level, int _EXP, int _cumulativeEXP, bool _status, bool _wild)
+{
+    // species = _species;
+    Species** newInstance = new Species*(_species);
+    species = *newInstance;
+    name = _name;
+    parent = _parent;
+    level = _level;
+    EXP = _EXP;
+    cumulativeEXP = _cumulativeEXP;
+    status = _status;
+    wild = _wild;
+    skills = vector<Skill> ();
+    skills.push_back(_species->getBaseSkill());
+}
 
-    this->elements = vector<Element> ();
-    elements.push_back(elm);
+// ctor dengan argument parent = string dan skill engimon diambil dari skill bawaan
+Engimon::Engimon(Species* _species, string _name, string specParA, string nameParA, 
+string specParB, string nameParB, int _level, int _EXP, int _cumulativeEXP, 
+bool _status, bool _wild)
+{
+    // species = _species;
+    Species** newInstance = new Species*(_species);
+    species = *newInstance;
+    name = _name;
+    level = _level;
+    EXP = _EXP;
+    cumulativeEXP = _cumulativeEXP;
+    status = _status;
+    wild = _wild;
+    parent = pair<pair<string, string>, pair<string, string>> ();
+    setParent(specParA, nameParA, specParB, nameParB);
+    skills = vector<Skill> ();
+    skills.push_back(_species->getBaseSkill());
+}
 
-    // cout << "Test 1" << endl;
+// ctor dengan argument parent = string dan skill engimon diambil dari argumen _skills
+Engimon::Engimon(Species* _species, string _name, string specParA, string nameParA, 
+string specParB, string nameParB, vector<Skill> _skills, int _level, int _EXP,
+int _cumulativeEXP, bool _status, bool _wild)
+{
+    // species = _species;
+    Species** newInstance = new Species*(_species);
+    species = *newInstance;
+    name = _name;
+    level = _level;
+    EXP = _EXP;
+    cumulativeEXP = _cumulativeEXP;
+    status = _status;
+    wild = _wild;
+    parent = pair<pair<string, string>, pair<string, string>> ();
+    setParent(specParA, nameParA, specParB, nameParB);
+    skills = _skills;
+}
 
-    if (!_parent.empty()){
-        parent.push_back(_parent.front());
-        parent.push_back(_parent.back());
-    }
-    else{
-        this->parent = list<pair<int, string>> ();
-    }
-
-    // cout << "Test 2" << endl;
+// ctor untuk wild engimon
+Engimon::Engimon(Species* _species, int _level, int _EXP, int _cumulativeEXP, bool _status, bool _wild) : Engimon(_species, "", "", "", "", "", _level, _EXP, _cumulativeEXP, _status, _wild)
+{
 
 }
 
-Engimon::Engimon(string _species, string _name, list<pair<int, string>> _parent, Skill _skills, 
-Element elm1, Element elm2, int _level, int _EXP, 
-int _cumulativeEXP, bool _status, int _health) : 
-Engimon(_species, _name, _parent, _skills, elm1, _level, 
-_EXP, _cumulativeEXP, _status, _health){
-    elements.push_back(elm2);
+// ctor untuk wild engimon dengan skill > 1 jika mungkin (tanpa skill bawaan)
+Engimon::Engimon(Species* _species, vector<Skill> _skills, int _level, int _EXP, int _cumulativeEXP, 
+bool _status, bool _wild) : Engimon(_species, "", "", "", "", "", _skills, _level, _EXP, _cumulativeEXP, _status, _wild)
+{
+
 }
 
-Engimon::~Engimon(){}
-
-bool Engimon::operator==(const Engimon& otherEngimon){
-
-    if (otherEngimon.skills.size() != skills.size() || 
-    otherEngimon.parent.size() != parent.size() ||
-    otherEngimon.elements.size() != elements.size()) return false;
-
-    else{
-        if (parent.front() != otherEngimon.parent.front() || 
-        parent.back() != otherEngimon.parent.back()) return false;
-        
-        for (int i = 0; i < skills.size(); i++){
-            if (skills[i] == otherEngimon.skills[i]);
-            else return false;
-        }
-        for (int i = 0; i < elements.size(); i++){
-            if (elements[i] == otherEngimon.elements[i]);
-            else return false;
-        }
-    }
-    return 
-    (this->name == otherEngimon.name) &&
-    (this->level == otherEngimon.level) &&
-    (this->EXP == otherEngimon.EXP) &&
-    (this->cumulativeEXP == otherEngimon.cumulativeEXP) &&
-    (this->status == otherEngimon.status) &&
-    (this->health == otherEngimon.health);
+//dtor
+Engimon::~Engimon(){
 }
 
-Engimon& Engimon::operator=(const Engimon& otherEngimon){
-    this->name = otherEngimon.name;
-    this->parent = otherEngimon.parent;
-    this->level = otherEngimon.level;
-    this->EXP = otherEngimon.EXP;
-    this->cumulativeEXP = otherEngimon.cumulativeEXP;
-    this->status = otherEngimon.status;
-    this->health = otherEngimon.health;
-
-    this->elements.clear();
-    this->skills.clear();
-
-    for (auto i = otherEngimon.elements.begin(); i != otherEngimon.elements.end(); ++i){
-        elements.push_back(*i);
+// operator overload
+bool Engimon::operator==(const Engimon& engi)
+{
+    // cek apakah jumlah kedua elemen spesies sama
+    if ((this->species->isSingleElement() && engi.species->isSingleElement()) || 
+    (!this->species->isSingleElement() && !engi.species->isSingleElement()))
+    {
+        return (*(species) == *(engi.species) &&
+        name == engi.name &&
+        parent == engi.parent &&
+        level == engi.level &&
+        EXP == engi.EXP &&
+        cumulativeEXP == engi.cumulativeEXP &&
+        status == engi.status &&
+        wild == engi.wild &&
+        skills == engi.skills
+        );
     }
-    for (auto i = otherEngimon.skills.begin(); i != otherEngimon.skills.end(); ++i){
-        skills.push_back(*i);
-    }
+    return false;
+
+}
+Engimon& Engimon::operator=(const Engimon& engi)
+{
+    // cout << "YEET" << endl;
+    Species** newInstance = new Species*(engi.species);
+    species = *newInstance;
+    // species = engi.species;
+    name = engi.name;
+    parent = engi.parent;
+    level = engi.level;
+    EXP = engi.EXP;
+    cumulativeEXP = engi.cumulativeEXP;
+    status = engi.status;
+    wild = engi.wild;
+    skills = engi.skills;
 
     return *this;
 }
 
-ostream& operator<<(ostream& os, const Engimon& engimon){
-    KatalogEngimon k;
-    os << "+++++++++++++++++++++++++++++++" << endl;
-    os << "| " << engimon.name << endl;
-    os << "| Spesies      : " << engimon.species << endl;
-    os << "| Parent       : ";
-
-    if (engimon.parent.empty()) cout << "-" << endl;
+ostream& operator<<(ostream& os, const Engimon& engi)
+{
+    if(engi.wild){
+        os << " Wild " << engi.species->getName();
+    }
     else{
-        os << "(" << k[engimon.parent.front().first] << ")";
-        os << engimon.parent.front().second << "/";
-        os << "(" << k[engimon.parent.back().first] << ")";
-        os << engimon.parent.back().second << endl;
-    }
-
-    os << "| Elements     : ";
-    for (int i = 0; i < engimon.elements.size(); i++){
-        if (i != 0) {cout << "/";}
-        os << engimon.elements[i];
-    }
+        if (engi.name == "") { 
+            os << " - "; 
+        }
+        else { 
+            os << "| Name : " << engi.name;
+        }
+    } 
     os << endl;
-    os << "| Level        : " << engimon.level << endl; 
-    os << "| EXP          : " << engimon.EXP << "/100" << endl;
-    os << "| Total EXP    : " << engimon.cumulativeEXP << endl;
-    os << "| Skills       : " << endl ;
-    
-    for (int i = 0; i < engimon.skills.size(); i++){
-        os << engimon.skills[i] << endl;
-    }
-    os << "===============================" << endl;
-    os << "+++++++++++++++++++++++++++++++" << endl;
+
+    os << "" << " Spesies : " << engi.species->getName() << endl;
+
     return os;
 }
 
 // getter
-int Engimon::getLevel() const{
-    return this->level;
-}
+int Engimon::getLevel() const { return level; }
+int Engimon::getEXP() const { return EXP; }
+int Engimon::getCumulativeEXP() const { return cumulativeEXP; }
+Species* Engimon::getSpecies() const { return species; }
+pair<pair<string, string>, pair<string, string>> Engimon::getParent() const
+{ return parent; }
+vector<Skill> Engimon::getSkills() const { return skills; }
+bool Engimon::isWild() const { return wild; }
+bool Engimon::getStatus() const { return status; }
+string Engimon::getName() const { return name; }
+vector<Element> Engimon::getElement() const
+{
+    vector<Element> elmnts;
+    elmnts.push_back(species->getElement(0));
 
-int Engimon::getEXP() const{
-    return this->EXP;
-}
+    if (!species->isSingleElement()) { elmnts.push_back(species->getElement(1)); }
 
-list<pair<int, string>> Engimon::getParent() const{
-    return this->parent;
+    return elmnts;
 }
-
-vector<Skill> Engimon::getSkills() const{
-    return this->skills;
-}
-
-vector<Element> Engimon::getElement() const{
-    return this->elements;
-}
-
-bool Engimon::getStatus() const{
-    return this->status;
-}
-
-int Engimon::getHealth() const{
-    return this->health;
-}
-
-void Engimon::setName(string _name){
-    name = _name;
-}
-void Engimon::setParent(pair<int, string> _parent1, pair<int, string> _parent2){
-    parent.clear();
-    parent.push_back(_parent1);
-    parent.push_back(_parent2);
-}
-void Engimon::setSkills(vector<Skill> _skills){
-    skills.clear();
-    
-    for (auto i = _skills.begin(); i != _skills.end(); ++i){
-        skills.push_back(*i);
+string Engimon::getSpeciesName() const
+{
+    if (species == NULL){
+        return "";
     }
+    return species->getName();
+}
+float Engimon::getAdvantageElement(Element _elm2) const{
+    return table[species->getElement(0)][_elm2];
 }
 
-void Engimon::setElements(vector<Element> _elements){
-    elements.clear();
-
-    for (auto i = _elements.begin(); i != _elements.end(); ++i){
-        elements.push_back(*i);
-    }
-}
-void Engimon::setLevel(int _level){
-    level = _level;
-}
-
-void Engimon::setEXP(int _EXP){
-    EXP = _EXP;
-}
-
-void Engimon::setCumulativeEXP(int _cumulativeEXP){
-    cumulativeEXP = _cumulativeEXP;
-}
-        
-void Engimon::setStatus(bool _status){
-    status = _status;
-}
-
-void Engimon::setHealth(int _health){
-    health = _health;
-}
-
-// fungsi lain
-void Engimon::upLevel(int naik){
-    this->level+=naik;
-
-    for (int i = 0; i < skills.size(); i++){
-        skills[i].incrMasteryLevel();
-    }
-}
-
-void Engimon::downLevel(int decr){
-    if (this->level >= decr){
-        this->level -= decr;
-    }
-    else{
-        cout << "Level tidak cukup" << endl;
-    }
-}
-
-void Engimon::addEXP(int exp){
-    this->EXP += exp;
-    this->cumulativeEXP += exp;
-
-    if (cumulativeEXP > maxCumulative) {status = false;}
-    else{
-        if (EXP / 100 >= 1){
-            upLevel(EXP/100);
-            if (EXP % 100 == 0) {EXP = 0;}
-            else {EXP = EXP%100;}
+float Engimon::advantage(Engimon& e1,Engimon& e2,int n) {
+    float x = 0;
+    float y = 0;
+    vector<Element> element1 = e1.getElement();
+    vector<Element> element2 = e2.getElement();
+    for (auto i = element1.begin(); i != element1.end(); ++i) {
+        for (auto j = element2.begin(); j != element2.end(); ++j) {
+            if(table[*i][*j] > x) {
+                x = table[*i][*j];
+            }
+            if(table[*j][*i] > y) {
+                y = table[*j][*i];
+            }
         }
     }
+    if(n == 1) {
+        return x;
+    }
+    else if(n == 2) {
+        return y;
+    }
+    return -1;
 }
 
-void Engimon::addSkills(Skill skill){
-    if (this->skills.size() == maxSkill) { cout << "Slot skill penuh" << endl; }
-    else{
-        if (this->elements == skill.getElement()) {skills.push_back(skill);} //ini udah lolos error kalau misalnya elemennya cuman kebalik?
-        //operator == vector itu harus urut kan ngeceknya? kalau kebalik gimana?
-        else if (this->elements.size() == 2 && 
-        (this->elements[0] == skill.getElement()[0] || this->elements[0] == skill.getElement()[1])) {skills.push_back(skill);}
-        //kalau nambah skill yang sesuai elemen kedua gimana?
-        else cout << "Elemen tidak sesuai" << endl;
+vector<vector<float>> Engimon::getAdvElementTable() const{
+    vector<vector<float>> tabel = vector<vector<float>>();
+    for (int i = 0; i < 5; i++){
+        vector<float> row;
+        for (int j = 0; j < 5; j++){
+            row.push_back(table[i][j]);
+        }
+        tabel.push_back(row);
+    }
+    return tabel;
+}
+
+float Engimon::countPower(Engimon& e,float adv) {
+    // Rumus hitung power: level * element advantage + SUM(every skill’s base power *Mastery Level)
+    float total = e.getLevel() * adv;
+    vector<Skill> skill = e.getSkills();
+    for (auto i = skill.begin(); i != skill.end(); ++i) {
+        total = total + (i->getBasePower() * i->getMasteryLevel());
+    }
+    return total;
+}
+
+// setter
+void Engimon::setWild(bool _wild){ this->wild = _wild; }
+void Engimon::setParent(string speciesA, string parentA, string speciesB, string parentB)
+{
+    parent = pair<pair<string, string>, pair<string, string>> ();
+    parent.first.first = speciesA;
+    parent.first.second = parentA;
+    parent.second.first = speciesB;
+    parent.second.second = parentB;
+}
+
+void Engimon::setStatus(bool _status) { status = _status; }
+
+void Engimon::addSkill(Skill _skill)
+{
+    
+    //ini ngapa thrownya string WWKWKKWKWWKkWW
+    if (skills.size() == 4) throw SkillPenuh(); // dicek apakah full
+    else
+    {
+        
+        // cek apa udah punya skill
+        for (auto i = skills.begin(); i != skills.end(); ++i)
+        {
+            if ((*i) == _skill) throw SudahPunyaSkill();
+        }
+        
+        // dicek apakah element sesuai, atau harusnya cek ini dulu ya diawal haha
+        // SingleType Engimon
+        if (species != NULL){
+            
+            if ( species->isSingleElement())
+            {
+                
+                if (_skill.hasElement(species->getElement(0))) {skills.push_back(_skill);} 
+                else {throw InvalidElement();} 
+            }
+            // Double type engimon
+            else
+            {
+                if (_skill.hasElement(species->getElement(0)) || 
+                _skill.hasElement(species->getElement(1))) {skills.push_back(_skill);} 
+                else {throw InvalidElement(); }
+            }
+        }
+        
+        
     }
 }
 
-void Engimon::dropSkills(Skill skill){
+// Mengubah nama Engimon
+void Engimon::rename(string _name) { this->name = _name; }
+void Engimon::printDetail()
+{
+    cout << "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-" << endl;
+    cout << "|" << endl;
+    cout << " 			";
+    
+    if (wild){
+        cout << "Wild " << species->getName();
+    }
+    if (!wild){
+        cout << name;
+    }
+    cout << endl;
+    // Print species dan atribut
+    cout << " [ " << species->getName() << " ] ";
+    cout << "[ " << species->getElement(0);
+    if (!species->isSingleElement())
+    {
+        cout << "/" << species->getElement(1);
+    }
+    cout << " ]" << endl;
+
+    // tulis level, exp, total exp
+    cout << " [ Lvl : " << level;
+    cout << " ] [ EXP : " << EXP << "/100 ] [ TotalEXP : ";
+    cout << cumulativeEXP << " ]" << endl;
+    if (!wild){
+        // print parent
+        // case 1, nda punya parent samsek
+        cout << " > Parent <" << endl;
+        cout << " [ " << parent.first.first << " | " << parent.first.second << " ] ";
+        cout << " X ";
+        cout << " [ " << parent.second.first << " | " << parent.second.second << " ] ";
+        cout << endl;
+    }
+    cout << " > Skills <" << endl;
+    for (auto i = skills.begin(); i != skills.end(); ++i){
+        cout << " ";
+        (*i).printDetail();
+        cout << endl;
+    }
+    cout << "                                                    |" << endl;
+    cout << "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-" << endl;
+}
+void Engimon::dropSkill(Skill _skill)
+{
     for (int i = 0; i < skills.size(); i++){
-        if (skills[i] == skill){
+        if (skills[i] == _skill){
             skills.erase(skills.begin() + i);
             return;
         }
     }
+    throw TidakMemilikiSkill();
 }
 
-bool Engimon::checkNumOfElements() const{
-    return elements.size() == 2;
-}
-
-// Kelas katalogEngimon
-KatalogEngimon::KatalogEngimon(){
-    katalogEngimon = map<int, Engimon> ();
-    KatalogSkill skills;
-
-    // skills.printtKatalogSkill();
-
-    // list<string> parent1 = {"a", "b"};
-    // cout << "Masuk sini?" << endl;
-    Engimon e1("Spesies1","", {}, skills[0], fire, 1, 0, 0, true, 100);
-
-    // list<string> parent2 = {"c", "d"};
-    Engimon e2("Spesies2","", {}, skills[1], water, 1, 0, 0, true, 100);
-
-    // list<string> parent3 = {"e", "f"};
-    Engimon e3("Spesies3","", {}, skills[2], electric, 1, 0, 0, true, 100);
-
-    // list<string> parent4;
-    Engimon e4("Spesies4","", {}, skills[7], water, ground, 1, 0, 0, true, 100);
-
-
-    katalogEngimon.insert(pair<int, Engimon>(0, e1));
-    katalogEngimon.insert(pair<int, Engimon>(1, e2));
-    katalogEngimon.insert(pair<int, Engimon>(2, e3));
-    katalogEngimon.insert(pair<int, Engimon>(3, e4));
-
-}
-
-void KatalogEngimon::printKatalogEngimon(){
-    for (int i = 0; i < katalogEngimon.size(); i++){
-        cout << katalogEngimon[i];
+// Menaikkan level engimon sebesar incr
+// Skill yang sedang di equip ikut bertambah mastery levelnya
+void Engimon::upLevel(int incr)
+{
+    level+=incr;
+    for (auto i = skills.begin(); i != skills.end(); ++i)
+    {
+        (*i).incrMasteryLevel();
     }
 }
 
-Engimon& KatalogEngimon::operator[](int i){
-    return katalogEngimon[i];
+// Menurunkan level engimon sebesar decr
+// Cumulative EXP berkurang sebesar decr * 100 (EXP/Level)
+void Engimon::downLevel(int decr)
+{
+    level-=decr;
+    cumulativeEXP-=(decr*100);
+}
+
+// Menambahkan EXP sebesar exp
+// Cumulative EXP ikut bertambah
+// Apabila cumulativeEXP > 1500, engimon dihapus dari program
+// Apabila EXP >= kelipatan seratus, engimon naik level
+void Engimon::addEXP(int exp)
+{
+    EXP += exp;
+    cumulativeEXP += exp;
+
+    if (cumulativeEXP > maxCumulative) { status = false; }
+    else
+    {
+        if (EXP/100 >= 1)
+        {
+            upLevel(EXP/100);
+            if (EXP % 100 == 0) { EXP = 0; } // kondisi ini kayaknya dihapus aja
+            else { EXP = EXP%100; }
+        }
+    }
+}
+
+// Mengembalikan jumlah elemen spesies engimon
+bool Engimon::checkNumOfElements() const
+{
+    return species->isSingleElement();
 }

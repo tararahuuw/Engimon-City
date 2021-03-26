@@ -41,11 +41,7 @@ public:
     vector<Element> getElement() const;
     
     // setter, seperlunya
-    void setName(string _name);
-    void setBasePower(int _basePower);
     void setMasteryLevel(int _masteryLevel);
-    void setElement(Element elm);
-    void setElement(Element elm1, Element elm2);
     void printDetail();
     // fungsi lain
     void incrMasteryLevel();
