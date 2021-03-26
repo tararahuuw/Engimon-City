@@ -46,7 +46,7 @@ public:
     void setMasteryLevel(int _masteryLevel);
     void setElement(Element elm);
     void setElement(Element elm1, Element elm2);
-    
+    void printDetail();
     // fungsi lain
     void incrMasteryLevel();
     bool hasElement(Element elm);

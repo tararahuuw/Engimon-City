@@ -81,6 +81,7 @@ class Engimon{
         int getCumulativeEXP() const;
         pair<pair<string, string>, pair<string, string>> getParent() const;
         Species* getSpecies() const;
+        string getSpeciesName() const;
         bool isWild() const;
         string getName() const;
         vector<Skill> getSkills() const;
@@ -113,6 +114,7 @@ class Engimon{
         // Elemen skill diinisiasi di awal dan hanya bisa diakses lewat SkillsFactory dan kemungkinan urutan elemen akan selalu sama karena skill tidak pernah diubah atributnya kecuali mastery levelnya
         void dropSkill(Skill skill); // Menghapus skill engimon dengan asumsi Skill skill dimiliki engimon 
         bool checkNumOfElements() const; // kalau 1 itu true, kalau 2 false
+        void printASCII();
         static float countPower(Engimon& e,float adv);
         static float advantage(Engimon& e1,Engimon& e2,int n);
 };

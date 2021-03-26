@@ -125,13 +125,6 @@ Engimon& Engimon::operator=(const Engimon& engi)
     return *this;
 }
 
-void printSpace(int n)
-{
-    for (int i = 0; i < n; i++)
-    {
-        cout << " ";
-    }
-}
 ostream& operator<<(ostream& os, const Engimon& engi)
 {
     os << "------------------------" << endl;
@@ -174,6 +167,13 @@ vector<Element> Engimon::getElement() const
     if (!species->isSingleElement()) { elmnts.push_back(species->getElement(1)); }
 
     return elmnts;
+}
+string Engimon::getSpeciesName() const
+{
+    if (species == NULL){
+        return "";
+    }
+    return species->getName();
 }
 float Engimon::getAdvantageElement(Element _elm2) const{
     return table[species->getElement(0)][_elm2];
@@ -272,39 +272,49 @@ void Engimon::addSkill(Skill _skill)
     }
 }
 
-void printSpace(int n){
-    for (int i =0; i < n; i++){
-        cout << " ";
-    }
-}
-
-
 void Engimon::printDetail()
 {
-    cout <<  "_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-" << endl;
-    cout << "							       " << endl;
-    if (!wild) cout << "     " << name;
-    else { cout << "Wild" << species->getName();}
-    cout << endl;
-    cout << "	[ " << species->getName() << " ] [ " << species->getElement(0);
-    if (!species->isSingleElement()){ cout << "/" << species->getElement(1); }
-    cout << " ]" << endl;
-    cout << "	[ Lvl : " << level << " ]";
+    cout << "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-" << endl;
+    cout << "|" << endl;
+    cout << " 			";
+    
+    if (wild){
+        cout << "Wild " << species->getName();
+    }
     if (!wild){
-        cout << " [ EXP : " << EXP << "/100 ] [";
-        cout << "Total EXP : " << cumulativeEXP << " ]" << endl;
-        cout << "	== Parent ==" << endl;
-        cout << " 	";
-        //print parent
-        cout << "[ " << parent.first.first << " | " << parent.first.second << " ] X [ ";
-        cout << " " << parent.second.first << " | " << parent.second.second << " ]" << endl;
+        cout << name;
     }
-    cout << "    	== Skills ==" << endl;
-    // print skills
+    cout << endl;
+    // Print species dan atribut
+    cout << " [ " << species->getName() << " ] ";
+    cout << "[ " << species->getElement(0);
+    if (!species->isSingleElement())
+    {
+        cout << "/" << species->getElement(1);
+    }
+    cout << " ]" << endl;
+
+    // tulis level, exp, total exp
+    cout << " [ Lvl : " << level;
+    cout << " ] [ EXP : " << EXP << "/100 ] [ TotalEXP : ";
+    cout << cumulativeEXP << " ]" << endl;
+    if (!wild){
+        // print parent
+        // case 1, nda punya parent samsek
+        cout << " > Parent <" << endl;
+        cout << " [ " << parent.first.first << " | " << parent.first.second << " ] ";
+        cout << " X ";
+        cout << " [ " << parent.second.first << " | " << parent.second.second << " ] ";
+        cout << endl;
+    }
+    cout << " > Skills <" << endl;
     for (auto i = skills.begin(); i != skills.end(); ++i){
-        cout << *i << endl;
+        cout << " ";
+        (*i).printDetail();
+        cout << endl;
     }
-    cout <<  endl << "_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-" << endl;
+    cout << "                                                    |" << endl;
+    cout << "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-" << endl;
 }
 void Engimon::dropSkill(Skill _skill)
 {
@@ -361,4 +371,11 @@ void Engimon::addEXP(int exp)
 bool Engimon::checkNumOfElements() const
 {
     return species->isSingleElement();
+}
+
+void Engimon::printASCII(){
+    if (species->getName() == "Snorlax")
+    {
+        
+    }
 }
