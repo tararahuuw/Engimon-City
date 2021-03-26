@@ -15,6 +15,9 @@ int main(){
     //nanti welcome message disini
     while (command != "exit" &&  !(isGameOver)){
         try{
+            if (round%15 == 0){
+                player1.spawn();
+            }
             if (command == "d" or command == "D"){
                 player1.moveD();
                 isLastCommandMove = true;
@@ -88,9 +91,7 @@ int main(){
                 player1.deactivateEngimon();
             }
             //jika mencapai round dengan kriteria tertentu, random spawn dan/atau random gerak
-            if (round%15 == 0){
-                player1.spawn();
-            }
+            
             if (round%10 == 0){
                 player1.randomMove();
             }
