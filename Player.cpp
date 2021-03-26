@@ -440,14 +440,15 @@ bool Player::battle(Engimon& enemy) {
 				this->addEngimonToInven(enemy); // nambah engimon ke inventoy
 
 				//dapet skill random
+				vector<Skill> skills = sf.getSkills();
 				int ele2 = enemy.getElement().at(0); //yang dipake elemen enemy pertama
-				int x = rand() % sf.getSkills().size();
-				Skill s = sf[x];
+				int x = rand() % skills.size();
+				Skill s = skills.at(x);
 
-				while(count(s.getElement().begin(),s.getElement().end(),ele2) == 0) { //skill randomnya beda elemen
-					x = (x + 1) % sf.getSkills().size();
-					s = Skill(sf[x]);
-				} 
+				while(!s.hasElement(ele2)) { //skill randomnya beda elemen
+					x = (x + 1) % skills.size();
+					s = skills.at(x);
+				}
 				this->addSkillItemToInven(s);
 				cout << "You obtained skill item : " << s.getName() << endl;
 				ongoing = 0;

@@ -50,6 +50,7 @@ public:
     // fungsi lain
     void incrMasteryLevel();
     bool hasElement(Element elm);
+    bool hasElement(int elm);
 };
 
 // Berisi daftar skill yang ada

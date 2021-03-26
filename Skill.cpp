@@ -106,6 +106,11 @@ bool Skill::hasElement(Element elm)
     for (auto i = element.begin(); i != element.end(); ++i) { if (*i == elm) return true; }
     return false;
 }
+bool Skill::hasElement(int elm)
+{
+    for (auto i = element.begin(); i != element.end(); ++i) { if (*i == elm) return true; }
+    return false;
+}
 void Skill::printDetail(){
     cout << "[ " << name << " | ";
     cout << basePower;
