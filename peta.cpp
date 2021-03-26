@@ -175,7 +175,7 @@ pair<int, Engimon> Peta::GetEngimonforDelete(int x, int y){
 }
 
 
-void Peta::BacaFile(string filename){
+bool Peta::BacaFile(string filename){
 	ifstream obj(filename);
 	char element;
 	int index = 0;
@@ -188,9 +188,9 @@ void Peta::BacaFile(string filename){
 				index++;
 			}
 		}
-		
+		return true;
 	} else {
-		cout << "File map tidak dapat dibuka" << endl;
+		return false;
 	}
 }
 

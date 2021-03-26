@@ -4,7 +4,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
-#include "Engimon.h"
+#include "Engimon2.cpp"
 #include "CustomException.h"
 using namespace std;
 
@@ -59,7 +59,7 @@ class Peta {
         pair<int, Engimon> GetEngimonforDelete(int x, int y);
         
         //Baca file dan isi element pada peta sesuai dengan isi file txt
-        void BacaFile(string filename);
+        bool BacaFile(string filename);
         
         //Print isi Peta
         void PrintPeta();

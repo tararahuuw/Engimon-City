@@ -1,4 +1,4 @@
-#include "peta.h"
+#include "peta.cpp"
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -7,7 +7,9 @@ int main(){
 	string filename;
 	cout << "masukkan nama file : ";
 	cin >> filename;
-	P.BacaFile(filename);
+	if(P.BacaFile(filename) != true) {
+		exit(1);
+	}
 	//P.PrintPeta();
 	//P.SpawnEngimon(10);
 	//P.PrintPeta();
