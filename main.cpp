@@ -4,8 +4,14 @@
 //to do : bikin list command
 //g++ main.cpp Player.cpp Engimon2.cpp Species.cpp peta.cpp Skill.cpp
 int main(){
-    Peta peta(14,14);
-	peta.BacaFile();
+    int b,k;
+    cout << "Enter map dimension :";
+    cin >>b>>k;
+    cout << "Enter map name :";
+    string filename;
+    cin >> filename;
+    Peta peta(b,k);
+	peta.BacaFile(filename);
 	Player player1(make_pair(13,13), peta);
     player1.spawn();
     int round = 0;

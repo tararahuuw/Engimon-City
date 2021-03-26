@@ -540,7 +540,6 @@ void Player:: initBattle(){
 	if (this->isThereActiveEngimon and this->isEnemyAround()){
 		pair<int,int> coorEnemy = this->getEnemyAround();
 		Engimon enemy = this->peta.GetEngimonLiar(coorEnemy.first,coorEnemy.second);
-		cout << enemy << endl;
 		bool win = this->battle(enemy);
 		if (win) {
 			this->peta.DeleteEngimon2(coorEnemy.first,coorEnemy.second);
