@@ -419,6 +419,7 @@ bool Player::battle(Engimon& enemy) {
 		cout << "Choose a command : ";
 		cin >> answer;
 		if(answer == 1) {
+			this->drawing(18);
 			//ongoing = attack(P,P.getActiveEngimon(),enemy,attempt); // error soalnya harusnya pake reference
 			SkillsFactory sf = SkillsFactory(); //buat nanti dapet skill item
 			float adv1 = Engimon::advantage(this->activeEngimon,enemy,1);
@@ -428,6 +429,7 @@ bool Player::battle(Engimon& enemy) {
 			cout << "Your Engimon attacks with a total power of " << power1 << endl;
 			cout << "Wild Engimon attacks with a total power of " << power2 << endl;
 			if(power1 >= power2) { // kalo player menang
+				this->drawing(20);
 				cout << "Your Engimon wins" << endl;
 				this->activeEngimon.addEXP(enemy.getLevel()*5); // tambah exp
 				cout << "Your active engimon gained " << enemy.getLevel()*5 << " experience points" << endl;
@@ -457,6 +459,7 @@ bool Player::battle(Engimon& enemy) {
 				hasil = true;
 			}
 			else {
+				this->drawing(19);
 				cout << "Your Engimon is defeated" << endl;
 				this->activeEngimon = Engimon(); // Engimon player ditimpa default Engimon
 				this->isThereActiveEngimon = false;
@@ -466,7 +469,7 @@ bool Player::battle(Engimon& enemy) {
 				//oh ini harusnya kalau sampai sini gak battle lagi ya?
 				//kalau iya hasilnya false;
 				hasil = false;
-
+				
 				//kalau dia kalah dia wajib activate engimon waktu mash mode battle? kalau di luar mode battle gimna?
 			}
 					
@@ -540,6 +543,8 @@ void Player:: initBattle(){
 	if (this->isThereActiveEngimon and this->isEnemyAround()){
 		pair<int,int> coorEnemy = this->getEnemyAround();
 		Engimon enemy = this->peta.GetEngimonLiar(coorEnemy.first,coorEnemy.second);
+		this->drawing(21);
+		this->drawing(22);
 		bool win = this->battle(enemy);
 		if (win) {
 			this->peta.DeleteEngimon2(coorEnemy.first,coorEnemy.second);
@@ -610,4 +615,594 @@ void Player::delearnSkill(int idx){
 		// this->listSkillItem.addElement(dummy);
 		//ditambahin ke invent gak ya?
 	}else throw ActiveEngimonKosong();
+}
+
+void Player::interact(){
+	if (this->isThereActiveEngimon){
+		this->drawing(14);
+		cout << "Answer : ";
+		int answer;
+		cin >> answer;
+		if (answer == 1){
+			this->drawing(15);
+			this->activeEngimon.printDetail();
+		}else if (answer == 2){
+			this->drawing(16);
+			string name;
+			cout << "Enter new name: ";
+			std::getline(std::cin >> std::ws,name);
+			this->activeEngimon.rename(name);
+		}else if (answer == 3){
+			this->drawing(17);
+		}else cout << "Wrong input" << endl;
+	}else throw ActiveEngimonKosong();
+}
+
+void Player :: drawing(int index) {
+	if (index == -1) {
+	cout << " _   /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\ /\\   _ " << endl;
+    cout << "| | |/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\|/\\| | |" << endl;
+    cout << "| |                                                                     | |" << endl;
+    cout << "| |                                                                     | |" << endl;
+    cout << "| |                                                                     | |" << endl;
+    cout << "| |                                                                     | |" << endl;
+    cout << "| |                                                                     | |" <<endl;
+    cout << "|_|   ______             _                          _____ _ _           |_|" <<endl;
+    cout << "| |  |  ____|           (_)                        / ____(_| |          | |" <<endl;
+    cout << "| |  | |__   _ __   __ _ _ _ __ ___   ___  _ __   | |     _| |_ _   _   | |" <<endl;
+    cout << "| |  |  __| | '_ \\ / _` | | '_ ` _ \\ / _ \\| '_ \\  | |    | | __| | | |  | |" <<endl;
+    cout << "| |  | |____| | | | (_| | | | | | | | (_) | | | | | |____| | |_| |_| |  | |" <<endl;
+    cout << "| |  |______|_| |_|\\__, |_|_| |_| |_|\\___/|_| |_|  \\_____|_|\\__|\\__, |  | |" <<endl;
+    cout << "| |                 __/ |                                        __/ |  | |" <<endl;
+    cout << "|_|                |___/                                        |___/   |_|" <<endl;
+    cout << "| |                                                                     | |" <<endl;
+    cout << "| |                                                                     | |" <<endl;
+    cout << "| |                                                                     | |" <<endl;
+    cout << "| |                                                                     | |" <<endl;
+    cout << "| |                                                                     | |" <<endl;
+    cout << "| |______ ______ ______ ______ ______ ______ ______ ______ ______ ______| |" <<endl;
+    cout << "|_|______|______|______|______|______|______|______|______|______|______|_|" <<endl;
+	}
+	else if (index == 0) {
+    cout << "" << endl;
+    cout <<"              _.--\"\"`-.. "<< endl;
+    cout <<"            ,'          `. "<< endl;
+    cout <<"          ,'          __  `. "<< endl;
+    cout <<"         /|          \" __   \\ "<< endl;
+    cout <<"        , |           / |.   . "<< endl;
+    cout <<"        |,'          !_.'|   | "<< endl;
+    cout <<"      ,'             '   |   | "<< endl;
+    cout <<"     /              |`--'|   | "<< endl;
+    cout <<"    |                `---'   | "<< endl;
+    cout <<"     .   ,                   |                       ,\". "<< endl;
+    cout <<"      ._     '           _'  |                    , ' \\ ` "<< endl;
+    cout <<"  `.. `.`-...___,...---\"\"    |       __,.        ,`\"   L,| "<< endl;
+    cout <<"  |, `- .`._        _,-,.'   .  __.-'-. /        .   ,    \\ "<< endl;
+    cout <<"-:..     `. `-..--_.,.<       `\"      / `.        `-/ |   . "<< endl;
+    cout <<"  `,         \"\"\"\"'     `.              ,'         |   |  ',, "<< endl;
+    cout <<"    `.      '            '            /          '    |'. |/ "<< endl;
+    cout <<"      `.   |              \\       _,-'           |       '' "<< endl;
+    cout <<"        `._'               \\   '\"\\                .      | "<< endl;
+    cout <<"           |                '     \\                `._  ,' "<< endl;
+    cout <<"           |                 '     \\                 .'| "<< endl;
+    cout <<"           |                 .      \\                | | "<< endl;
+    cout <<"           |                 |       L              ,' | "<< endl;
+    cout <<"           `                 |       |             /   ' "<< endl;
+    cout <<"            \\                |       |           ,'   / "<< endl;
+    cout <<"          ,' \\               |  _.._ ,-..___,..-'    ,' "<< endl;
+    cout <<"         /     .             .      `!             ,j' "<< endl;
+    cout <<"        /       `.          /        .           .'/ "<< endl;
+    cout <<"       .          `.       /         |        _.'.' "<< endl;
+    cout <<"        `.          7`'---'          |------\"'_.' "<< endl;
+    cout <<"       _,.`,_     _'                ,''-----\"' "<< endl;
+    cout <<"   _,-_    '       `.     .'      ,\\ "<< endl;
+    cout <<"   -\" /`.         _,'     | _  _  _.| "<< endl;
+    cout <<"    \"\"--'---\"\"\"\"\"'        `' '! |! / "<< endl;
+    cout <<"                            `\" \" -'" << endl;
+	}
+	else if (index == 1) {
+	cout << "                                       __,......._"<<endl;
+    cout << "    _............___          ____....<__         `\"._"<<endl;
+    cout << "   '._      `\",     `'--._,.-'   ___     `\"-.    ___..>---,---------.."<<endl;
+    cout << " ____ -.,..--\"            `-  ,-'   `       .`-\"'       .'_         ,-'"<<endl;
+    cout << "'._  \"\"'-.                  .'     _.._                    `-._ ,.-'"<<endl;
+    cout << "   `-._   `._              .     ,'    `.                    ,-'----.._"<<endl;
+    cout << "       _>.   -.            `     |      |                _,-'          )"<<endl;
+    cout << ",..--\"\"`--\"\"\"\"\"`-.          \\    `-.    |             ,.+.__   _,;---\"\""<<endl;
+    cout << "\\_ |              `.         `.       _.'         _,-`      `\"\"   `."<<endl;
+    cout << "  \"\\                `       / _`\"----'           '                 /-."<<endl;
+    cout << "   `.____                  |  #      #' \\                         `,..'"<<endl;
+    cout << "       ,-\"--...__          `--        --'                   ___,..'"<<endl;
+    cout << "      '-.---\"'  |           -.,........,            ,.---\"\"\" ."<<endl;
+    cout << "                |            |        \\'             \\\"\"--..._`"<<endl;
+    cout << "                |             \\       /              |"<<endl;
+    cout << "                .              `.    /               |"<<endl;
+    cout << "                 ,               `--'                j"<<endl;
+    cout << "                j \\                                 /"<<endl;
+    cout << "                |  .                               '`."<<endl;
+    cout << "                 L._`.                           .' ,|"<<endl;
+    cout << "                 |  `.:-._                    _,' ,' |"<<endl;
+    cout << "                 `.,'| \"\"\"`.__            _,< _..-   '"<<endl;
+    cout << "                     `...-'   `----------'   `-.__|`' "<<endl;
+	}
+	else if (index == 2) {
+	cout << "                                             ,-."<<endl;
+    cout << "                                          _.|  '"<<endl;
+    cout << "                                        .'  | /"<<endl;
+    cout << "                                      ,'    |'"<<endl;
+    cout << "                                     /      /"<<endl;
+    cout << "                       _..----\"\"---.'      /"<<endl;
+    cout << " _.....---------...,-\"\"                  ,'"<<endl;
+    cout << " `-._  \\                                /"<<endl;
+    cout << "     `-.+_            __           ,--. ."<<endl;
+    cout << "          `-.._     .:  ).        (`--\"| \\"<<endl;
+    cout << "               7    | `\" |         `...'  \\"<<endl;
+    cout << "               |     `--'     '+\"        ,\". ,\"\"-"<<endl;
+    cout << "               |   _...        .____     | |/    '"<<endl;
+    cout << "          _.   |  .    `.  '--\"   /      `./     j"<<endl;
+    cout << "         \\' `-.|  '     |   `.   /        /     /"<<endl;
+    cout << "         '     `-. `---\"      `-\"        /     /"<<endl;
+    cout << "          \\       `.                  _,'     /"<<endl;
+    cout << "           \\        `                        ."<<endl;
+    cout << "            \\                                j"<<endl;
+    cout << "             \\                              /"<<endl;
+    cout << "              `.                           ."<<endl;
+    cout << "                +                          \\"<<endl;
+    cout << "                |                           L"<<endl;
+    cout << "                |                           |"<<endl;
+    cout << "                |  _ /,                     |"<<endl;
+    cout << "                | | L)'..                   |"<<endl;
+    cout << "                | .    | `                  |"<<endl;
+    cout << "                '  \\'   L                   '"<<endl;
+    cout << "                 \\  \\   |                  j"<<endl;
+    cout << "                  `. `__'                 /"<<endl;
+	}
+
+	else if (index == 3) {
+	cout <<"                       _"<<endl;
+    cout <<"            _,..-\"\"\"--' `,.-\"."<<endl;
+    cout <<"          ,'      __.. --',  |"<<endl;
+    cout <<"        _/   _.-\"' |    .' | |       ____"<<endl;
+    cout <<"  ,.-\"\"'    `-\"+.._|     `.' | `-..,',--.`."<<endl;
+    cout <<" |   ,.                      '    j 7    l \\__"<<endl;
+    cout <<" |.-'                            /| |    j||  ."<<endl;
+    cout <<" `.                   |         / L`.`\"\"','|\\  \\"<<endl;
+    cout <<"   `.,----..._       ,'`\"'-.  ,'   \\ `\"\"'  | |  l"<<endl;
+    cout <<"     Y        `-----'       v'    ,'`,.__..' |   ."<<endl;
+    cout <<"      `.                   /     /   /     `.|   |"<<endl;
+    cout <<"        `.                /     l   j       ,^.  |L"<<endl;
+    cout <<"          `._            L       +. |._   .' \\|  | \\"<<endl;
+    cout <<"            .`--...__,..-'\"\"'-._  l L  \"\"\"    |  |  \\"<<endl;
+    cout <<"          .'  ,`-......L_       \\  \\ \\     _.'  ,'.  l"<<endl;
+    cout <<"       ,-\"`. / ,-.---.'  `.      \\  L..--\"'  _.-^.|   l"<<endl;
+    cout <<" .-\"\".'\"`.  Y  `._'   '    `.     | | _,.--'\"     |   |"<<endl;
+    cout <<"  `._'   |  |,-'|      l     `.   | |\"..          |   l"<<endl;
+    cout <<"  ,'.    |  |`._'      |      `.  | |_,...---\"\"\"\"\"`    L"<<endl;
+    cout <<" /   |   j _|-' `.     L       | j ,|              |   |"<<endl;
+    cout <<"`--,\"._,-+' /`---^..../._____,.L',' `.             |\\  |"<<endl;
+    cout <<"   |,'      L                   |     `-.          | \\j"<<endl;
+    cout <<"            .                    \\       `,        |  |"<<endl;
+    cout <<"             \\                __`.Y._      -.     j   |"<<endl;
+    cout <<"              \\           _.,'       `._     \\    |  j"<<endl;
+    cout <<"              ,-\"`-----\"\"\"\"'           |`.    \\  7   |"<<endl;
+    cout <<"             /  `.        '            |  \\    \\ /   |"<<endl;
+    cout <<"            |     `      /             |   \\    Y    |"<<endl;
+    cout <<"            |      \\    .             ,'    |   L_.-')"<<endl;
+    cout <<"             L      `.  |            /      ]     _.-^._"<<endl;
+    cout <<"              \\   ,'  `-7         ,-'      / |  ,'      `-._"<<endl;
+    cout <<"             _,`._       `.   _,-'        ,',^.-            `."<<endl;
+    cout <<"          ,-'     v....  _.`\"',          _:'--....._______,.-'"<<endl;
+    cout <<"        ._______./     /',,-'\"'`'--.  ,-'  `."<<endl;
+    cout <<"                 \"\"\"\"\"`.,'         _\\`----...' "<<endl;
+    cout <<"                        --------\"\"'"<<endl;
+	}
+
+	else if (index == 4) {
+    cout << "               _," << endl;
+    cout << "             .'.'  _." << endl;
+    cout << "           ,' ._,-'_\"'" << endl;
+    cout << "        _,'   '  ------\"\"'`._" << endl;
+    cout << "      ,'                 _,.--\"'              ___        __,.." << endl;
+    cout << "      |    _,..       ,-'             _,.--\"\"'   7_,.--\"'    ,'" << endl;
+    cout << "      j. .'D  |       |            ,'\"       _.-'       _.-\"\"'.  _,..-\"'" << endl;
+    cout << " ,---'  `+----'       |`._      _.'         '                '.-'      /" << endl;
+    cout << "j         `.       ,-'    `'--,\"                           ,'       ,-'" << endl;
+    cout << "|    __    |      '-.._,    .'                           ,'     ,.-'" << endl;
+    cout << "`. ,' ('T--'        .\"     /                          _.'  _,--\"" << endl;
+    cout << "  `   `,  /         _`.   j                         _', ,-\"__,..,-." << endl;
+    cout << "      `-\"`.        \\   `-.|                        _,'\"\"\"\"'       l" << endl;
+    cout << "           `.,      \\     L                     _.'      __,...--'" << endl;
+    cout << "            ` '-    .`     `._             _,.-' ,--'\"\"\"\"" << endl;
+    cout << "             '  \\`.,\\         `+------,--\"'     /" << endl;
+    cout << "                 \\ )`'      ,-'      /         /" << endl;
+    cout << "                  `     _,-'       ,'         /" << endl;
+    cout << "                   `+\"\"'         ,'     ,.  ,'" << endl;
+    cout << "                     `.        ,'     ,'   ." << endl;
+    cout << "                       `-._.,-'      /. _.,j" << endl;
+    cout << "                           \"\"`-----.'  '  /" << endl;
+    cout << "                                / /   /  /" << endl;
+    cout << "                    _.......__,' /__,' ,'" << endl;
+    cout << "                  ,\\  ,--..--------\"_  ...._" << endl;
+    cout << "                 '--\"(_,`|  ,..-' _,....__  |." << endl;
+    cout << "                        '-./...-'\"        `\"\"\"- " << endl;
+	}
+	else if (index == 5) {
+    cout << "                    _,.-''\"\"\"`-._" << endl;
+    cout << "                  ,\"             `._" << endl;
+    cout << "                ,'   ..     .       `." << endl;
+    cout << "              .'     ||     ||        `._" << endl;
+    cout << "   ,.....---'\"                         `._`-..._" << endl;
+    cout << "   `._  _,.-\"/        `\"--'         `  `. `._   `\"'-." << endl;
+    cout << "  __..-'   ,' /                      \\   `.  `-.__.-'" << endl;
+    cout << "`._    __,'  ,                        `.   `.    \"--." << endl;
+    cout << "   `\"'.'   .'       _,.+..              `.   `.-...-'" << endl;
+    cout << "    ,'  _,'     _.-\"   A  `-._            `._  `-." << endl;
+    cout << "    `\"+'       '     ,' `     `-             \"''-'" << endl;
+    cout << "      '            ,' ___`.                   |" << endl;
+    cout << "     .            ' .`   `.`.                 |  _,." << endl;
+    cout << "     |            ,'       `                  |,\" ,'" << endl;
+    cout << "     |           /          \\                 |  /" << endl;
+    cout << "     |          j            '                | /" << endl;
+    cout << "     '          |'`\"\"''\"`'\"\"\"|                |/" << endl;
+    cout << "      .         `            '               ,'" << endl;
+    cout << "       `.        \\          /              ,'" << endl;
+    cout << "         `._      `._     ,'             .'" << endl;
+    cout << "            `._      `\"\"\"'             .'" << endl;
+    cout << "          _,'  `-.....___________...-'`-." << endl;
+    cout << "         `...---'               `--.....-' " << endl;
+	}
+
+	else if (index == 6) {
+    cout <<"                                           /"<<endl;
+    cout <<"                        _,.------....___,.' ',.-."<<endl;
+    cout <<"                     ,-'          _,.--\"        |"<<endl;
+    cout <<"                   ,'         _.-'              ."<<endl;
+    cout <<"                  /   ,     ,'                   `"<<endl;
+    cout <<"                 .   /     /                     ``."<<endl;
+    cout <<"                 |  |     .                       \\.\\"<<endl;
+    cout <<"       ____      |___._.  |       __               \\ `."<<endl;
+    cout <<"     .'    `---\"\"       ``\"-.--\"'`  \\               .  \\"<<endl;
+    cout <<"    .  ,            __               `              |   ."<<endl;
+    cout <<"    `,'         ,-\"'  .               \\             |    L"<<endl;
+    cout <<"   ,'          '    _.'                -._          /    |"<<endl;
+    cout <<"  ,`-.    ,\".   `--'                      >.      ,'     |"<<endl;
+    cout <<" . .'\\'   `-'       __    ,  ,-.         /  `.__.-      ,'"<<endl;
+    cout <<" ||:, .           ,'  ;  /  / \\ `        `.    .      .'/"<<endl;
+    cout <<" j|:D  \\          `--'  ' ,'_  . .         `.__, \\   , /"<<endl;
+    cout <<"/ L:_  |                 .  \"' :_;                `.'.'"<<endl;
+    cout <<".    \"\"'                  \"\"\"\"\"'                    V"<<endl;
+    cout <<" `.                                 .    `.   _,..  `"<<endl;
+    cout <<"   `,_   .    .                _,-'/    .. `,'   __  `"<<endl;
+    cout <<"    ) \\`._        ___....----\"'  ,'   .'  \\ |   '  \\  ."<<endl;
+    cout <<"   /   `. \"`-.--\"'         _,' ,'     `---' |    `./  |"<<endl;
+    cout <<"  .   _  `\"\"'--.._____..--\"   ,             '         |"<<endl;
+    cout <<"  | .\" `. `-.                /-.           /          ,"<<endl;
+    cout <<"  | `._.'    `,_            ;  /         ,'          ."<<endl;
+    cout <<" .'          /| `-.        . ,'         ,           ,"<<endl;
+    cout <<" '-.__ __ _,','    '`-..___;-...__   ,.'\\ ____.___.'"<<endl;
+    cout <<" `\"^--'..'   '-`-^-'\"--    `-^-'`.''\"\"\"\"\"`.,^.`.--' "<<endl;
+	}
+    
+	else if (index == 7) {
+	cout<<"                   _,........_"<<endl;
+    cout<<"               _.-'    ___    `-._"<<endl;
+    cout<<"            ,-'      ,'   \\       `."<<endl;
+    cout<<" _,...    ,'      ,-'     |  ,\"\"\":`._."<<endl;
+    cout<<"/     `--+.   _,.'      _.',',|\"|  ` \\`"<<endl;
+    cout<<"\\_         `\"'     _,-\"'  | / `-'   l L\\"<<endl;
+    cout<<"  `\"---.._      ,-\"       | l       | | |"<<endl;
+    cout<<"      /   `.   |          ' `.     ,' ; |"<<endl;
+    cout<<"     j     |   |           `._`\"\"\"' ,'  |__"<<endl;
+    cout<<"     |      `--'____          `----'    .' `."<<endl;
+    cout<<"     |    _,-\"\"\"    `-.                 |    \\"<<endl;
+    cout<<"     l   /             `.               F     l"<<endl;
+    cout<<"      `./     __..._     `.           ,'      |"<<endl;
+    cout<<"        |  ,-\"      `.    | ._     _.'        |"<<endl;
+    cout<<"        . j           \\   j   /`\"\"\"      __   |          ,\"`."<<endl;
+    cout<<"         `|           | _,.__ |        ,'  `. |          |   |"<<endl;
+    cout<<"          `-._       /-'     `L       .     , '          |   |"<<endl;
+    cout<<"              F-...-'          `      |    , /           |   |"<<endl;
+    cout<<"              |            ,----.     `...' /            |   |"<<endl;
+    cout<<"              .--.        j      l        ,'             |   j"<<endl;
+    cout<<"             j    L       |      |'-...--<               .  /"<<endl;
+    cout<<"             `     |       . __,,_    ..  |               \\/"<<endl;
+    cout<<"              `-..'.._  __,-'     \\  |  |/`._           ,'`"<<endl;
+    cout<<"                  |   \"\"       .--`. `--,  ,-`..____..,'   |"<<endl;
+    cout<<"                   L          /     \\ _.  |   | \\  .-.\\    j"<<endl;
+    cout<<"                  .'._        l     .\\    `---' |  |  || ,'"<<endl;
+    cout<<"                   .  `..____,-.._.'  `._       |  `--;\"I'"<<endl;
+    cout<<"                    `--\"' `.            ,`-..._/__,.-1,'"<<endl;
+    cout<<"                            `-.__  __,.'     ,' ,' _-'"<<endl;
+    cout<<"                                 `'...___..`'--^--' "<<endl;
+	}
+
+	else if (index == 8) {
+ 	cout << "                 .\"-,.__"<<endl;
+    cout << "                 `.     `.  ,"<<endl;
+    cout << "              .--'  .._,'\"-' `."<<endl;
+    cout << "             .    .'         `'"<<endl;
+    cout << "             `.   /          ,'"<<endl;
+    cout << "               `  '--.   ,-\"'"<<endl;
+    cout << "                `\"`   |  \\"<<endl;
+    cout << "                   -. \\, |"<<endl;
+    cout << "                    `--Y.'      ___."<<endl;
+    cout << "                         \\     L._, \\"<<endl;
+    cout << "               _.,        `.   <  <\\                _"<<endl;
+    cout << "             ,' '           `, `.   | \\            ( `"<<endl;
+    cout << "          ../, `.            `  |    .\\`.           \\ \\_"<<endl;
+    cout << "         ,' ,..  .           _.,'    ||\\l            )  '\"."<<endl;
+    cout << "        , ,'   \\           ,'.-.`-._,'  |           .  _._`."<<endl;
+    cout << "      ,' /      \\ \\        `' ' `--/   | \\          / /   ..\\"<<endl;
+    cout << "    .'  /        \\ .         |\\__ - _ ,'` `        / /     `.`."<<endl;
+    cout << "    |  '          ..         `-...-\"  |  `-'      / /        . `."<<endl;
+    cout << "    | /           |L__           |    |          / /          `. `."<<endl;
+    cout << "   , /            .   .          |    |         / /             ` `"<<endl;
+    cout << "  / /          ,. ,`._ `-_       |    |  _   ,-' /               ` \\"<<endl;
+    cout << " / .           \\\"`_/. `-_ \\_,.  ,'    +-' `-'  _,        ..,-.    \\`."<<endl;
+    cout << ".  '         .-f    ,'   `    '.       \\__.---'     _   .'   '     \\ \\"<<endl;
+    cout << "' /          `.'    l     .' /          \\..      ,_|/   `.  ,'`     L`"<<endl;
+    cout << "|'      _.-\"\"` `.    \\ _,'  `            \\ `.___`.'\"`-.  , |   |    | \\"<<endl;
+    cout << "||    ,'      `. `.   '       _,...._        `  |    `/ '  |   '     .|"<<endl;
+    cout << "||  ,'          `. ;.,.---' ,'       `.   `.. `-'  .-' /_ .'    ;_   ||"<<endl;
+    cout << "|| '              V      / /           `   | `   ,'   ,' '.    !  `. ||"<<endl;
+    cout << "||/            _,-------7 '              . |  `-'    l         /    `||"<<endl;
+    cout << ". |          ,' .-   ,' ||               | .-.        `.      .'     ||"<<endl;
+    cout << " `'        ,'    `\".'    |               |    `.        '. -.'       `'"<<endl;
+    cout << "          /      ,'      |               |,'    \\-.._,.'/'"<<endl;
+    cout << "          .     /        .               .       \\    .''"<<endl;
+    cout << "        .`.    |         `.             /         :_,'.'"<<endl;
+    cout << "          \\ `...\\   _     ,'-.        .'         /_.-'"<<endl;
+    cout << "           `-.__ `,  `'   .  _.>----''.  _  __  /"<<endl;
+    cout << "                .'        /\"'          |  \"'   '_"<<endl;
+    cout << "               /_|.-'\\ ,\".             '.'`__'-( \\"<<endl;
+    cout << "                 / ,\"'\"\\,'               `/  `-.|\" "<<endl;
+	}
+
+	else if (index == 9) {
+    cout << "                                      ,\\'\\`--."<< endl;
+    cout << "                                     |     __ `-."<< endl;
+    cout << "                                     |    /  `.  `."<< endl;
+    cout << "                                      \\        ,   `."<< endl;
+    cout << "                                       `.      \\_    `."<< endl;
+    cout << "                                         `.    | `.    \\"<< endl;
+    cout << "                                           `--\"    `.   `"<< endl;
+    cout << "                                                     `.  `"<< endl;
+    cout << "                 ,.._                                  \\  `"<< endl;
+    cout << "               /_,.  `.                                 \\  `"<< endl;
+    cout << "              j/   .   \\                  ___            \\  \\"<< endl;
+    cout << "              |    |   `____         _,--'   `.           .  L"<< endl;
+    cout << "               L  /`--\"'    `'--._ ,'   ,-`'\\ |            . |"<< endl;
+    cout << "                |-                /  ,''     ||            | |"<< endl;
+    cout << "     -v._      /                   ,'        ||            | |"<< endl;
+    cout << "       `.`-._,'               _     \\        |j    _,...   | |"<< endl;
+    cout << "         `,.'             _,-. \\     |      /,---\"\"     `- | |"<< endl;
+    cout << "        .'              ,\".   ||     `..___/,'            `' |"<< endl;
+    cout << "        |   ,         _/`-'  /,'                            `|"<< endl;
+    cout << "        |-.__.-'\"''\"\"' \"\"\"\"\"\"\"\"--`_,...-----''''--...--      `."<< endl;
+    cout << "         `.____,..              \"\"   __,..---\"\"\"              |"<< endl;
+    cout << "          |       `              --\"'.                        `"<< endl;
+    cout << "          |     ,' `._                \\'                       `"<< endl;
+    cout << "          | |  .^.    `.             /                          `."<< endl;
+    cout << "         ,'_]__|  \\   / `.          /          /____._            `._"<< endl;
+    cout << "       ,'          \\ j    '        /          /       `.             `."<< endl;
+    cout << " ___,.' `._       __L/    |     __'          /     _, / \\             |"<< endl;
+    cout << "`-._       L,.-\"\"\"  .    ,' _.-','          /-----'-./   `--.         |"<< endl;
+    cout << "   '   / ,'         '..'\"_,'    /         F /  .\"'_,'        |.__     '"<< endl;
+    cout << "  / ,.\\,'              \"\"      /         / (,'\\ .'        ,.-\"'  `.  j"<< endl;
+    cout << "  -'   '                      /        ,'     `\"         / __/' .- ,'"<< endl;
+    cout << "                           __.'\"`.    /                 `-' | _,L,'"<< endl;
+    cout << "                         .',      `\"\"'                      '/,--"<< endl;
+    cout << "                          / _..' _,,'"<< endl;
+    cout << "                          ,' `-\"' "<< endl;
+	}
+
+	else if (index == 10) {
+    cout << "                           _            _"<<endl;
+    cout << "                          / )  _  _,.-\"\" )"<<endl;
+    cout << "                        ,' /..' /\"   _,+'--\"`."<<endl;
+    cout << "                       /     / j_.-\"'     ,-\""<<endl;
+    cout << "                     ,'    ,'       _____  `"<<endl;
+    cout << "                   _+__   .     _.-'     \\  `...._"<<endl;
+    cout << "              ,'\"\"\"    \"\"/  _.-'          .       \\"<<endl;
+    cout << "            ,'          '  ',--'\"\"`-.      L   ,-\""<<endl;
+    cout << "          .\"              .'         \\     |  /"<<endl;
+    cout << "        ,' _                          \\    | j      _"<<endl;
+    cout << "       / ,'   _,+-'                 _,'   ,' /_,.-\"\" |"<<endl;
+    cout << "    _.' '  .+'.  \\               ,-\"___..\"  -'      ,'"<<endl;
+    cout << " ,-\"     ,'-' |  |           .,-\"\"''___,..-'       /"<<endl;
+    cout << "j        `\"\"\"\"---'             '\"'\"\"       ._    , _.--\"."<<endl;
+    cout << "\\   ,                                        `- ' `._  ,'"<<endl;
+    cout << " \\                            _.-'            .\"`.   `-. ____...----\"\"`"<<endl;
+    cout << "  `.-\"-._,..---+ +          ,'       `         `.'      `.             |"<<endl;
+    cout << "      `.        \\/        ,'          |            ,.---. \\           ."<<endl;
+    cout << "        `._               +__,...__   |     ,     |     |  L        .'"<<endl;
+    cout << "           `--...-\"\"`-._   /       `,\"    ,'      `     |  |      ,'"<<endl;
+    cout << "                     /  `./        /    ,'         \\    j  '    .'"<<endl;
+    cout << "                    /    j        /    .       _    `._'     ,-'"<<endl;
+    cout << "                   j     '       /     |     .\" `         ,-'"<<endl;
+    cout << "                   |, .<(       '      `      \\_/       ,'"<<endl;
+    cout << "                   |-...+.___,./`.______\\             ,'"<<endl;
+    cout << "                   `.'`.' \\/  V /_/.___  `.  _     _,'"<<endl;
+    cout << "                                `....\\_`,-\",' |,-./"<<endl;
+    cout << "                                        `\"\"..-'---` "<<endl;
+	}
+
+	else if (index == 11) {
+    cout << "        ,-\"\"'-.._"<<endl;
+    cout << "   .---'\"\" \">` - `--"<<endl;
+    cout << "   `.      `-._  .`-."<<endl;
+    cout << "     `-.       \\ .` : -."<<endl;
+    cout << "      _.>._     / ` `:..,"<<endl;
+    cout << " ,.../...._`\"-./    '.|, `"<<endl;
+    cout << "`---.._\"'-.`-._    |    \"'--."<<endl;
+    cout << "       `--.\\`. `._,'         `.---------------.._"<<endl;
+    cout << "            \"-'--.___          \\`'\"-..__         `-._"<<endl;
+    cout << "                     `.\"`-\\     ` `\"--..\"`-.-..__    `\"."<<endl;
+    cout << "                       `.  `.     |``._ `--. `-..`\"-._`.\\-."<<endl;
+    cout << "                         \\   -....' `-.`-.  `-._ `-.  `-.\\ `."<<endl;
+    cout << "                          `-.__  `.`-. `. `._   `._ `-.  `.  `."<<endl;
+    cout << "                               `-..`` `. `.  `.    `.  `-.     \\"<<endl;
+    cout << "                                   \\`.` `  `.  `.    `.   `-.   `."<<endl;
+    cout << "                                    `.`-'`.  \\   .     `.    `.   \\"<<endl;
+    cout << "                                      `..  \\  \\   \\      `.    `.,_`."<<endl;
+    cout << "                                         \\` \\  .   `.     '\\     `.`.`._"<<endl;
+    cout << "                                          \\``.  \\    \\     \\`.    |"<<endl;
+    cout << "                                           ' '.  \\    \\     \\ \\   L"<<endl;
+    cout << "                                             \\ \\  '    `    '. `.  \\"<<endl;
+    cout << "                                              ` `. \\    `    '.  `. `."<<endl;
+    cout << "                                               `. `,`.   `.   `.   `._."<<endl;
+    cout << "                                                 `-  \\._   `.  `.     \"`"<<endl;
+    cout << "                                                      ` `.   `.  ."<<endl;
+    cout << "                                                          `-. ``-.:-."<<endl;
+    cout << "                                                              -.`. '\"-'"<<endl;
+    cout << "                                                                 `\"-. "<<endl;
+	}
+
+	else if (index == 12) {
+    cout << "________                  ,d888888888b,                  ________ " << endl;
+    cout << "     _.-;`               ,dP'         `Qb,           _.-`.`         " << endl;
+    cout << "   .`  <           ,d88buP               ud88b,    <  .` " << endl;
+    cout << "    `.  `.        dP   8`   ..       ..   `8   Qb    \\  `. " << endl;
+    cout << "      `>  `,     dP .::8 _ :.@;  _  ;@.: _ 8::. Qb    `,  `> " << endl;
+    cout << "     /`   /     ,8` .::dP        `.`        Qb::. `8,  /`  /` " << endl;
+    cout << "   /`    `\\     dP .:::8(      `--^--`      )8:::. Qb `\\ /` " << endl;
+    cout << "  `-,_     `\\   8` :::: Qba,..,       ,..,adP:::: `8   `-,_ " << endl;
+    cout << "      ~-.  /`  ,8  ::::::,p`""         ""`q,::::::  8,   /` ~-. " << endl;
+    cout << "      _-`/`   ,d` .:::::,d`               `b,:::::. `b,/`   _-` " << endl;
+    cout << "  ,-`  `\\   ,d` .::::::d`                 `b::::::. `b\\ .-` " << endl;
+    cout << "  `-,_    `\\,d` q888q8b,8    ,p       q,    8,d8p888p `b,\\`-. " << endl;
+    cout << "      `-,.  d` d,  ;  `b,   8,       ,8   ,d`  ;  ,b `b `. `-,. " << endl;
+    cout << "        .` ,8  8 `  `   `b,  `b,     ,d`  ,d`   `  ` 8  8 ,`  .` " << endl;
+    cout << "       ,` / q, `b,       `b  a88a. .a88a  d`       ,d` ,p/  ,` " << endl;
+    cout << "      <  `. `q,  `b,      8      8.8      8      ,d  ,p`. < " << endl;
+    cout << "       `.  ; `Q888`b,    `Q8888P" "Q8888P`    ,d`888P`  ; `. " << endl;
+    cout << "_____    `_`          Q888P              Q888P          `._;   ____ " << endl;
+    cout << "                                                                   " << endl;
+	}
+	else if (index == 13) {
+	cout << "	    .eec.              .e$ " << endl;
+	cout << "   z$**$$eec..       zP  .3$c    " << endl;
+	cout << "  .$`  d$`  ```****bee*=*`` *$ " << endl;
+	cout << "  $%  d$$                   ^$% " << endl;
+	cout << " .$  z$%$bc.                 $% " << endl;
+	cout << " 4F 4$` $`^$*ec..  .ee.    ./` b " << endl;
+	cout << " dF $P  P  F   `````3F````   4 " << endl;
+	cout << "  4$$               $F         F " << endl;
+	cout << "  ^$F   .......     $F        .F " << endl;
+	cout << "   $`  z`     ^`````$F`````````%. " << endl;
+	cout << "  4$  4F     e      $L          `. " << endl;
+	cout << "  4F  ^L    4$     z%`c    *.    b " << endl;
+	cout << "  d    ^$*=e$$eer=$`  `be..JL..ee* " << endl;
+	cout << "  $     $   $F    $   zP   4P   F " << endl;
+	cout << "  F     F   $F    4. .P    d%  J " << endl;
+	cout << " 4%     F   $F     F $`   zP   P " << endl;
+	cout << " J      F   '%     Fd`   4P   4` " << endl;
+	cout << " $      F          $F         P " << endl;
+	cout << " $      L         .$         4% " << endl;
+	cout << " *      '.       .$$.       .$ " << endl;
+	cout << " `       ^`****```  `*******$` " << endl;
+	cout << "  %                        .P " << endl;
+	cout << "   *c                     .@ " << endl;
+	cout << "    ^`%            ...zed*  " << endl;
+	cout << "       ^``````````` " << endl;
+	}
+	else if (index == 14) {
+	cout << "  _ /\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/|  " << endl;
+	cout << "| |/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/ | " << endl;
+	cout << "| |   PLAYER                                                              | | " << endl;
+	cout << "| |      Hello my lovely Engimon                                            | | " << endl;
+	cout << "| |      1. How are you? May I see your status?                           | | " << endl;
+	cout << "| |      2. I will give you a new name                                    | | " << endl;
+	cout << "| |      3. Let's go find wild engimon together                           | | " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/| " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/  " << endl;
+	}
+	else if (index == 15) {
+	cout << "  _ /\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/|  " << endl;
+	cout << "| |/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/ | " << endl;
+	cout << "| |   ENGIMON                                                             | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |        Hmmm, I'm fine. Yeah Master, I will show my status             | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/| " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/  " << endl;
+	}
+	else if (index == 16) {
+	cout << "  _ /\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/|  " << endl;
+	cout << "| |/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/ | " << endl;
+	cout << "| |   ENGIMON                                                             | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |        Yeayyyy, with pleasure Master                                  | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/| " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/  " << endl;
+	}
+	else if (index == 17) {
+	cout << "  _ /\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/|  " << endl;
+	cout << "| |/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/ | " << endl;
+	cout << "| |   ENGIMON                                                             | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |        Yosh, Lets GOOO!!!!                                            | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/| " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/  " << endl;
+	}
+	else if (index == 18) {
+	cout << "  _ /\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/|  " << endl;
+	cout << "| |/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/ | " << endl;
+	cout << "| |   ENGIMON                                                             | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |       Master, let's win this match together                           | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/| " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/  " << endl;
+	}
+	else if (index == 19) {
+	cout << "  _ /\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/|  " << endl;
+	cout << "| |/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/ | " << endl;
+	cout << "| |   ENGIMON                                                             | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |       Oh sh*t, the enemy damage was massive.                          | | " << endl;
+	cout << "| |       Sorry sir, I can't survive anymore                              | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/| " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/  " << endl;
+	}
+	else if (index == 20) {
+	cout << "  _ /\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/|  " << endl;
+	cout << "| |/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/ | " << endl;
+	cout << "| |   ENGIMON                                                             | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |       Yeyey yeyey, we did it master                                   | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/| " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/  " << endl;
+	}
+	else if (index == 21) {
+	cout << "  _ /\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/|  " << endl;
+	cout << "| |/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/ | " << endl;
+	cout << "| |   PLAYER                                                              | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |       Oww wow, we found wild engimon! Let's catch it!                 | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/| " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/  " << endl;
+	}
+	else if (index == 22) {
+	cout << "  _ /\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/|  " << endl;
+	cout << "| |/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/ | " << endl;
+	cout << "| |   WILD ENGIMON                                                        | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |       What? If you want to have me, you have to beat me first         | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "| |                                                                       | | " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/| " << endl;
+	cout << "|/\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\/  " << endl;
+	}
 }

@@ -236,6 +236,8 @@ public:
 
 	void deactivateEngimon();
 	void delearnSkill(int idx);
+
+	static void drawing(int index);
 };
 
 
