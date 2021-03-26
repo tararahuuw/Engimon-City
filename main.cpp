@@ -1,6 +1,8 @@
 #include <bits/stdc++.h> //no need to include another c++ library
 #include "Player.h"
 
+void printCommandList();
+
 //to do : bikin list command
 //g++ main.cpp Player.cpp Engimon2.cpp Species.cpp peta.cpp Skill.cpp
 int main(){
@@ -11,14 +13,17 @@ int main(){
     string filename;
     cin >> filename;
     Peta peta(b,k);
-	peta.BacaFile(filename);
+	bool berhasil = peta.BacaFile(filename);
+    if( !berhasil) exit(1);
 	Player player1(make_pair(13,13), peta);
     player1.spawn();
     int round = 0;
+    printCommandList();
     bool isLastCommandMove = false;
     bool isGameOver = false;
     string command;
-    cin >> command;
+    cout << "Enter your command : ";
+    cin >>command;
     //nanti welcome message disini
     while (command != "exit" &&  !(isGameOver)){
         try{
@@ -50,7 +55,7 @@ int main(){
                 player1.viewListEngimon();
             }
 
-            if (command == "viewItems"){
+            if (command == "viewItem"){
                 player1.viewListSkill();
             }
 
@@ -65,11 +70,11 @@ int main(){
                 cin >> idx;
                 player1.activateEngimon(idx-1);
             }
-            if(command == "status") {
-                if (player1.isThereActiveEngimonYet()) cout << "status : " << player1.getActiveEngimon().getStatus() << endl;
-                else throw ActiveEngimonKosong();
-            }
-
+            // if(command == "status") {
+            //     if (player1.isThereActiveEngimonYet()) cout << "status : " << player1.getActiveEngimon().getStatus() << endl;
+            //     else throw ActiveEngimonKosong();
+            // }
+            
             if (command =="detailEng"){
                 player1.viewListEngimon();
                 int idx;
@@ -81,7 +86,7 @@ int main(){
             if (command == "detailItem"){
                 player1.viewListSkill();
                 int idx;
-                cout << "Choose engimon (use number) :";
+                cout << "Choose skill item (use number) :";
                 cin >> idx;
                 player1.getListSkill().getSkillX(idx-1).printDetail();
                 cout << endl;
@@ -117,6 +122,10 @@ int main(){
             if (command == "deactivate"){
                 player1.deactivateEngimon();
             }
+
+            if (command == "help"){
+                printCommandList();
+            }
             //jika mencapai round dengan kriteria tertentu, random spawn dan/atau random gerak
             if (round%15 == 0){
                 player1.spawn();
@@ -146,8 +155,30 @@ int main(){
             //do nothing;
         }
         isLastCommandMove = false;
-        cin >> command;       
+        if (!isGameOver) cout << "Enter your command : ";
+        cin >>command;       
     }
 
     //goodbye
+}
+
+void printCommandList(){
+    cout << "List command that you can use:\n" << endl;
+    cout << "exit           \t- To exit the game" << endl;
+    cout << "\"w\" or \"W\"\t- Move up" << endl;
+    cout << "\"a\" or \"A\"\t- Move left" << endl;
+    cout << "\"s\" or \"S\"\t- Move down" << endl;
+    cout << "\"d\" or \"D\"\t- Move right" << endl;
+    cout << "map            \t- To view map" << endl;
+    cout << "viewEng        \t- To view Engimon Inventory" << endl;
+    cout << "viewItem       \t- To view Skill Item Inventory" << endl;
+    cout << "viewInventory  \t- To view all inventory" << endl;
+    cout << "activate       \t- To activate Engimon" <<endl;
+    cout << "deactivate     \t- To deactivate Engimon" << endl;
+    cout << "detailEng      \t- To view details of one specific Engimon" << endl;
+    cout << "detailItem     \t- To view details of one specific Skill Item" << endl;
+    cout << "learn          \t- To learn Skill Item in Active Engimon" << endl;
+    cout << "battle         \t- To battle adjacent Wild Engimon" << endl;
+    cout << "breeding       \t- To breed 2 Engimons" << endl;
+    cout << "help           \t- View this list" <<endl;
 }

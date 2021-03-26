@@ -29,9 +29,9 @@ Player::Player(pair<int,int> Coordinate, const Peta& p){
 	Species* A = katalogspecies[0];
 	Species* L = katalogspecies[2];
 	Species* T = katalogspecies[1];
-	Engimon Alam(A, "Alam", "", "", "", "", 10, 0, 0, true, false);
-	Engimon Chelsie(L, "Chelsie", "", "", "", "", 10,0,0,true, false);
-	Engimon Monica(T, "Monica", "", "", "", "", 10, 0, 0, true, false);
+	Engimon Alam(A, "Alam", "", "", "", "", 5, 0, 0, true, false);
+	Engimon Chelsie(L, "Chelsie", "", "", "", "", 5,0,0,true, false);
+	Engimon Monica(T, "Monica", "", "", "", "", 5, 0, 0, true, false);
 	this->addEngimonToInven(Alam);
 	this->addEngimonToInven(Chelsie);
 	this->addEngimonToInven(Monica);
