@@ -457,6 +457,7 @@ bool Player::battle(Engimon& enemy) {
 				cout << "Your Engimon is defeated" << endl;
 				this->activeEngimon = Engimon(); // Engimon player ditimpa default Engimon
 				this->isThereActiveEngimon = false;
+				this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second, this->peta.GetElementPetaTetap(this->coorActive.first,this->coorActive.second));
 				//changeEngimon(p,attempt); // kalo Engimon mati wajib ganti
 				ongoing = 0;
 				//oh ini harusnya kalau sampai sini gak battle lagi ya?

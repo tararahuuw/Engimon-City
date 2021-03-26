@@ -161,10 +161,7 @@ public:
 	
 };
 
-//TODO : breeding, battle
-//spawn wild engimon
-//need to fix output view inventory, currently ugly
-//waiting thomas fixing output
+
 //interaction with active engimon
 class Player{
 private:
