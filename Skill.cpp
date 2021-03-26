@@ -106,6 +106,22 @@ bool Skill::hasElement(Element elm)
     for (auto i = element.begin(); i != element.end(); ++i) { if (*i == elm) return true; }
     return false;
 }
+void Skill::printDetail(){
+    cout << "[ " << name << " | ";
+    cout << basePower;
+    cout << " | ";
+    cout << masteryLevel;
+    cout << " | ";
+
+    int j =0;
+    for (auto i = element.begin(); i != element.end(); ++i){
+        if (j != 0){
+            cout << "/";
+        }
+        cout << (*i);
+    }
+    cout << " ]";
+}
 /* Class KatalogSkill */
 
 SkillsFactory::SkillsFactory(){
