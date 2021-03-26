@@ -402,7 +402,7 @@ bool Player::battle(Engimon& enemy) {
 	bool hasil;
 	while(ongoing == 1) {
 		string answer;
-		cout << "Enemy : " << enemy.getSpecies() << endl;
+		cout << "Enemy : " << enemy.getSpecies() << endl; //error disini
 		cout << "Element : ";
 		vector<Element> element = enemy.getElement();
 		for (auto i = element.begin(); i != element.end(); ++i) {
@@ -463,7 +463,7 @@ bool Player::battle(Engimon& enemy) {
 						{
 							throw InvalidIndexException(); //ini apa gak suruh minta inputan lagi aja sampai dapet engimon yang pas?
 							//maksudnya biar dia cuma keluar dari battle kalau kalah atau run
-							
+
 							//ABAIKAN KOMEN INI, BACA YANG BAWAH YANG TANYA GAK BATTLE LAGI KALAU PLAYER KALAH
 						}
 						cout << "You have successfully changed your active Engimon" << endl;
@@ -597,4 +597,22 @@ pair<int,int> Player:: getEnemyAround(){
 
 bool Player::isGameOver(){
 	return (not this->isThereActiveEngimon  and this->listEngimon.getSize()==0);
+}
+
+void Player::deactivateEngimon(){
+	if (this->isThereActiveEngimon){
+		this->addEngimonToInven(this->activeEngimon);
+		this->isThereActiveEngimon =false;
+		this->activeEngimon = Engimon();
+	}else throw ActiveEngimonKosong();
+}
+
+void Player::delearnSkill(int idx){
+	if (this->isThereActiveEngimon){
+		Skill dummy = this->activeEngimon.getSkills().at(idx);
+		this->activeEngimon.dropSkill(dummy);
+	//these lines below will be executed if there is no exception throwed
+		// this->listSkillItem.addElement(dummy);
+		//ditambahin ke invent gak ya?
+	}else throw ActiveEngimonKosong();
 }

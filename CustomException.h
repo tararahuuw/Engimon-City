@@ -4,7 +4,7 @@
 using namespace std;
 class InventoryPenuhException : public exception{
 	public:
-	virtual char const * what() const noexcept { return "Inventory penuh"; } 
+	virtual char const * what() const noexcept { return "Inventory is full"; } 
 };
 
 class InvalidIndexException : public exception{
@@ -14,42 +14,42 @@ class InvalidIndexException : public exception{
 
 class InventoryKosongException : public exception{
 	public:
-	virtual char const * what() const  noexcept { return "Inventory yang diminta kosong";}
+	virtual char const * what() const  noexcept { return "Inventory is empty";}
 };
 
 class EmptySkillsItemException : public exception{
 	public:
-	virtual char const * what() const noexcept { return "Item skill yang diminta tidak ada";}
+	virtual char const * what() const noexcept { return "There is no item skill";}
 };
 
 class InvalidEngimonException : public exception{
 	public:
-	virtual char const * what() const noexcept {return "Engimon yang dipilih tidak valid";}
+	virtual char const * what() const noexcept {return "Invalid engimon choice";}
 };
 
 class InvalidElement : public exception {
 	public:
-	virtual char const * what() const noexcept {return "Skill yang dipilih tidak sesuai dengan elemen Engimon";}
+	virtual char const * what() const noexcept {return "Choosen skill doesnt compatible with engimon's element(s)";}
 };
 
 class SkillPenuh : public exception {
 	public:
-	virtual char const * what() const noexcept {return "Engimon sudah memiliki 4 skill";}
+	virtual char const * what() const noexcept {return "Engimon already has 4 skills";}
 };
 
 class SudahPunyaSkill : public exception {
 	public:
-	virtual char const * what() const noexcept {return "Engimon sudah memiliki skill ini";}
+	virtual char const * what() const noexcept {return "Engimon already has this skill";}
 };
 
 class TidakMemilikiSkill : public exception {
 	public:
-	virtual char const * what() const noexcept {return "Engimon tidak memiliki skill ini";}
+	virtual char const * what() const noexcept {return "Engimon doesnt have this skill";}
 };
 
 class ActiveEngimonKosong : public exception {
 	public:
-	virtual char const * what() const noexcept {return "Tidak ada active engimon";}
+	virtual char const * what() const noexcept {return "There is no active engimon";}
 };
 
 class InvalidMove : public exception {

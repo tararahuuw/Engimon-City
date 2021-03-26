@@ -38,8 +38,20 @@ int main(){
             if (command == "peta"){
                 player1.lihatPeta();
             }
+            if (command == "viewEng"){
+                player1.viewListEngimon();
+            }
 
+            if (command == "viewItems"){
+                player1.viewListSkill();
+            }
+
+            if (command == "viewInventory"){
+                player1.viewListEngimon();
+                player1.viewListSkill();
+            }
             if (command == "activate"){
+                player1.viewListEngimon();
                 int idx;
                 cout << "Masukkan nomor engimon yang ingin digunakan :";
                 cin >> idx;
@@ -63,10 +75,14 @@ int main(){
                     int idx1,idx2;
                     cout << "Masukkan nomor engimon yang ingin digunakan :";
                     cin >> idx1 >> idx2;
-                    player1.breeding(idx1,idx2);
+                    player1.breeding(idx1-1,idx2-1);
                 }
             }
 
+
+            if (command == "deactivate"){
+                player1.deactivateEngimon();
+            }
             //jika mencapai round dengan kriteria tertentu, random spawn dan/atau random gerak
             if (round%15 == 0){
                 player1.spawn();

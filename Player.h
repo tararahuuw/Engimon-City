@@ -236,6 +236,9 @@ public:
 	pair<int,int> getEnemyAround();
 
 	bool isGameOver();
+
+	void deactivateEngimon();
+	void delearnSkill(int idx);
 };
 
 
