@@ -69,7 +69,7 @@ class EnemyKosong : public exception{
 
 class NotEnoughEngiBreed : public exception{
 	public:
-	virtual char const * what const noexcept {return "Not enough Engimon in inventory to breed";}
+	virtual char const * what() const noexcept {return "Not enough Engimon in inventory to breed";}
 };
 
 #endif

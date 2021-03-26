@@ -395,6 +395,7 @@ vector<Skill> Player :: skillanak(Engimon A, Engimon B) {
         getSkill.push_back(allSkill[i]);
     }
   	return getSkill;
+}
 bool Player::battle(Engimon& enemy) {
 	int ongoing = 1;
 	int attempt = 1;
@@ -462,6 +463,8 @@ bool Player::battle(Engimon& enemy) {
 						{
 							throw InvalidIndexException(); //ini apa gak suruh minta inputan lagi aja sampai dapet engimon yang pas?
 							//maksudnya biar dia cuma keluar dari battle kalau kalah atau run
+							
+							//ABAIKAN KOMEN INI, BACA YANG BAWAH YANG TANYA GAK BATTLE LAGI KALAU PLAYER KALAH
 						}
 						cout << "You have successfully changed your active Engimon" << endl;
 						found = 1;
@@ -478,6 +481,11 @@ bool Player::battle(Engimon& enemy) {
 					}
 				}
 				ongoing = 0;
+				//oh ini harusnya kalau sampai sini gak battle lagi ya?
+				//kalau iya hasilnya false;
+				hasil = false;
+
+				//kalau dia kalah dia wajib activate engimon waktu mash mode battle? kalau di luar mode battle gimna?
 			}
 					
 		}
@@ -537,6 +545,7 @@ bool Player::battle(Engimon& enemy) {
 		}
 
 	}
+	return hasil;
 }
 
 void Player:: initBattle(){
@@ -584,4 +593,8 @@ pair<int,int> Player:: getEnemyAround(){
 	}
 
 	return make_pair(-1,-1);
+}
+
+bool Player::isGameOver(){
+	return (not this->isThereActiveEngimon  and this->listEngimon.getSize()==0);
 }

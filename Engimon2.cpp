@@ -191,6 +191,7 @@ float Engimon::advantage(Engimon& e1,Engimon& e2,int n) {
     else if(n == 2) {
         return y;
     }
+    return -1;
 }
 
 vector<vector<float>> Engimon::getAdvElementTable() const{

@@ -234,6 +234,8 @@ public:
 	bool isEnemyAround();
 
 	pair<int,int> getEnemyAround();
+
+	bool isGameOver();
 };
 
 
