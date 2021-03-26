@@ -198,6 +198,7 @@ float Engimon::advantage(Engimon& e1,Engimon& e2,int n) {
     else if(n == 2) {
         return y;
     }
+    return -1;
 }
 
 vector<vector<float>> Engimon::getAdvElementTable() const{
@@ -271,6 +272,7 @@ void Engimon::addSkill(Skill _skill)
         
     }
 }
+
 
 void Engimon::printDetail()
 {
@@ -371,11 +373,4 @@ void Engimon::addEXP(int exp)
 bool Engimon::checkNumOfElements() const
 {
     return species->isSingleElement();
-}
-
-void Engimon::printASCII(){
-    if (species->getName() == "Snorlax")
-    {
-        
-    }
 }

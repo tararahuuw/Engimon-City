@@ -294,3 +294,307 @@ void Player:: spawn(){
 void Player:: randomMove(){
 	this->peta.GerakinSemuaEngimon();
 }
+
+void Player :: breeding (int Index1, int Index2) {
+    string nama;
+    Species* spec;
+	SpeciesFactory specieses;
+    specieses.initSpecies();
+
+	Engimon A = this->listEngimon.getElementX(Index1);
+	Engimon B = this->listEngimon.getElementX(Index2);
+  
+    cout << "Masukkan nama anak : ";
+    cin >> nama;
+  	if (A.getElement().at(0) == B.getElement().at(0)) {
+      	spec = A.getSpecies();
+    }
+
+    else
+    {
+      
+        if (A.getAdvantageElement(B.getElement().at(0)) > B.getAdvantageElement(A.getElement().at(0))) {
+      		spec = A.getSpecies();
+        }
+        else if (A.getAdvantageElement(B.getElement().at(0)) == B.getAdvantageElement(A.getElement().at(0))) {
+          if ((A.getSpecies()->hasElement(fire) && B.getSpecies()->hasElement(electric)) ||
+              (B.getSpecies()->hasElement(fire) && A.getSpecies()->hasElement(electric))) {
+                  spec = specieses[5];
+              }
+          else if ((A.getSpecies()->hasElement(water) && B.getSpecies()->hasElement(ice)) ||
+              (B.getSpecies()->hasElement(water) && A.getSpecies()->hasElement(ice))) {
+                  spec = specieses[6];
+              }
+          else if ((A.getSpecies()->hasElement(water) && B.getSpecies()->hasElement(ground)) ||
+              (B.getSpecies()->hasElement(water) && A.getSpecies()->hasElement(ground))) {
+                  spec = specieses[7];
+              }
+          }
+  
+        else {
+      		spec = B.getSpecies();
+        }
+        
+    }
+
+  	Engimon C(spec, nama, A.getSpecies()->getName(), A.getName(), B.getSpecies()->getName(), B.getName(),
+        skillanak(A, B), 1, 0, 100, true, false);
+    
+	addEngimonToInven(C);
+}
+
+vector<Skill> Player :: skillanak(Engimon A, Engimon B) {
+  	int masteryA, masteryB;
+    vector<Skill> skillsA = A.getSkills();
+    vector<Skill> skillsB = B.getSkills();
+  	int n = skillsA.size() + skillsB.size();
+    int max;
+  	Skill allSkill[n];
+  	Skill temp;
+  	vector<Skill> getSkill;
+  	
+  	// Make a new array with all of the skills
+	for (int i = 0; i < skillsA.size(); i++) {
+      	allSkill[i] = skillsA[i];
+    }
+	for (int j = 0; j < skillsB.size(); j++) {
+      	allSkill[j + skillsA.size()] = skillsB[j];
+    }
+
+  	// Sort all skills according to mastery level
+	for (int i = 0; i < n - 1; i++) {
+		max = i;
+		for (int j = i + 1; j < n; j++) {
+            masteryA = allSkill[max].getMasteryLevel();
+            masteryB = allSkill[j].getMasteryLevel();
+            if (masteryA < masteryB)
+                max = j;
+        }
+        temp = allSkill[i];
+        allSkill[i] = allSkill[max];
+        allSkill[max] = temp;
+    }
+
+
+   // Remove duplicate skills
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = i + 1; j < n; j++) {
+            if (allSkill[i] == allSkill[j]) {   
+                int mastery = allSkill[i].getMasteryLevel() + 1;
+                allSkill[i].setMasteryLevel(mastery);
+                n = n - 1;
+          		for (int k = j; k < n; k++) {
+                  	allSkill[k] = allSkill[k + 1];
+                }
+            }
+        }
+    }
+  
+    getSkill.clear();
+    for (int i = 0; i < 4 && i < n; i++) {
+        getSkill.push_back(allSkill[i]);
+    }
+  	return getSkill;
+}
+bool Player::battle(Engimon& enemy) {
+	int ongoing = 1;
+	int attempt = 1;
+	bool hasil;
+	while(ongoing == 1) {
+		string answer;
+		cout << "Enemy : " << enemy.getSpecies() << endl;
+		cout << "Element : ";
+		vector<Element> element = enemy.getElement();
+		for (auto i = element.begin(); i != element.end(); ++i) {
+			cout << " - " << *i << endl;
+		} 
+		cout << "Level : " << enemy.getLevel() << endl;
+
+		cout << "What will you do?" << endl;
+		cout << "- attack" << endl;
+		cout << "- change active engimon" << endl;
+		cout << "- run" << endl;
+		cout << "Choose a command : ";
+		cin >> answer;
+		if(answer == "attack") {
+			//ongoing = attack(P,P.getActiveEngimon(),enemy,attempt); // error soalnya harusnya pake reference
+			SkillsFactory sf = SkillsFactory(); //buat nanti dapet skill item
+			float adv1 = Engimon::advantage(this->activeEngimon,enemy,1);
+			float adv2 = Engimon::advantage(this->activeEngimon,enemy,2);
+			float power1 = Engimon::countPower(this->activeEngimon,adv1);
+			float power2 = Engimon::countPower(enemy,adv2);
+			cout << "Player Engimon attacks with a total power of " << power1 << endl;
+			cout << "Wild Engimon attacks with a total power of " << power2 << endl;
+			if(power1 >= power2) { // kalo player menang
+				cout << "Player Engimon wins" << endl;
+				this->activeEngimon.addEXP(enemy.getLevel()*5); // tambah exp
+				this->addEngimonToInven(enemy); // nambah engimon ke inventoy
+
+				//dapet skill random
+				int ele2 = enemy.getElement().at(0); //yang dipake elemen enemy pertama
+				int x = rand() % sf.getSkills().size();
+				Skill s = Skill(sf[x]);
+				while(count(s.getElement().begin(),s.getElement().end(),ele2) == 0) { //skill randomnya beda elemen
+					x = (x + 1) % sf.getSkills().size();
+					s = Skill(sf[x]);
+				} 
+				this->addSkillItemToInven(s);
+				ongoing = 0;
+				hasil = true;
+			}
+			else {
+				cout << "Your Engimon is defeated" << endl;
+				this->activeEngimon = Engimon(); // Engimon player ditimpa default Engimon
+				this->isThereActiveEngimon = false;
+				//changeEngimon(p,attempt); // kalo Engimon mati wajib ganti
+				if(this->getListEng().getSize() >= 1) { // kalo masih ada Engimon di inventory
+					int found = 0;
+					while(found == 0) {
+						int x,y;
+						cout << "Please choose another Engimon to be active" << endl;
+						this->viewListEngimon(); 
+						cout << "Input the index of the Engimon : ";
+						cin >> x;
+						y = x - 1;
+						try {
+							this->activateEngimon(y); // error kalo input index di luar batas
+						}
+						catch (exception& e)
+						{
+							throw InvalidIndexException(); //ini apa gak suruh minta inputan lagi aja sampai dapet engimon yang pas?
+							//maksudnya biar dia cuma keluar dari battle kalau kalah atau run
+							
+							//ABAIKAN KOMEN INI, BACA YANG BAWAH YANG TANYA GAK BATTLE LAGI KALAU PLAYER KALAH
+						}
+						cout << "You have successfully changed your active Engimon" << endl;
+						found = 1;
+					}
+				}
+				else {
+					if(this->isThereActiveEngimon = false) { // otomatis kalah kalo Active Engimon mati dan nggak ada lagi di inventory
+						cout << "All of your Engimon are defeated." << endl;
+    					cout << "GAME OVER" << endl;
+						hasil = false;
+					}
+					else {
+						cout << "You don't have any other available Engimon" << endl;  //sampai sini bukannya udah kosong engimonnya dia?
+					}
+				}
+				ongoing = 0;
+				//oh ini harusnya kalau sampai sini gak battle lagi ya?
+				//kalau iya hasilnya false;
+				hasil = false;
+
+				//kalau dia kalah dia wajib activate engimon waktu mash mode battle? kalau di luar mode battle gimna?
+			}
+					
+		}
+		else if(answer == "change active engimon") {
+			if(this->getListEng().getSize() >= 1) { // kalo masih ada Engimon di inventory
+				int found = 0;
+				while(found == 0) {
+					int x,y;
+					cout << "Please choose another Engimon to be active" << endl;
+					this->viewListEngimon(); 
+					cout << "Input the index of the Engimon : ";
+					cin >> x;
+					y = x - 1;
+					try {
+						this->activateEngimon(y); // error kalo input index di luar batas
+					}
+					catch (exception& e)
+					{
+						throw InvalidIndexException();//ini apa gak suruh minta inputan lagi aja sampai dapet engimon yang pas?
+						//maksudnya biar dia cuma keluar dari battle kalau kalah atau run
+					}
+					cout << "You have successfully changed your active Engimon" << endl;
+					found = 1;
+				}
+			}
+			else {
+				if(this->isThereActiveEngimon = false) { // otomatis kalah kalo Active Engimon mati dan nggak ada lagi di inventory
+					cout << "All of your Engimon are defeated." << endl;
+					cout << "GAME OVER" << endl;
+					hasil = false;
+				}
+				else {
+					cout << "You don't have any other available Engimon" << endl; 
+				}
+			}
+
+		}
+		else if(answer == "run") {
+			//ongoing = run(attempt);
+			int x = rand() % 2 + 1;
+			if(attempt > 0) {
+				attempt = attempt - 1;
+				if(x == 1) {
+					cout << "You failed to run" << endl;
+					ongoing = 1;
+				}
+				else {
+					cout << "You successfully fled" << endl;
+					ongoing = 0;
+					hasil = false;
+				}
+			}
+			else {
+				cout << "You may only attempt to run once." << endl;
+				ongoing = 1; //ini attempt runnya gak tiap engimon aja? kalau 1 tiap player bisa langsung kalah kalau enemynya OP
+			}
+		}
+
+	}
+	return hasil;
+}
+
+void Player:: initBattle(){
+	if (this->isThereActiveEngimon and this->isEnemyAround()){
+		pair<int,int> coorEnemy = this->getEnemyAround();
+		Engimon enemy = this->peta.GetEngimonLiar(coorEnemy.first,coorEnemy.second);
+		bool win = this->battle(enemy);
+		if (win) {
+			this->peta.DeleteEngimon2(coorEnemy.first,coorEnemy.second);
+		}
+	}else{
+		if (not this->isThereActiveEngimon){
+			throw ActiveEngimonKosong();
+		}else throw EnemyKosong();
+	}
+}
+
+bool Player:: isEnemyAround(){
+	int y = this->coordinate.first;
+	int x = this->coordinate.second;
+	if ( y-1 >= 0 and (this->peta.GetElementPeta(y-1,x) != '-' or this->peta.GetElementPeta(y-1,x) != 'o' or this->peta.GetElementPeta(y-1,x) != 'X')){
+		return true;
+	}else if (x+1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y,x+1) != '-' or this->peta.GetElementPeta(y,x+1) != 'o' or this->peta.GetElementPeta(y,x+1) != 'X')){
+		return true;
+	}else if (y+1 < this->peta.GetBaris() and (this->peta.GetElementPeta(y+1,x) != '-' or this->peta.GetElementPeta(y+1,x) != 'o' or this->peta.GetElementPeta(y+1,x) != 'X')){
+		return true;
+	}else if (x-1 >= 0 and (this->peta.GetElementPeta(y,x-1) != '-' or this->peta.GetElementPeta(y,x-1) != 'o' or this->peta.GetElementPeta(y,x-1) != 'X')){
+		return true;
+	}
+
+	return false;
+}
+
+pair<int,int> Player:: getEnemyAround(){
+	int y = this->coordinate.first;
+	int x = this->coordinate.second;
+	if ( y-1 >= 0 and (this->peta.GetElementPeta(y-1,x) != '-' or this->peta.GetElementPeta(y-1,x) != 'o' or this->peta.GetElementPeta(y-1,x) != 'X')){
+		return make_pair(y-1,x);
+	}else if (x+1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y,x+1) != '-' or this->peta.GetElementPeta(y,x+1) != 'o' or this->peta.GetElementPeta(y,x+1) != 'X')){
+		return make_pair(y,x+1);
+	}else if (y+1 < this->peta.GetBaris() and (this->peta.GetElementPeta(y+1,x) != '-' or this->peta.GetElementPeta(y+1,x) != 'o' or this->peta.GetElementPeta(y+1,x) != 'X')){
+		return make_pair(y+1,x);
+	}else if (x-1 >= 0 and (this->peta.GetElementPeta(y,x-1) != '-' or this->peta.GetElementPeta(y,x-1) != 'o' or this->peta.GetElementPeta(y,x-1) != 'X')){
+		return make_pair(y,x-1);
+	}
+
+	return make_pair(-1,-1);
+}
+
+bool Player::isGameOver(){
+	return (not this->isThereActiveEngimon  and this->listEngimon.getSize()==0);
+}

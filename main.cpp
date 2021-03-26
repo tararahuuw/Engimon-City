@@ -9,10 +9,11 @@ int main(){
 	Player player1(make_pair(13,13), peta);
     int round = 0;
     bool isLastCommandMove = false;
+    bool isGameOver = false;
     string command;
     cin >> command;
     //nanti welcome message disini
-    while (command != "exit"){
+    while (command != "exit" and not isGameOver){
         try{
             if (command == "d" or command == "D"){
                 player1.moveD();
@@ -50,7 +51,21 @@ int main(){
                 cin >> idx;
                 player1.learnSkill(idx-1);
             }
+            if (command == "battle"){
+                player1.initBattle();
+            }
 
+            if (command == "breeding"){
+                if (player1.getListEng().getSize() < 2){
+                    throw NotEnoughEngiBreed();
+                }else{
+                    player1.viewListEngimon();
+                    int idx1,idx2;
+                    cout << "Masukkan nomor engimon yang ingin digunakan :";
+                    cin >> idx1 >> idx2;
+                    player1.breeding(idx1,idx2);
+                }
+            }
 
             //jika mencapai round dengan kriteria tertentu, random spawn dan/atau random gerak
             if (round%15 == 0){
@@ -70,6 +85,7 @@ int main(){
                     cout << "Relocating to " << player1.getYCoorAE() << "," << player1.getXCoorAE() <<endl;
                 }
             }
+            isGameOver = player1.isGameOver();
         }catch (exception& e){
             cout << e.what() << endl;
         }catch (...){

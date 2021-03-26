@@ -17,7 +17,5 @@ class Breeding {
 
         static vector<Skill> skillanak(Engimon A, Engimon B);
 
-        static float advantagebreeding(Engimon& e1,Engimon& e2,int n);
-
 };
 #endif

@@ -59,7 +59,17 @@ class InvalidMove : public exception {
 
 class InvalidMoveEngimon : public InvalidMove{
 	public:
-	virtual char const * what() const noexcept {return "Invalid move active engimon\nRelocating...";};
+	virtual char const * what() const noexcept {return "Invalid move active engimon\nRelocating...";}
+};
+
+class EnemyKosong : public exception{
+	public:
+	virtual char const * what() const noexcept {return "There is no enemy around";}
+};
+
+class NotEnoughEngiBreed : public exception{
+	public:
+	virtual char const * what() const noexcept {return "Not enough Engimon in inventory to breed";}
 };
 
 #endif

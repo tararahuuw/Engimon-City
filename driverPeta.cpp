@@ -8,13 +8,13 @@ int main(){
 	//P.PrintPeta();
 	//P.SpawnEngimon(10);
 	//P.PrintPeta();
-	P.SpawnEngimon(5);
+	P.SpawnEngimon();
 	P.PrintPeta();
 	//pair<int, Engimon> tmp = P.GetDaftarEngimon(0);
-	int b = P.GetBarisObjek(P.GetDaftarEngimon(2).first);
-	int k = P.GetKolomObjek(P.GetDaftarEngimon(2).first);
-	cout << b << endl;
-	cout << k << endl;
+	// int b = P.GetBarisObjek(P.GetDaftarEngimon(2).first);
+	// int k = P.GetKolomObjek(P.GetDaftarEngimon(2).first);
+	// cout << b << endl;
+	// cout << k << endl;
 	//int g = P.GetEngimonId();
 	//cout << g << endl;
 	P.PrintDaftarEngimon();
