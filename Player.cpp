@@ -29,9 +29,9 @@ Player::Player(pair<int,int> Coordinate, const Peta& p){
 	Species* A = katalogspecies[0];
 	Species* L = katalogspecies[2];
 	Species* T = katalogspecies[1];
-	Engimon Alam(A, "Alam", "", "", "", "", 10, 0, 0, false, false);
-	Engimon Chelsie(L, "Chelsie", "", "", "", "", 10,0,0,false, false);
-	Engimon Monica(T, "Monica", "", "", "", "", 10, 0, 0, false, false);
+	Engimon Alam(A, "Alam", "", "", "", "", 10, 0, 0, true, false);
+	Engimon Chelsie(L, "Chelsie", "", "", "", "", 10,0,0,true, false);
+	Engimon Monica(T, "Monica", "", "", "", "", 10, 0, 0, true, false);
 	this->addEngimonToInven(Alam);
 	this->addEngimonToInven(Chelsie);
 	this->addEngimonToInven(Monica);
@@ -425,22 +425,31 @@ bool Player::battle(Engimon& enemy) {
 			float adv2 = Engimon::advantage(this->activeEngimon,enemy,2);
 			float power1 = Engimon::countPower(this->activeEngimon,adv1);
 			float power2 = Engimon::countPower(enemy,adv2);
-			cout << "Player Engimon attacks with a total power of " << power1 << endl;
+			cout << "Your Engimon attacks with a total power of " << power1 << endl;
 			cout << "Wild Engimon attacks with a total power of " << power2 << endl;
 			if(power1 >= power2) { // kalo player menang
-				cout << "Player Engimon wins" << endl;
+				cout << "Your Engimon wins" << endl;
 				this->activeEngimon.addEXP(enemy.getLevel()*5); // tambah exp
+				cout << "Your active engimon gained " << enemy.getLevel()*5 << " experience points" << endl;
+				if(this->activeEngimon.getStatus() == false) {
+					this->activeEngimon = Engimon();
+					this->isThereActiveEngimon = false;
+					cout << "Your active Engimon has reached its limit. He will ascend to Engimon heaven" << endl;
+				}
+				enemy.setWild(false);
 				this->addEngimonToInven(enemy); // nambah engimon ke inventoy
 
 				//dapet skill random
 				int ele2 = enemy.getElement().at(0); //yang dipake elemen enemy pertama
 				int x = rand() % sf.getSkills().size();
-				Skill s = Skill(sf[x]);
+				Skill s = sf[x];
+
 				while(count(s.getElement().begin(),s.getElement().end(),ele2) == 0) { //skill randomnya beda elemen
 					x = (x + 1) % sf.getSkills().size();
 					s = Skill(sf[x]);
 				} 
 				this->addSkillItemToInven(s);
+				cout << "You obtained skill item : " << s.getName() << endl;
 				ongoing = 0;
 				hasil = true;
 			}

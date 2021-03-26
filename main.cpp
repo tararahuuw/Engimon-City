@@ -57,8 +57,12 @@ int main(){
                 cin >> idx;
                 player1.activateEngimon(idx-1);
             }
+            if(command == "status") {
+                cout << "status : " << player1.getActiveEngimon().getStatus() << endl;
+            }
             if (command == "learn"){
                 int idx;
+                player1.getListSkill().viewList();
                 cout << "Masukkan nomor skill item yang ingin digunakan :";
                 cin >> idx;
                 player1.learnSkill(idx-1);
