@@ -528,7 +528,12 @@ bool Player::battle(Engimon& enemy) {
 void Player:: initBattle(){
 	if (this->isThereActiveEngimon and this->isEnemyAround()){
 		pair<int,int> coorEnemy = this->getEnemyAround();
+		cout << this->coordinate.first << " " << this->coordinate.second << endl;
+		cout << "sampai sini" << endl;
+		cout << coorEnemy.first << " " << coorEnemy.second << endl;
+		cout << this->peta.GetElementPeta(coorEnemy.first,coorEnemy.second) << endl;
 		Engimon enemy = this->peta.GetEngimonLiar(coorEnemy.first,coorEnemy.second);
+		cout << enemy << endl;
 		bool win = this->battle(enemy);
 		if (win) {
 			this->peta.DeleteEngimon2(coorEnemy.first,coorEnemy.second);
@@ -543,13 +548,13 @@ void Player:: initBattle(){
 bool Player:: isEnemyAround(){
 	int y = this->coordinate.first;
 	int x = this->coordinate.second;
-	if ( y-1 >= 0 and (this->peta.GetElementPeta(y-1,x) != '-' or this->peta.GetElementPeta(y-1,x) != 'o' or this->peta.GetElementPeta(y-1,x) != 'X')){
+	if ( y-1 >= 0 and (this->peta.GetElementPeta(y-1,x) != '-' and this->peta.GetElementPeta(y-1,x) != 'o' and this->peta.GetElementPeta(y-1,x) != 'X')){
 		return true;
-	}else if (x+1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y,x+1) != '-' or this->peta.GetElementPeta(y,x+1) != 'o' or this->peta.GetElementPeta(y,x+1) != 'X')){
+	}else if (x+1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y,x+1) != '-' and this->peta.GetElementPeta(y,x+1) != 'o' and this->peta.GetElementPeta(y,x+1) != 'X')){
 		return true;
-	}else if (y+1 < this->peta.GetBaris() and (this->peta.GetElementPeta(y+1,x) != '-' or this->peta.GetElementPeta(y+1,x) != 'o' or this->peta.GetElementPeta(y+1,x) != 'X')){
+	}else if (y+1 < this->peta.GetBaris() and (this->peta.GetElementPeta(y+1,x) != '-' and this->peta.GetElementPeta(y+1,x) != 'o' and this->peta.GetElementPeta(y+1,x) != 'X')){
 		return true;
-	}else if (x-1 >= 0 and (this->peta.GetElementPeta(y,x-1) != '-' or this->peta.GetElementPeta(y,x-1) != 'o' or this->peta.GetElementPeta(y,x-1) != 'X')){
+	}else if (x-1 >= 0 and (this->peta.GetElementPeta(y,x-1) != '-' and this->peta.GetElementPeta(y,x-1) != 'o' and this->peta.GetElementPeta(y,x-1) != 'X')){
 		return true;
 	}
 
@@ -559,17 +564,23 @@ bool Player:: isEnemyAround(){
 pair<int,int> Player:: getEnemyAround(){
 	int y = this->coordinate.first;
 	int x = this->coordinate.second;
-	if ( y-1 >= 0 and (this->peta.GetElementPeta(y-1,x) != '-' or this->peta.GetElementPeta(y-1,x) != 'o' or this->peta.GetElementPeta(y-1,x) != 'X')){
-		return make_pair(y-1,x);
-	}else if (x+1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y,x+1) != '-' or this->peta.GetElementPeta(y,x+1) != 'o' or this->peta.GetElementPeta(y,x+1) != 'X')){
-		return make_pair(y,x+1);
-	}else if (y+1 < this->peta.GetBaris() and (this->peta.GetElementPeta(y+1,x) != '-' or this->peta.GetElementPeta(y+1,x) != 'o' or this->peta.GetElementPeta(y+1,x) != 'X')){
-		return make_pair(y+1,x);
-	}else if (x-1 >= 0 and (this->peta.GetElementPeta(y,x-1) != '-' or this->peta.GetElementPeta(y,x-1) != 'o' or this->peta.GetElementPeta(y,x-1) != 'X')){
-		return make_pair(y,x-1);
-	}
+	int a;
+	int b;
+	if ( y-1 >= 0 and (this->peta.GetElementPeta(y-1,x) != '-' and this->peta.GetElementPeta(y-1,x) != 'o' and this->peta.GetElementPeta(y-1,x) != 'X')){
+		a= y-1;
+		b=x;
+	}else if (x+1 < this->peta.GetKolom() and (this->peta.GetElementPeta(y,x+1) != '-' and this->peta.GetElementPeta(y,x+1) != 'o' and this->peta.GetElementPeta(y,x+1) != 'X')){
+		a = y;
+		b=x+1;
+	}else if (y+1 < this->peta.GetBaris() and (this->peta.GetElementPeta(y+1,x) != '-' and this->peta.GetElementPeta(y+1,x) != 'o' and this->peta.GetElementPeta(y+1,x) != 'X')){
+		a=y+1;
+		b=x;
+	}else if (x-1 >= 0 and (this->peta.GetElementPeta(y,x-1) != '-' and this->peta.GetElementPeta(y,x-1) != 'o' and this->peta.GetElementPeta(y,x-1) != 'X')){
+		a = y;
+		b = x-1;
+	}else {a = -1; b=-1;}
 
-	return make_pair(-1,-1);
+	return make_pair(a,b);
 }
 
 bool Player::isGameOver(){
