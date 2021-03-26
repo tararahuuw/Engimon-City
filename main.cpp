@@ -13,7 +13,7 @@ int main(){
     string command;
     cin >> command;
     //nanti welcome message disini
-    while (command != "exit" and not isGameOver){
+    while (command != "exit" &&  !(isGameOver)){
         try{
             if (command == "d" or command == "D"){
                 player1.moveD();

@@ -29,9 +29,9 @@ Player::Player(pair<int,int> Coordinate, const Peta& p){
 	Species* A = katalogspecies[0];
 	Species* L = katalogspecies[2];
 	Species* T = katalogspecies[1];
-	Engimon Alam(A, "Alam", "", "", "", "", 1, 0, 0, false, false);
-	Engimon Chelsie(L, "Chelsie", "", "", "", "", 1,0,0,false, false);
-	Engimon Monica(T, "Monica", "", "", "", "", 1, 0, 0, false, false);
+	Engimon Alam(A, "Alam", "", "", "", "", 10, 0, 0, false, false);
+	Engimon Chelsie(L, "Chelsie", "", "", "", "", 10,0,0,false, false);
+	Engimon Monica(T, "Monica", "", "", "", "", 10, 0, 0, false, false);
 	this->addEngimonToInven(Alam);
 	this->addEngimonToInven(Chelsie);
 	this->addEngimonToInven(Monica);
@@ -420,14 +420,11 @@ bool Player::battle(Engimon& enemy) {
 		cin >> answer;
 		if(answer == 1) {
 			//ongoing = attack(P,P.getActiveEngimon(),enemy,attempt); // error soalnya harusnya pake reference
-			cout << "tes" << endl;
 			SkillsFactory sf = SkillsFactory(); //buat nanti dapet skill item
-			cout << "tes" << endl;
 			float adv1 = Engimon::advantage(this->activeEngimon,enemy,1);
 			float adv2 = Engimon::advantage(this->activeEngimon,enemy,2);
 			float power1 = Engimon::countPower(this->activeEngimon,adv1);
 			float power2 = Engimon::countPower(enemy,adv2);
-			cout << "tes" << endl;
 			cout << "Player Engimon attacks with a total power of " << power1 << endl;
 			cout << "Wild Engimon attacks with a total power of " << power2 << endl;
 			if(power1 >= power2) { // kalo player menang
@@ -573,7 +570,7 @@ pair<int,int> Player:: getEnemyAround(){
 }
 
 bool Player::isGameOver(){
-	return (not this->isThereActiveEngimon  and this->listEngimon.getSize()==0);
+	return (!(this->isThereActiveEngimon) && (this->getListEng().getSize()==0));
 }
 
 void Player::deactivateEngimon(){

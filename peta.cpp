@@ -242,56 +242,48 @@ void Peta::CreateEngimon(char e, int level, Engimon *engi){
 	Species* spesies;
 	int random = rand() % 2;
 	if(e == 'f' || e == 'F'){
-		cout << "berhasil buat f" << endl;
 		if(random == 0){
 			spesies = DaftarSpecies[0];
 		} else {
 			spesies = DaftarSpecies[8];
 		}
 	} else if(e == 'e' || e == 'E'){
-		cout << "berhasil buat e" << endl;
 		if(random == 0){
 			spesies = DaftarSpecies[2];
 		} else {
 			spesies = DaftarSpecies[10];
 		}
 	} else if(e == 'g' || e == 'G'){
-		cout << "berhasil buat g" << endl;
 		if(random == 0){
 			spesies = DaftarSpecies[3];
 		} else {
 			spesies = DaftarSpecies[11];
 		}
 	} else if(e == 'w' || e == 'W') {
-		cout << "berhasil buat w" << endl;
 		if(random == 0){
 			spesies = DaftarSpecies[1];
 		} else {
 			spesies = DaftarSpecies[9];
 		}
 	} else if(e == 'i' || e == 'I') {
-		cout << "berhasil buat i" << endl;
 		if(random == 0){
 			spesies = DaftarSpecies[4];
 		} else {
 			spesies = DaftarSpecies[12];
 		}
 	} else  if(e == 'l' || e == 'L') {
-		cout << "berhasil buat l" << endl;
 		if(random == 0){
 			spesies = DaftarSpecies[5];
 		} else {
 			spesies = DaftarSpecies[13];
 		}
 	} else  if(e == 's' || e == 'S') {
-		cout << "berhasil buat s" << endl;
 		if(random == 0){
 			spesies = DaftarSpecies[6];
 		} else {
 			spesies = DaftarSpecies[14];
 		}
 	} else  { //if(e == 'n' || e == 'N')
-		cout << "berhasil buat n" << endl;
 		if(random == 0){
 			spesies = DaftarSpecies[7];
 		} else {

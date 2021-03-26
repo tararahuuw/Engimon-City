@@ -177,10 +177,12 @@ float Engimon::getAdvantageElement(Element _elm2) const{
 }
 
 float Engimon::advantage(Engimon& e1,Engimon& e2,int n) {
-    int x = 0;
-    int y = 0;
-    for (auto i = e1.getElement().begin(); i != e1.getElement().end(); ++i) {
-        for (auto j = e2.getElement().begin(); j != e2.getElement().end(); ++j) {
+    float x = 0;
+    float y = 0;
+    vector<Element> element1 = e1.getElement();
+    vector<Element> element2 = e2.getElement();
+    for (auto i = element1.begin(); i != element1.end(); ++i) {
+        for (auto j = element2.begin(); j != element2.end(); ++j) {
             if(table[*i][*j] > x) {
                 x = table[*i][*j];
             }
