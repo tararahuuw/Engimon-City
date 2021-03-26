@@ -434,6 +434,8 @@ bool Player::battle(Engimon& enemy) {
 				if(this->activeEngimon.getStatus() == false) {
 					this->activeEngimon = Engimon();
 					this->isThereActiveEngimon = false;
+					this->peta.SetElementPeta(this->coorActive.first,this->coorActive.second, this->peta.GetElementPetaTetap(this->coorActive.first,this->coorActive.second));
+					
 					cout << "Your active Engimon has reached its limit. He will ascend to Engimon heaven" << endl;
 				}
 				enemy.setWild(false);
